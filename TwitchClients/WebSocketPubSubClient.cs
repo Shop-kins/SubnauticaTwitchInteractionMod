@@ -40,7 +40,7 @@ namespace TwitchInteraction
             }
         }
 
-        public async Task ConnectAsync(string token, string nickId, CancellationToken cancellationToken)
+        public async Task ConnectAsync(string token, string channelId, CancellationToken cancellationToken)
         {
             await _webSocketClient.ConnectAsync(_webSocketServerUri, cancellationToken);
 
@@ -49,7 +49,7 @@ namespace TwitchInteraction
                 ListenRequest lr = new ListenRequest();
                 ListenRequestData lrd = new ListenRequestData();
                 lrd.AuthToken = token;
-                String[] lrdt = { "channel-points-channel-v1." + nickId, "channel-bits-events-v2." + nickId };
+                String[] lrdt = { "channel-points-channel-v1." + channelId, "channel-bits-events-v2." + channelId };
                 lrd.Topics = lrdt;
                 lr.Data = lrd;
                 lr.Nonce = "lkjsdhfiusdagf";
