@@ -34,7 +34,7 @@ namespace TwitchInteraction
         {
             cts = new System.Threading.CancellationToken();
             otherclient = new TwitchChatClient();
-            await otherclient.ConnectAsync("oauth:" + secrets.access_token, "oftheseabot", cts);
+            await otherclient.ConnectAsync("oauth:" + secrets.access_token, secrets.botname, cts);
             channelington = await otherclient.JoinChannelAsync(secrets.username, cts);
             channelington.MessageReceived += TwitchEventManager.ChatMessageReceived;
         }
