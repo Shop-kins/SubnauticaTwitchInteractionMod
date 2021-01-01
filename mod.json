@@ -1,0 +1,11 @@
+{
+  "Id": "TwitchInteraction",
+  "DisplayName": "TwitchInteraction",
+  "Author": "Salvner",
+  "Version": "1.0.0",
+  "Enable": true,
+  "AssemblyName": "TwitchInteraction.dll",
+  "EntryMethod": "TwitchInteraction.MainPatcher.Patch",
+  "Dependencies": [],
+  "Game": "Subnautica"
+}

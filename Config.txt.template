@@ -1,0 +1,8 @@
+﻿{
+	"client_id": "TwitchTokenGenerator client_id",
+	"bot_access_token": "Access token of the account that will be using chat",
+	"username_token": "Access token for your account",
+	"username_id": "Id of your account",
+	"username": "name of your account",
+	"bot_name": "name of the account using chat"
+}
