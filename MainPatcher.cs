@@ -43,7 +43,6 @@ namespace TwitchInteraction
         {
             cts2 = new System.Threading.CancellationToken();
             otherpubsub = new TwitchPubSubClient();
-            Console.WriteLine("doot");
             await otherpubsub.ConnectAsync(secrets.api_token, secrets.nick_id, cts2);
             channelington2 = await otherpubsub.JoinChannelAsync(secrets.username, cts);
             channelington2.MessageReceived += TwitchEventManager.PubSubMessageReceived;
