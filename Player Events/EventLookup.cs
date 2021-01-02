@@ -13,17 +13,15 @@ namespace TwitchInteraction.Player_Events
             { "Rip Riley [Integration]", new EventInfo(DangerZone.KillPlayer, 200)  }
         };
 
-        //LIST OF FUNZONE KEYS
-        private static readonly List<string> FunList = new List<string>() {
-            ""
-            };
-
-
-        public static int? getBitCost(string EventText)
+        public static string getBitCosts()
         {
-            if (EventDictionary.Keys.Contains(EventText))
-                return EventDictionary[EventText].BitCost;
-            return null;
+            string message = "";
+            foreach(KeyValuePair<string, EventInfo> pair in EventDictionary)
+            {
+                var costText = pair.Key + " costs " + pair.Value.BitCost + " bits ||| ";
+                message += costText;
+            }
+            return message;
         }
 
         public static void Lookup(string EventText)
@@ -40,22 +38,6 @@ namespace TwitchInteraction.Player_Events
                 Event.Value.BitCost += 5;
                 Event.Value.Action.Invoke();
             }
-        }
-
-        //can get the same one twice w/e tho
-        public static string FourRandomFunZone()
-        {
-            var Rand = new Random();
-         
-            var RandomObjects = new List<string>();
-
-            for (int i = 0; i < 4; i++)
-            {
-                var Index = Rand.Next(FunList.Count);
-
-                RandomObjects.Add(FunList[Index]);
-            }
-            return string.Join(",", RandomObjects);
         }
    
     }

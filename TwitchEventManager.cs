@@ -8,16 +8,9 @@ namespace TwitchInteraction
         public static void ChatMessageReceived(object sender, Message e)
         {
             Console.WriteLine("Received Chat Message");
-            if (e.Text.Trim() == "{random}")
+            if(e.Text.Trim() == ("{bit-costs}"))
             {
-                MainPatcher.TextChannel.SendMessageAsync(EventLookup.FourRandomFunZone(), MainPatcher.cts);
-            } else if(e.Text.StartsWith("{"))
-            {
-                string Text = e.Text.Trim();
-                string TextCleaned = Text.Substring(1, Text.Length - 2);
-                int? BitCost = EventLookup.getBitCost(TextCleaned);
-                if(BitCost != null)
-                    MainPatcher.TextChannel.SendMessageAsync(TextCleaned + " costs " + BitCost + " Bits", MainPatcher.cts);
+                MainPatcher.TextChannel.SendMessageAsync(EventLookup.getBitCosts(), MainPatcher.cts);
             }
         }
 
@@ -30,7 +23,6 @@ namespace TwitchInteraction
             }
             if (e.Host == BitsHost())
             {
-
                 EventLookup.Lookup(e.Text, Int32.Parse(e.Text.Split(':')[0]));
             }
         }
