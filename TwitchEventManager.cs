@@ -1,10 +1,5 @@
 ﻿using System;
-using TwitchLib.Client.Events;
-using UnityEngine;
-using TwitchLib.Api.Models.Undocumented.Chatters;
-using TwitchLib.PubSub.Events;
-using System.Collections;
-using System.Collections.Generic;
+using TwitchInteraction.Player_Events;
 
 namespace TwitchInteraction
 {
@@ -13,12 +8,24 @@ namespace TwitchInteraction
         public static void ChatMessageReceived(object sender, Message e)
         {
             Console.WriteLine("Received Chat Message");
+            if (e.Text.Trim() == "{random}")
+            {
+                MainPatcher.TextChannel.SendMessageAsync(EventLookup.FourRandomFunZone(), MainPatcher.cts);
+            }
         }
 
         public static void PubSubMessageReceived(object sender, Message e)
         {
-            Console.WriteLine("Received Pub Sub Message");
-            Player_Events.EventLookup.Lookup(e.Text);
+            Console.WriteLine("Received Pub Sub Message:");
+            if (e.Host == ChannelPointsHost())
+            {
+                EventLookup.Lookup(e.Text);
+            }
+            if (e.Host == BitsHost())
+            {
+
+                EventLookup.Lookup(e.Text, Int32.Parse(e.Text.Split(':')[0]));
+            }
         }
 
         private static string ChannelPointsHost()
