@@ -11,6 +11,13 @@ namespace TwitchInteraction
             if (e.Text.Trim() == "{random}")
             {
                 MainPatcher.TextChannel.SendMessageAsync(EventLookup.FourRandomFunZone(), MainPatcher.cts);
+            } else if(e.Text.StartsWith("{"))
+            {
+                string Text = e.Text.Trim();
+                string TextCleaned = Text.Substring(1, Text.Length - 2);
+                int? BitCost = EventLookup.getBitCost(TextCleaned);
+                if(BitCost != null)
+                    MainPatcher.TextChannel.SendMessageAsync(TextCleaned + " costs " + BitCost + " Bits", MainPatcher.cts);
             }
         }
 

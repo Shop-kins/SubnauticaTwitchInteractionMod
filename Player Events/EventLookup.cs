@@ -18,6 +18,14 @@ namespace TwitchInteraction.Player_Events
             ""
             };
 
+
+        public static int? getBitCost(string EventText)
+        {
+            if (EventDictionary.Keys.Contains(EventText))
+                return EventDictionary[EventText].BitCost;
+            return null;
+        }
+
         public static void Lookup(string EventText)
         {
             if (EventDictionary.Keys.Contains(EventText))
