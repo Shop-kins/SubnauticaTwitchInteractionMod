@@ -35,7 +35,6 @@ namespace TwitchInteraction.Player_Events
             KeyValuePair<string, EventInfo> Event = EventDictionary.FirstOrDefault(it => EventText.Contains(it.Key));
             if (!Event.Equals(default(KeyValuePair<string, EventInfo>)) && bits >= Event.Value.BitCost)
             {
-                Event.Value.BitCost += 5;
                 Event.Value.Action.Invoke();
             }
         }
