@@ -18,10 +18,7 @@ namespace TwitchInteraction
         public static void PubSubMessageReceived(object sender, Message e)
         {
             Console.WriteLine("Received Pub Sub Message");
-            if(e.Host == ChannelPointsHost() && e.Text == "Button goes brr, Ded Salvner")
-            {
-                Player_Events.DangerZone.KillPlayer();
-            }
+            Player_Events.EventLookup.Lookup(e.Text);
         }
 
         private static string ChannelPointsHost()
