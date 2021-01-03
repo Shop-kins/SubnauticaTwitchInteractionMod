@@ -27,11 +27,6 @@ namespace TwitchInteraction
             }
         }
 
-        public static void ConnectChatOnDisconnect(Object sender, Object a)
-        {
-            MainPatcher.otherclient.ConnectAsync("oauth:" + MainPatcher.secrets.access_token, MainPatcher.secrets.botname, MainPatcher.cts);
-        }
-
         private static string ChannelPointsHost()
         {
             return "channel-points-channel-v1." + MainPatcher.secrets.nick_id;

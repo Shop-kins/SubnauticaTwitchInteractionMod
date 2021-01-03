@@ -21,7 +21,7 @@ namespace TwitchInteraction
         public static void Patch()
         {
             secrets = new Secrets();
-            StartTwitchChatClient();
+            //StartTwitchChatClient(); Turned off cause the ping pong doesnt work and when it disconnects it crashes the game
             StartTwitchPubSubClient();
 
             var harmony = HarmonyInstance.Create("subnautica.mod.twitchinteraction"); 
@@ -35,7 +35,6 @@ namespace TwitchInteraction
             await otherclient.ConnectAsync("oauth:" + secrets.access_token, secrets.botname, cts);
             TextChannel = await otherclient.JoinChannelAsync(secrets.username, cts);
             TextChannel.MessageReceived += TwitchEventManager.ChatMessageReceived;
-            otherclient.ConnectionClose += TwitchEventManager.ConnectChatOnDisconnect;
         }
 
         private static async void StartTwitchPubSubClient()
