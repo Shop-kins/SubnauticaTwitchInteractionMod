@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using UnityEngine;
+using TwitchInteraction.InputPatch;
 
 namespace TwitchInteraction.Player_Events
 {
@@ -108,6 +109,34 @@ namespace TwitchInteraction.Player_Events
             {
                 CraftData.AddToInventory(listofstuff[random.Next(listofstuff.Length)], 1, false, false);
             }
+        }
+
+        public static void InvertControls()
+        {
+            InputPatch.InputPatch.invertKeyboardAxisX = true;
+            InputPatch.InputPatch.invertKeyboardAxisY = true;
+            InputPatch.InputPatch.invertKeyboardAxisZ = true;
+            InputPatch.InputPatch.invertMouseAxisX = true;
+            InputPatch.InputPatch.invertMouseAxisY = true;
+
+            var timer = new Timer(async (e) =>
+            {
+                InputPatch.InputPatch.invertKeyboardAxisX = false;
+                InputPatch.InputPatch.invertKeyboardAxisY = false;
+                InputPatch.InputPatch.invertKeyboardAxisZ = false;
+                InputPatch.InputPatch.invertMouseAxisX = false;
+                InputPatch.InputPatch.invertMouseAxisY = false;
+            }, null, TimeSpan.FromMinutes(1), Timeout.InfiniteTimeSpan);
+        }
+
+        public static void DisableControls()
+        {
+            InputPatch.InputPatch.controlsEnabled = false;
+
+            var timer = new Timer(async (e) =>
+            {
+                InputPatch.InputPatch.controlsEnabled = true;
+            }, null, TimeSpan.FromSeconds(20), Timeout.InfiniteTimeSpan);
         }
 
     }
