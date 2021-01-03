@@ -35,11 +35,32 @@ namespace TwitchInteraction.Player_Events
 
         public static void openPDA()
         {
+
             PDA pda = Player.main.GetPDA();
             if (!pda.Open())
             {
                 return;
             }
+        }
+
+
+        public static void EnableGun()
+        {
+            Player.main.oxygenMgr.RemoveOxygen(-100);
+
+        }
+
+        public static void FillOxygen()
+        {
+            Player.main.oxygenMgr.AddOxygen(Player.main.GetOxygenAvailable() + 3);
+
+            
+        }
+
+        public static void RandomMouseSens()
+        {
+            Random random = new Random();
+            GameInput.SetMouseSensitivity((float)random.NextDouble());
         }
     }
 }
