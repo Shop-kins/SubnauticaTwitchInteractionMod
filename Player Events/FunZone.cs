@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace TwitchInteraction.Player_Events
 {
@@ -69,6 +70,13 @@ namespace TwitchInteraction.Player_Events
         public static void showHUD()
         {
             HideForScreenshots.Hide(HideForScreenshots.HideType.None);
+        }
+        
+        public static void LifePodWarp_Shallows()
+        {
+            Vector3 newHome = RandomStart.main.GetRandomStartPoint();
+            EscapePod.main.transform.position = newHome;
+            EscapePod.main.anchorPosition = newHome;            
         }
     }
 }
