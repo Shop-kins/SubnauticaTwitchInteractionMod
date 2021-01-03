@@ -47,18 +47,35 @@ namespace TwitchInteraction.Player_Events
             Player.main.oxygenMgr.AddOxygen(Player.main.GetOxygenAvailable() + 3);            
         }
 
+        private static float initialMouseSens;
+        private static Timer randomMouseSensTimer;
+        private static bool randomMouseSensTimerRunning = false;
+
         public static void RandomMouseSens()
         {
 
-            float currentSens = GameInput.GetMouseSensitivity();
-            System.Random random = new System.Random();
-            GameInput.SetMouseSensitivity((float)random.NextDouble());
-
-            var timer = new Timer(async (e) =>
+            if (!randomMouseSensTimerRunning)
             {
-                GameInput.SetMouseSensitivity(currentSens);
-            }, null, TimeSpan.FromMinutes(1), Timeout.InfiniteTimeSpan);
+                // Only update this when there is no timer running
+                initialMouseSens = GameInput.GetMouseSensitivity();
+            }
 
+            System.Random random = new System.Random();
+            GameInput.SetMouseSensitivity((float) random.NextDouble());
+
+            if (randomMouseSensTimerRunning)
+            {
+                // Stop the timer and immediately apply the next effect to prevent overlaps
+                randomMouseSensTimer.Change(Timeout.Infinite, Timeout.Infinite);
+                randomMouseSensTimer.Dispose();
+            }
+
+            randomMouseSensTimer = new Timer(async (e) =>
+            {
+                GameInput.SetMouseSensitivity(initialMouseSens);
+                randomMouseSensTimerRunning = false;
+            }, null, TimeSpan.FromMinutes(1), Timeout.InfiniteTimeSpan);
+            randomMouseSensTimerRunning = true;
         }
 
         public static void hideHUD()
@@ -111,6 +128,9 @@ namespace TwitchInteraction.Player_Events
             }
         }
 
+        private static Timer invertControlsTimer;
+        private static bool invertControlsTimerRunning = false;
+
         public static void InvertControls()
         {
             InputPatch.InputPatch.invertKeyboardAxisX = true;
@@ -119,24 +139,45 @@ namespace TwitchInteraction.Player_Events
             InputPatch.InputPatch.invertMouseAxisX = true;
             InputPatch.InputPatch.invertMouseAxisY = true;
 
-            var timer = new Timer(async (e) =>
+            if (invertControlsTimerRunning)
+            {
+                // Stop the timer and immediately apply the next effect to prevent overlaps
+                invertControlsTimer.Change(Timeout.Infinite, Timeout.Infinite);
+                invertControlsTimer.Dispose();
+            }
+
+            invertControlsTimer = new Timer(async (e) =>
             {
                 InputPatch.InputPatch.invertKeyboardAxisX = false;
                 InputPatch.InputPatch.invertKeyboardAxisY = false;
                 InputPatch.InputPatch.invertKeyboardAxisZ = false;
                 InputPatch.InputPatch.invertMouseAxisX = false;
                 InputPatch.InputPatch.invertMouseAxisY = false;
+                invertControlsTimerRunning = false;
             }, null, TimeSpan.FromMinutes(1), Timeout.InfiniteTimeSpan);
+            invertControlsTimerRunning = true;
         }
+
+        private static Timer disableControlsTimer;
+        private static bool disableControlsTimerRunning = false;
 
         public static void DisableControls()
         {
             InputPatch.InputPatch.controlsEnabled = false;
 
-            var timer = new Timer(async (e) =>
+            if (disableControlsTimerRunning)
+            {
+                // Stop the timer and immediately apply the next effect to prevent overlaps
+                disableControlsTimer.Change(Timeout.Infinite, Timeout.Infinite);
+                disableControlsTimer.Dispose();
+            }
+
+            disableControlsTimer = new Timer(async (e) =>
             {
                 InputPatch.InputPatch.controlsEnabled = true;
-            }, null, TimeSpan.FromSeconds(20), Timeout.InfiniteTimeSpan);
+                disableControlsTimerRunning = false;
+            }, null, TimeSpan.FromSeconds(10), Timeout.InfiniteTimeSpan);
+            disableControlsTimerRunning = true;
         }
 
     }
