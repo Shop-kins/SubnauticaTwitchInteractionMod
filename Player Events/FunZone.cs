@@ -9,5 +9,9 @@ namespace TwitchInteraction.Player_Events
     //Add functions to the EventLookup.cs class
     class FunZone // These events are mild->medium inconveniences that can be cheap or used in free votes
     {
+        public static void HealPlayer()
+        {
+            Player.main.liveMixin.AddHealth(777f);
+        }
     }
 }
