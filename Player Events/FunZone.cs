@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace TwitchInteraction.Player_Events
@@ -58,7 +54,7 @@ namespace TwitchInteraction.Player_Events
 
         public static void RandomMouseSens()
         {
-            Random random = new Random();
+            System.Random random = new System.Random();
             GameInput.SetMouseSensitivity((float)random.NextDouble());
         }
 
