@@ -18,7 +18,7 @@ namespace TwitchInteraction
             
             var redemption = JsonSerializer.Deserialize<ChannelPointRedemptionMessage>(message);
             var regex = new Regex(".*login\":\"(?<user>.*?)\".*title\":\"(?<title>.*?)\".*");
-            var regexBits = new Regex(".*login\":\"(?<user>.*?)\".*chat_message\":\"(?<title>.*?)\".*");
+            var regexBits = new Regex(".*user_name\":\"(?<user>.*?)\".*chat_message\":\"(?<title>.*?)\".*\"bits_used\":(?<bits>.*?),.*");
 
             var match = regex.Match("");
             //FOR SOME REASON YOU NEED THIS IN A TRY CATCH OR IT DOESN'T FUNCTION
@@ -26,10 +26,14 @@ namespace TwitchInteraction
             {
                 match = regex.Match(redemption.Data.Message);
                 msg.Host = redemption.Data.Topic;
+                if(match.Success)
+                    msg.Text = match.Groups["title"].Value;
                 if (!match.Success)
                 {
                     match = regexBits.Match(redemption.Data.Message);
                     msg.Host = redemption.Data.Topic;
+                    if(match.Success)
+                        msg.Text = match.Groups["bits"].Value + ":" + match.Groups["title"].Value;
                 }
             }
             catch (Exception e)
@@ -44,8 +48,7 @@ namespace TwitchInteraction
 
             msg.RawMessage = message;
             msg.User = groups["user"].Value;
-            msg.Channel = groups["user"].Value;
-            msg.Text = groups["title"].Value;
+            msg.Channel = MainPatcher.secrets.username;
 
             return true;
         }
