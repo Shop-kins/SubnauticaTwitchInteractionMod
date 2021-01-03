@@ -13,5 +13,11 @@ namespace TwitchInteraction.Player_Events
         {
             Player.main.liveMixin.TakeDamage(666);
         }
+
+        public static void EnableGun()
+        {
+            StoryGoalCustomEventHandler.main.gunDisabled = false;
+
+        }
     }
 }

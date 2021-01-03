@@ -14,7 +14,7 @@ namespace TwitchInteraction.Player_Events
             { "Heal Riley [Integration]", new EventInfo(FunZone.HealPlayer, 10) },
             { "Toggle Day/Night [Integration]", new EventInfo(FunZone.ToggleDayNight, 5) },
             { "Open PDA [Integration]", new EventInfo(FunZone.openPDA, 5) },
-            { "Turn on the big gun [Integration]", new EventInfo(FunZone.EnableGun, 5) },
+            { "Turn on the big gun [Integration]", new EventInfo(DangerZone.EnableGun, 50) },
             { "Fill Oxygen [Integration]", new EventInfo(FunZone.FillOxygen, 5) },
             { "Random Mouse Sensitivity [Integration]", new EventInfo(FunZone.RandomMouseSens, 5) },
             { "Hide HUD [Integration]", new EventInfo(FunZone.hideHUD, 10) },
