@@ -13,5 +13,34 @@ namespace TwitchInteraction.Player_Events
         {
             Player.main.liveMixin.AddHealth(777f);
         }
+
+        public static void ToggleDayNight()
+        {
+
+            DayNightCycle dayNight = DayNightCycle.main;
+            bool flag = dayNight.IsDay();
+            if (!flag)
+            {
+                dayNight.timePassedAsDouble += 1200.0 - DayNightCycle.main.timePassed % 1200.0 + 600.0;
+                
+                dayNight.dayNightCycleChangedEvent.Trigger(true);
+            }
+            else
+            {
+                dayNight.timePassedAsDouble += 1200.0 - DayNightCycle.main.timePassed % 1200.0;
+                dayNight.dayNightCycleChangedEvent.Trigger(false);
+            }
+
+        }
+
+        public static void openPDA()
+        {
+            PDA pda = Player.main.GetPDA();
+            if (!pda.Open())
+            {
+                return;
+            }
+        }
     }
 }
+
