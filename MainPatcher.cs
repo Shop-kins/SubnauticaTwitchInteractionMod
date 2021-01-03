@@ -9,12 +9,10 @@ namespace TwitchInteraction
 {
     public class MainPatcher
     {
-        public static TwitchClient client;
         public static TwitchChatClient otherclient;
-        public static TwitchPubSub pubsub;
         public static TwitchPubSubClient otherpubsub;
-        public static Channel channelington;
-        public static Channel channelington2;
+        public static Channel TextChannel;
+        public static Channel PubSubChannel;
         public static System.Threading.CancellationToken cts;
         public static System.Threading.CancellationToken cts2;
         public static Api api;
@@ -35,8 +33,8 @@ namespace TwitchInteraction
             cts = new System.Threading.CancellationToken();
             otherclient = new TwitchChatClient();
             await otherclient.ConnectAsync("oauth:" + secrets.access_token, secrets.botname, cts);
-            channelington = await otherclient.JoinChannelAsync(secrets.username, cts);
-            channelington.MessageReceived += TwitchEventManager.ChatMessageReceived;
+            TextChannel = await otherclient.JoinChannelAsync(secrets.username, cts);
+            TextChannel.MessageReceived += TwitchEventManager.ChatMessageReceived;
         }
 
         private static async void StartTwitchPubSubClient()
@@ -44,8 +42,8 @@ namespace TwitchInteraction
             cts2 = new System.Threading.CancellationToken();
             otherpubsub = new TwitchPubSubClient();
             await otherpubsub.ConnectAsync(secrets.api_token, secrets.nick_id, cts2);
-            channelington2 = await otherpubsub.JoinChannelAsync(secrets.username, cts);
-            channelington2.MessageReceived += TwitchEventManager.PubSubMessageReceived;
+            PubSubChannel = await otherpubsub.JoinChannelAsync(secrets.username, cts);
+            PubSubChannel.MessageReceived += TwitchEventManager.PubSubMessageReceived;
         }
     }
 
