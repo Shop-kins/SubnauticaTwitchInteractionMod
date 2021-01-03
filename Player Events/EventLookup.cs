@@ -39,13 +39,22 @@ namespace TwitchInteraction.Player_Events
                 EventDictionary[EventText].Action.Invoke();
         }
 
-        public static void Lookup(string EventText, int bits)
+        public static string Lookup(string EventText, int bits)
         {
             KeyValuePair<string, EventInfo> Event = EventDictionary.FirstOrDefault(it => EventText.Contains(it.Key));
-            if (!Event.Equals(default(KeyValuePair<string, EventInfo>)) && bits >= Event.Value.BitCost)
+            if (!Event.Equals(default(KeyValuePair<string, EventInfo>)))
             {
-                Event.Value.Action.Invoke();
+                if (bits >= Event.Value.BitCost)
+                {
+                    Event.Value.Action.Invoke();
+                    return Event.Key + ":Activated";
+                } else
+                {
+                    return Event.Key + ":Not enough Bits";
+                }
             }
+            return "";
+            
         }
    
     }

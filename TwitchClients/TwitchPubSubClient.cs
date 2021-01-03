@@ -38,11 +38,6 @@ namespace TwitchInteraction
         /// <param name="e">Raw message</param>
         private void OnRawMessageReceived(object sender, string e)
         {
-            // About once every five minutes, the server sends a PING.
-            // To ensure that your connection to the server is not prematurely terminated, reply with PONG
-            if (e.StartsWith("PING"))
-                SendPongResponseAsync().Wait();
-
             if (_parser.TryParsePrivateMessage(e, out var message))
             {
                 var c = _channels.FirstOrDefault(d => d.Name == message.Channel);
@@ -80,16 +75,6 @@ namespace TwitchInteraction
             _channels.Add(channel);
 
             return channel;
-        }
-
-        /// <summary>
-        /// About once every five minutes, the server will send a PING :tmi.twitch.tv. 
-        /// To ensure that your connection to the server is not prematurely terminated, reply with PONG :tmi.twitch.tv.
-        /// </summary>
-        /// <returns></returns>
-        private Task SendPongResponseAsync()
-        {
-            return _twitchMessageClient.SendMessageAsync("PONG :tmi.twitch.tv", CancellationToken.None);
         }
     }
 }

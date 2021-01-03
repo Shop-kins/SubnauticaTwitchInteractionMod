@@ -35,6 +35,7 @@ namespace TwitchInteraction
             await otherclient.ConnectAsync("oauth:" + secrets.access_token, secrets.botname, cts);
             TextChannel = await otherclient.JoinChannelAsync(secrets.username, cts);
             TextChannel.MessageReceived += TwitchEventManager.ChatMessageReceived;
+            otherclient.ConnectionClose += TwitchEventManager.ConnectChatOnDisconnect;
         }
 
         private static async void StartTwitchPubSubClient()
