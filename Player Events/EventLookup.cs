@@ -10,7 +10,15 @@ namespace TwitchInteraction.Player_Events
 
         //MAP OF FUNZONE AND DANGER ZONE KEYS TO THEIR APPROPRIATE FUNCTIONS
         private static readonly Dictionary<string, EventInfo> EventDictionary = new Dictionary<string, EventInfo>(){
-            { "Rip Riley [Integration]", new EventInfo(DangerZone.KillPlayer, 200)  },
+            { "Rip Riley [Integration]", new EventInfo(DangerZone.KillPlayer, 200)},
+            { "Heal Riley [Integration]", new EventInfo(FunZone.HealPlayer, 10) },
+            { "Toggle Day/Night [Integration]", new EventInfo(FunZone.ToggleDayNight, 5) },
+            { "Open PDA [Integration]", new EventInfo(FunZone.openPDA, 5) },
+            { "Turn on the big gun [Integration]", new EventInfo(FunZone.EnableGun, 5) },
+            { "Fill Oxygen [Integration]", new EventInfo(FunZone.FillOxygen, 5) },
+            { "Random Mouse Sensitivity [Integration]", new EventInfo(FunZone.RandomMouseSens, 5) },
+            { "Hide HUD [Integration]", new EventInfo(FunZone.hideHUD, 10) },
+            { "Show HUD [Integration]", new EventInfo(FunZone.showHUD, 10) },
             { "Find a new home [Integration]", new EventInfo(FunZone.LifePodWarp_Shallows, 10) }
         };
 
