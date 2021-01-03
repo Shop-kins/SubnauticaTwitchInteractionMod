@@ -19,5 +19,11 @@ namespace TwitchInteraction.Player_Events
             StoryGoalCustomEventHandler.main.gunDisabled = false;
 
         }
+
+        public static void summonReaper()
+        {
+            DevConsole.SendConsoleCommand("spawn reaperleviathan");
+
+        }
     }
 }
