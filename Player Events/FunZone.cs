@@ -58,7 +58,7 @@ namespace TwitchInteraction.Player_Events
 
         public static void RandomMouseSens()
         {
-            Random random = new Random();
+            System.Random random = new System.Random();
             GameInput.SetMouseSensitivity((float)random.NextDouble());
         }
 
