@@ -16,7 +16,9 @@ namespace TwitchInteraction.Player_Events
             { "Open PDA [Integration]", new EventInfo(FunZone.openPDA, 5) },
             { "Turn on the big gun [Integration]", new EventInfo(FunZone.EnableGun, 5) },
             { "Fill Oxygen [Integration]", new EventInfo(FunZone.FillOxygen, 5) },
-            { "Random Mouse Sensitivity [Integration]", new EventInfo(FunZone.RandomMouseSens, 5) }
+            { "Random Mouse Sensitivity [Integration]", new EventInfo(FunZone.RandomMouseSens, 5) },
+            { "Hide HUD [Integration]", new EventInfo(FunZone.hideHUD, 10) },
+            { "Show HUD [Integration]", new EventInfo(FunZone.showHUD, 10) }
         };
 
         public static string getBitCosts()

@@ -46,21 +46,29 @@ namespace TwitchInteraction.Player_Events
 
         public static void EnableGun()
         {
-            Player.main.oxygenMgr.RemoveOxygen(-100);
+            StoryGoalCustomEventHandler.main.gunDisabled = false;
 
         }
 
         public static void FillOxygen()
         {
-            Player.main.oxygenMgr.AddOxygen(Player.main.GetOxygenAvailable() + 3);
-
-            
+            Player.main.oxygenMgr.AddOxygen(Player.main.GetOxygenAvailable() + 3);            
         }
 
         public static void RandomMouseSens()
         {
             Random random = new Random();
             GameInput.SetMouseSensitivity((float)random.NextDouble());
+        }
+
+        public static void hideHUD()
+        {
+            HideForScreenshots.Hide(HideForScreenshots.HideType.Mask | HideForScreenshots.HideType.HUD);
+        }
+
+        public static void showHUD()
+        {
+            HideForScreenshots.Hide(HideForScreenshots.HideType.None);
         }
     }
 }
