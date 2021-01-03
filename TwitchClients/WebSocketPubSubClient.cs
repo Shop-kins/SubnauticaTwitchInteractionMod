@@ -57,6 +57,11 @@ namespace TwitchInteraction
                 String jlr = JsonSerializer.Serialize<ListenRequest>(lr);
                 await SendMessageAsync(jlr, cancellationToken);
 
+                var timer = new Timer(async (e) =>
+                {
+                    await SendMessageAsync("{\"type\":  \"PING\"}", cancellationToken);
+                }, null, TimeSpan.Zero, TimeSpan.FromMinutes(5));
+
                 // start receiving messages in separeted thread
                 var receive = ReceiveAsync(cancellationToken).ConfigureAwait(false);
             }

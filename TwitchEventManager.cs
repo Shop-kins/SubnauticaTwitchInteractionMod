@@ -7,8 +7,7 @@ namespace TwitchInteraction
     {
         public static void ChatMessageReceived(object sender, Message e)
         {
-            Console.WriteLine("Received Chat Message");
-            if(e.Text.Trim() == ("{bit-costs}"))
+            if(e.Text.Trim() == ("{costs}"))
             {
                 MainPatcher.TextChannel.SendMessageAsync(EventLookup.getBitCosts(), MainPatcher.cts);
             }
@@ -16,15 +15,21 @@ namespace TwitchInteraction
 
         public static void PubSubMessageReceived(object sender, Message e)
         {
-            Console.WriteLine("Received Pub Sub Message:");
             if (e.Host == ChannelPointsHost())
             {
                 EventLookup.Lookup(e.Text);
             }
             if (e.Host == BitsHost())
             {
-                EventLookup.Lookup(e.Text, Int32.Parse(e.Text.Split(':')[0]));
+                string message = EventLookup.Lookup(e.Text, Int32.Parse(e.Text.Split(':')[0]));
+                if(message != "" && MainPatcher.TextChannel != null)
+                    MainPatcher.TextChannel.SendMessageAsync(e.User + " " + message, MainPatcher.cts);
             }
+        }
+
+        public static void ConnectChatOnDisconnect(Object sender, Object a)
+        {
+            MainPatcher.otherclient.ConnectAsync("oauth:" + MainPatcher.secrets.access_token, MainPatcher.secrets.botname, MainPatcher.cts);
         }
 
         private static string ChannelPointsHost()
