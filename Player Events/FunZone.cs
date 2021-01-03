@@ -40,13 +40,6 @@ namespace TwitchInteraction.Player_Events
             }
         }
 
-
-        public static void EnableGun()
-        {
-            StoryGoalCustomEventHandler.main.gunDisabled = false;
-
-        }
-
         public static void FillOxygen()
         {
             Player.main.oxygenMgr.AddOxygen(Player.main.GetOxygenAvailable() + 3);            
