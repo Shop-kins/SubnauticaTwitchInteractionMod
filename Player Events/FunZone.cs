@@ -43,7 +43,7 @@ namespace TwitchInteraction.Player_Events
 
         public static void FillOxygen()
         {
-            Player.main.oxygenMgr.AddOxygen(Player.main.GetOxygenAvailable() + 3);            
+            Player.main.oxygenMgr.AddOxygen(Player.main.GetOxygenCapacity() - Player.main.GetOxygenAvailable());
         }
 
         public static void RandomMouseSens()
