@@ -19,7 +19,7 @@ namespace TwitchInteraction.Player_Events
             { "Random Mouse Sensitivity [Integration]", new EventInfo(FunZone.RandomMouseSens, 100) },
             { "Hide HUD [Integration]", new EventInfo(FunZone.hideHUD, 50) },
             { "Show HUD [Integration]", new EventInfo(FunZone.showHUD, 50) },
-            { "Find a new home [Integration]", new EventInfo(FunZone.LifePodWarp_Shallows, 100) },n
+            { "Find a new home [Integration]", new EventInfo(FunZone.LifePodWarp_Shallows, 100) },
             { "Player Teleport [Integration]", new EventInfo(DangerZone.TeleportPlayer, 200) },
             { "Give that beautiful tooth [Integration]", new EventInfo(FunZone.giveTooth, 10000) },
             { "Cow or Reaper? Yes. [Integration]", new EventInfo(FunZone.randomSummon, 100) },
