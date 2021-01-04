@@ -29,13 +29,7 @@ namespace TwitchInteraction.Player_Events
             { "Disable Controls [Integration]", new EventInfo(FunZone.DisableControls, 200) },
             { "Invert Controls [Integration]", new EventInfo(FunZone.InvertControls, 200) },
             { "An early breakfast [Integration]", new EventInfo(FunZone.fillFoodWater, 20) },
-            { "Find a really new home [Integration]", new EventInfo(DangerZone.TeleportLifepod, 200) },
-            { "Play tooth drop sound [Integration]", new EventInfo(FunZone.playToothSound, 10) },
-            { "Light? What is light? [Integration]", new EventInfo(FunZone.EnableFilmicMode, 100) },
-            { "Clear a hotbar slot [Integration]", new EventInfo(FunZone.ClearRandomQuickSlot, 100) },
-            { "Shuffle the hotbar [Integration]", new EventInfo(FunZone.RandomizeQuickSlots, 250) },
-            { "Steal a battery [Integration]", new EventInfo(FunZone.RemoveRandomBattery, 150) }
-
+            { "Find a really new home [Integration]", new EventInfo(DangerZone.TeleportLifepod, 200) }
         };
 
         public static string getBitCosts()

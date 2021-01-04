@@ -78,15 +78,26 @@ namespace TwitchInteraction.Player_Events
             randomMouseSensTimerRunning = true;
         }
 
+        private static Timer hideHudTimer;
+        private static bool hideHudTimerRunning = false;
         public static void hideHUD()
         {
+            if (hideHudTimerRunning)
+            {
+                // Stop the timer and immediately apply the next effect to prevent overlaps
+                hideHudTimer.Change(Timeout.Infinite, Timeout.Infinite);
+                hideHudTimer.Dispose();
+            }
             HideForScreenshots.Hide(HideForScreenshots.HideType.Mask | HideForScreenshots.HideType.HUD);
+
+            hideHudTimer = new Timer(async (e) =>
+            {
+                HideForScreenshots.Hide(HideForScreenshots.HideType.None);
+                hideHudTimerRunning = false;
+            }, null, TimeSpan.FromMinutes(1), Timeout.InfiniteTimeSpan);
+            hideHudTimerRunning = true;
         }
 
-        public static void showHUD()
-        {
-            HideForScreenshots.Hide(HideForScreenshots.HideType.None);
-        }
 
         public static void LifePodWarp_Shallows()
         {
@@ -108,6 +119,13 @@ namespace TwitchInteraction.Player_Events
             string[] creatures = { "shocker", "biter", "blighter", "boneshark", "crabsnake", "crabsquid", "crash", "lavalizard", "mesmer", "reaperleviathan", "seadragon", "sandshark", "stalker", "warper", "bladderfish", "boomerang", "ghostrayred", "cutefish", "eyeye", "garryfish", "gasopod", "ghostrayblue", "holefish", "hoopfish", "hoverfish", "jellyray", "lavaboomerang", "oculus", "peeper", "rabbitray", "lavaeyeye", "reefback", "reginald", "seatreader", "spadefish", "spinefish", "bleeder", "shuttlebug", "cavecrawler", "floater", "lavalarva", "rockgrub", "jumper" };
 
             DevConsole.SendConsoleCommand("spawn " + creatures[random.Next(creatures.Length)]);
+        }
+
+        public static void fillFoodWater()
+        {
+            Survival component = Player.main.GetComponent<Survival>();
+            component.food += 124 - component.food;
+            component.water += 100 - component.water;
         }
 
         public static void randomBlueprintUnlock()
@@ -143,7 +161,16 @@ namespace TwitchInteraction.Player_Events
             for (int i = 0; i < 48; i++)
             {
                 CraftData.AddToInventory(listofstuff[random.Next(listofstuff.Length)], 1, false, false);
-            }
+            }           
+        }
+
+        public static void playToothSound()
+        {
+            System.Random random = new System.Random();
+
+            FMODUWE.PlayOneShot(CraftData.GetPrefabForTechType(TechType.Stalker).GetComponent<Stalker>().loseToothSound, new Vector3(Player.main.transform.position.x - random.Next(-8, 8), Player.main.transform.position.y - random.Next(-8, 7), Player.main.transform.position.z - random.Next(-7, 8)), 1f);
+         
+
         }
 
         private static Timer invertControlsTimer;
