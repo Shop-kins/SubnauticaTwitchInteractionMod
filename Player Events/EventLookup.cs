@@ -26,7 +26,9 @@ namespace TwitchInteraction.Player_Events
             { "Fill him up with junk [Integration]", new EventInfo(FunZone.junkFill, 50) },
             { "Get your pet reaper to hang out [Integration]", new EventInfo(DangerZone.summonReaper, 150) },
             { "Resource Roulette [Integration]", new EventInfo(FunZone.randomItem, 100) },
-            { "Blueprint Roulette [Integration]", new EventInfo(FunZone.randomBlueprintUnlock, 100) }
+            { "Blueprint Roulette [Integration]", new EventInfo(FunZone.randomBlueprintUnlock, 100) },
+            { "Disable Controls [Integration]", new EventInfo(FunZone.DisableControls, 200) },
+            { "Invert Controls [Integration]", new EventInfo(FunZone.InvertControls, 200) }
         };
 
         public static string getBitCosts()
