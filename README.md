@@ -4,7 +4,7 @@
 
 ###Publicise dlls
 
-it may be useful in the future, but currently not required to first publicise the following .dll files
+in order to use this (if you're building the solution yourself), you'll be required to first publicise the following .dll files
 
 - Assembly-CSharp
 - Assembly-CSharp-firstpass

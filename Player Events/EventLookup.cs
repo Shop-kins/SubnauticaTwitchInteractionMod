@@ -28,7 +28,8 @@ namespace TwitchInteraction.Player_Events
             { "Blueprint Roulette [Integration]", new EventInfo(FunZone.randomBlueprintUnlock, 100) },
             { "Disable Controls [Integration]", new EventInfo(FunZone.DisableControls, 200) },
             { "Invert Controls [Integration]", new EventInfo(FunZone.InvertControls, 200) },
-            { "An early breakfast [Integration]", new EventInfo(FunZone.fillFoodWater, 20) }
+            { "An early breakfast [Integration]", new EventInfo(FunZone.fillFoodWater, 20) },
+            { "Find a really new home [Integration]", new EventInfo(DangerZone.TeleportLifepod, 200) }
         };
 
         public static string getBitCosts()
