@@ -92,6 +92,23 @@ namespace TwitchInteraction.Player_Events
             DevConsole.SendConsoleCommand("spawn " + creatures[random.Next(creatures.Length)]);
         }
 
+        public static void randomBlueprintUnlock()
+        {
+            System.Random random = new System.Random();
+
+            TechType[] blueprintTech = { TechType.BaseBioReactor, TechType.Constructor, TechType.Exosuit, TechType.BaseMoonpool, TechType.BaseNuclearReactor, TechType.PropulsionCannon, TechType.Seamoth, TechType.StasisRifle, TechType.ThermalPlant, TechType.Transfuser, TechType.Workbench, TechType.Techlight, TechType.LEDLight, TechType.CyclopsHullBlueprint, TechType.CyclopsBridgeBlueprint, TechType.CyclopsEngineBlueprint, TechType.CyclopsDockingBayBlueprint, TechType.Seaglide, TechType.Beacon, TechType.BatteryCharger, TechType.BaseObservatory, TechType.FiltrationMachine, TechType.CoffeeVendingMachine, TechType.BaseMapRoom, TechType.BaseLadder };
+            int randomNum = random.Next(blueprintTech.Length);
+
+            while (CrafterLogic.IsCraftRecipeUnlocked(blueprintTech[randomNum])){
+                randomNum = random.Next(blueprintTech.Length);
+            }
+
+            if (CraftData.IsAllowed(blueprintTech[randomNum]) && KnownTech.Add(blueprintTech[randomNum], true))
+            {
+                ErrorMessage.AddDebug("Unlocked " + Language.main.Get(blueprintTech[randomNum].AsString(false)));
+            }
+        }
+
         public static void randomItem()
         {
             System.Random random = new System.Random();
