@@ -159,7 +159,16 @@ namespace TwitchInteraction.Player_Events
             for(int i = 0; i < 48; i++)
             {
                 CraftData.AddToInventory(listofstuff[random.Next(listofstuff.Length)], 1, false, false);
-            }
+            }           
+        }
+
+        public static void playToothSound()
+        {
+            System.Random random = new System.Random();
+
+            FMODUWE.PlayOneShot(CraftData.GetPrefabForTechType(TechType.Stalker).GetComponent<Stalker>().loseToothSound, new Vector3(Player.main.transform.position.x - random.Next(-8, 8), Player.main.transform.position.y - random.Next(-8, 7), Player.main.transform.position.z - random.Next(-7, 8)), 1f);
+         
+
         }
 
         private static Timer invertControlsTimer;
