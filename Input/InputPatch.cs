@@ -1,4 +1,5 @@
 using Harmony;
+using TwitchInteraction.Player_Events;
 using UnityEngine;
 
 namespace TwitchInteraction.InputPatch

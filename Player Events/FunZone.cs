@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading;
 using UnityEngine;
-using TwitchInteraction.InputPatch;
 
 namespace TwitchInteraction.Player_Events
 {
@@ -44,38 +43,21 @@ namespace TwitchInteraction.Player_Events
 
         public static void FillOxygen()
         {
-            Player.main.oxygenMgr.AddOxygen(Player.main.GetOxygenAvailable() + 3);            
+            Player.main.oxygenMgr.AddOxygen(Player.main.GetOxygenCapacity() - Player.main.GetOxygenAvailable());
         }
-
-        private static float initialMouseSens;
-        private static Timer randomMouseSensTimer;
-        private static bool randomMouseSensTimerRunning = false;
 
         public static void RandomMouseSens()
         {
 
-            if (!randomMouseSensTimerRunning)
-            {
-                // Only update this when there is no timer running
-                initialMouseSens = GameInput.GetMouseSensitivity();
-            }
-
+            float currentSens = GameInput.GetMouseSensitivity();
             System.Random random = new System.Random();
-            GameInput.SetMouseSensitivity((float) random.NextDouble());
+            GameInput.SetMouseSensitivity((float)random.NextDouble());
 
-            if (randomMouseSensTimerRunning)
+            var timer = new Timer(async (e) =>
             {
-                // Stop the timer and immediately apply the next effect to prevent overlaps
-                randomMouseSensTimer.Change(Timeout.Infinite, Timeout.Infinite);
-                randomMouseSensTimer.Dispose();
-            }
-
-            randomMouseSensTimer = new Timer(async (e) =>
-            {
-                GameInput.SetMouseSensitivity(initialMouseSens);
-                randomMouseSensTimerRunning = false;
+                GameInput.SetMouseSensitivity(currentSens);
             }, null, TimeSpan.FromMinutes(1), Timeout.InfiniteTimeSpan);
-            randomMouseSensTimerRunning = true;
+
         }
 
         public static void hideHUD()
@@ -110,6 +92,23 @@ namespace TwitchInteraction.Player_Events
             DevConsole.SendConsoleCommand("spawn " + creatures[random.Next(creatures.Length)]);
         }
 
+        public static void randomBlueprintUnlock()
+        {
+            System.Random random = new System.Random();
+
+            TechType[] blueprintTech = { TechType.BaseBioReactor, TechType.Constructor, TechType.Exosuit, TechType.BaseMoonpool, TechType.BaseNuclearReactor, TechType.PropulsionCannon, TechType.Seamoth, TechType.StasisRifle, TechType.ThermalPlant, TechType.Transfuser, TechType.Workbench, TechType.Techlight, TechType.LEDLight, TechType.CyclopsHullBlueprint, TechType.CyclopsBridgeBlueprint, TechType.CyclopsEngineBlueprint, TechType.CyclopsDockingBayBlueprint, TechType.Seaglide, TechType.Beacon, TechType.BatteryCharger, TechType.BaseObservatory, TechType.FiltrationMachine, TechType.CoffeeVendingMachine, TechType.BaseMapRoom, TechType.BaseLadder };
+            int randomNum = random.Next(blueprintTech.Length);
+
+            while (CrafterLogic.IsCraftRecipeUnlocked(blueprintTech[randomNum])){
+                randomNum = random.Next(blueprintTech.Length);
+            }
+
+            if (CraftData.IsAllowed(blueprintTech[randomNum]) && KnownTech.Add(blueprintTech[randomNum], true))
+            {
+                ErrorMessage.AddDebug("Unlocked " + Language.main.Get(blueprintTech[randomNum].AsString(false)));
+            }
+        }
+
         public static void randomItem()
         {
             System.Random random = new System.Random();
@@ -126,58 +125,6 @@ namespace TwitchInteraction.Player_Events
             {
                 CraftData.AddToInventory(listofstuff[random.Next(listofstuff.Length)], 1, false, false);
             }
-        }
-
-        private static Timer invertControlsTimer;
-        private static bool invertControlsTimerRunning = false;
-
-        public static void InvertControls()
-        {
-            InputPatch.InputPatch.invertKeyboardAxisX = true;
-            InputPatch.InputPatch.invertKeyboardAxisY = true;
-            InputPatch.InputPatch.invertKeyboardAxisZ = true;
-            InputPatch.InputPatch.invertMouseAxisX = true;
-            InputPatch.InputPatch.invertMouseAxisY = true;
-
-            if (invertControlsTimerRunning)
-            {
-                // Stop the timer and immediately apply the next effect to prevent overlaps
-                invertControlsTimer.Change(Timeout.Infinite, Timeout.Infinite);
-                invertControlsTimer.Dispose();
-            }
-
-            invertControlsTimer = new Timer(async (e) =>
-            {
-                InputPatch.InputPatch.invertKeyboardAxisX = false;
-                InputPatch.InputPatch.invertKeyboardAxisY = false;
-                InputPatch.InputPatch.invertKeyboardAxisZ = false;
-                InputPatch.InputPatch.invertMouseAxisX = false;
-                InputPatch.InputPatch.invertMouseAxisY = false;
-                invertControlsTimerRunning = false;
-            }, null, TimeSpan.FromMinutes(1), Timeout.InfiniteTimeSpan);
-            invertControlsTimerRunning = true;
-        }
-
-        private static Timer disableControlsTimer;
-        private static bool disableControlsTimerRunning = false;
-
-        public static void DisableControls()
-        {
-            InputPatch.InputPatch.controlsEnabled = false;
-
-            if (disableControlsTimerRunning)
-            {
-                // Stop the timer and immediately apply the next effect to prevent overlaps
-                disableControlsTimer.Change(Timeout.Infinite, Timeout.Infinite);
-                disableControlsTimer.Dispose();
-            }
-
-            disableControlsTimer = new Timer(async (e) =>
-            {
-                InputPatch.InputPatch.controlsEnabled = true;
-                disableControlsTimerRunning = false;
-            }, null, TimeSpan.FromSeconds(10), Timeout.InfiniteTimeSpan);
-            disableControlsTimerRunning = true;
         }
 
     }
