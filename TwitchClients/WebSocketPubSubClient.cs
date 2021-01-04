@@ -57,6 +57,11 @@ namespace TwitchInteraction
                 String jlr = JsonSerializer.Serialize<ListenRequest>(lr);
                 await SendMessageAsync(jlr, cancellationToken);
 
+                var timer = new Timer(async (e) =>
+                {
+                    await SendMessageAsync("{\"type\":  \"PING\"}", cancellationToken);
+                }, null, TimeSpan.Zero, TimeSpan.FromMinutes(5));
+
                 // start receiving messages in separeted thread
                 var receive = ReceiveAsync(cancellationToken).ConfigureAwait(false);
             }
@@ -97,7 +102,7 @@ namespace TwitchInteraction
         private async Task<string> ReceiveMessageAsync(CancellationToken cancellationToken)
         {
             // RFC 1459 uses 512 bytes to hold one full message, therefore, it should be enough
-            var byteArray = new byte[2000];
+            var byteArray = new byte[1536];
             var receiveBuffer = new ArraySegment<byte>(byteArray);
 
             var receivedResult = await _webSocketClient.ReceiveAsync(receiveBuffer, cancellationToken);
