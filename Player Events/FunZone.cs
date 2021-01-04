@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 
@@ -20,7 +21,7 @@ namespace TwitchInteraction.Player_Events
             if (!flag)
             {
                 dayNight.timePassedAsDouble += 1200.0 - DayNightCycle.main.timePassed % 1200.0 + 600.0;
-                
+
                 dayNight.dayNightCycleChangedEvent.Trigger(true);
             }
             else
@@ -60,7 +61,7 @@ namespace TwitchInteraction.Player_Events
             }
 
             System.Random random = new System.Random();
-            GameInput.SetMouseSensitivity((float) random.NextDouble());
+            GameInput.SetMouseSensitivity((float)random.NextDouble());
 
             if (randomMouseSensTimerRunning)
             {
@@ -97,12 +98,12 @@ namespace TwitchInteraction.Player_Events
             hideHudTimerRunning = true;
         }
 
-        
+
         public static void LifePodWarp_Shallows()
         {
             Vector3 newHome = RandomStart.main.GetRandomStartPoint();
             EscapePod.main.transform.position = newHome;
-            EscapePod.main.anchorPosition = newHome;            
+            EscapePod.main.anchorPosition = newHome;
         }
 
         public static void giveTooth()
@@ -134,7 +135,8 @@ namespace TwitchInteraction.Player_Events
             TechType[] blueprintTech = { TechType.BaseBioReactor, TechType.Constructor, TechType.Exosuit, TechType.BaseMoonpool, TechType.BaseNuclearReactor, TechType.PropulsionCannon, TechType.Seamoth, TechType.StasisRifle, TechType.ThermalPlant, TechType.Transfuser, TechType.Workbench, TechType.Techlight, TechType.LEDLight, TechType.CyclopsHullBlueprint, TechType.CyclopsBridgeBlueprint, TechType.CyclopsEngineBlueprint, TechType.CyclopsDockingBayBlueprint, TechType.Seaglide, TechType.Beacon, TechType.BatteryCharger, TechType.BaseObservatory, TechType.FiltrationMachine, TechType.CoffeeVendingMachine, TechType.BaseMapRoom, TechType.BaseLadder };
             int randomNum = random.Next(blueprintTech.Length);
 
-            while (CrafterLogic.IsCraftRecipeUnlocked(blueprintTech[randomNum])){
+            while (CrafterLogic.IsCraftRecipeUnlocked(blueprintTech[randomNum]))
+            {
                 randomNum = random.Next(blueprintTech.Length);
             }
 
@@ -156,7 +158,7 @@ namespace TwitchInteraction.Player_Events
         {
             System.Random random = new System.Random();
             TechType[] listofstuff = { TechType.AcidMushroomSpore, TechType.Lead, TechType.Diamond, TechType.Magnetite, TechType.UraniniteCrystal, TechType.SeaTreaderPoop, TechType.BloodOil, TechType.SmallFanSeed, TechType.PosterAurora, TechType.ToyCar, TechType.DepletedReactorRod, TechType.Magnesium, TechType.MercuryOre };
-            for(int i = 0; i < 48; i++)
+            for (int i = 0; i < 48; i++)
             {
                 CraftData.AddToInventory(listofstuff[random.Next(listofstuff.Length)], 1, false, false);
             }           
@@ -221,6 +223,119 @@ namespace TwitchInteraction.Player_Events
                 disableControlsTimerRunning = false;
             }, null, TimeSpan.FromSeconds(10), Timeout.InfiniteTimeSpan);
             disableControlsTimerRunning = true;
+        }
+
+        private static Timer enableFilmicModeTimer;
+        private static bool enableFilmicModeTimerRunning = false;
+
+        public static void EnableFilmicMode()
+        {
+            UwePostProcessingManager.SetColorGradingMode(2);
+
+            if (enableFilmicModeTimerRunning)
+            {
+                // Stop the timer and immediately apply the next effect to prevent overlaps
+                enableFilmicModeTimer.Change(Timeout.Infinite, Timeout.Infinite);
+                enableFilmicModeTimer.Dispose();
+            }
+
+            enableFilmicModeTimer = new Timer(async (e) =>
+            {
+                UwePostProcessingManager.SetColorGradingMode(0);
+                enableFilmicModeTimerRunning = false;
+            }, null, TimeSpan.FromMinutes(1), Timeout.InfiniteTimeSpan);
+            enableFilmicModeTimerRunning = true;
+        }
+
+        public static void ClearRandomQuickSlot()
+        {
+            QuickSlots quickSlots = Inventory.main.quickSlots;
+
+            // Find all slots which have items in them
+            List<int> activeSlots = new List<int>();
+            for (int i = 0; i < quickSlots.slotCount; i++)
+            {
+                if (quickSlots.GetSlotItem(i) != null)
+                {
+                    activeSlots.Add(i);
+                }
+            }
+
+            if (activeSlots.Count == 0)
+            {
+                // Prevent OutOfBounds errors
+                return;
+            }
+
+            System.Random random = new System.Random();
+            int randomSlotID = activeSlots[random.Next(0, activeSlots.Count)];
+            quickSlots.Unbind(randomSlotID);
+        }
+
+        public static void RandomizeQuickSlots()
+        {
+            QuickSlots quickSlots = Inventory.main.quickSlots;
+
+            // Make a list of all slots (including empty slots)
+            List<InventoryItem> allSlots = new List<InventoryItem>();
+            for (int i = 0; i < quickSlots.slotCount; i++)
+            {
+                allSlots.Add(quickSlots.GetSlotItem(i));
+            }
+
+            // Shuffle the list
+            System.Random random = new System.Random();
+            int n = allSlots.Count;
+            while (n > 1)
+            {
+                n--;
+                int k = random.Next(n + 1);
+                InventoryItem value = allSlots[k];
+                allSlots[k] = allSlots[n];
+                allSlots[n] = value;
+            }
+
+            // Set the quick slots
+            for (int i = 0; i < quickSlots.slotCount; i++)
+            {
+                quickSlots.binding[i] = allSlots[i];
+            }
+            // Notify the game that the slots have changed
+            for (int i = 0; i < quickSlots.slotCount; i++)
+            {
+                quickSlots.NotifyBind(i, allSlots[i] != null);
+            }
+
+        }
+
+        public static void RemoveRandomBattery()
+        {
+            PlayerTool[] playerTools = Inventory.main.gameObject.GetAllComponentsInChildren<PlayerTool>();
+            List<EnergyMixin> toolMixins = new List<EnergyMixin>();
+
+            foreach(PlayerTool playerTool in playerTools)
+            {
+                EnergyMixin toolEnergyMixin = playerTool.GetComponent<EnergyMixin>();
+                if (toolEnergyMixin != null && toolEnergyMixin.HasItem())
+                {
+                    toolMixins.Add(toolEnergyMixin);
+                }
+            }
+
+            if (toolMixins.Count == 0)
+            {
+                // Prevent OutOfBounds errors
+                return;
+            }
+
+            System.Random random = new System.Random();
+            int randomMixin = random.Next(0, toolMixins.Count);
+            EnergyMixin energyMixin = toolMixins[randomMixin];
+
+            InventoryItem storedBattery = energyMixin.batterySlot.storedItem;
+            energyMixin.batterySlot.RemoveItem();
+            Inventory.main.ForcePickup(storedBattery.item);
+
         }
 
     }
