@@ -34,8 +34,8 @@ namespace TwitchInteraction.Player_Events
             { "Light? What is light? [Integration]", new EventInfo(FunZone.EnableFilmicMode, 100) },
             { "Clear a hotbar slot [Integration]", new EventInfo(FunZone.ClearRandomQuickSlot, 100) },
             { "Shuffle the hotbar [Integration]", new EventInfo(FunZone.RandomizeQuickSlots, 250) },
-            { "Steal a battery [Integration]", new EventInfo(FunZone.RemoveRandomBattery, 150) }
-
+            { "Steal a battery [Integration]", new EventInfo(FunZone.RemoveRandomBattery, 150) },
+            { "Take all his tools [Integration]", new EventInfo(FunZone.DumpEquipment, 250) }
         };
 
         public static string getBitCosts()
