@@ -28,7 +28,10 @@ namespace TwitchInteraction.Player_Events
             { "Resource Roulette [Integration]", new EventInfo(FunZone.randomItem, 100) },
             { "Blueprint Roulette [Integration]", new EventInfo(FunZone.randomBlueprintUnlock, 100) },
             { "Disable Controls [Integration]", new EventInfo(FunZone.DisableControls, 200) },
-            { "Invert Controls [Integration]", new EventInfo(FunZone.InvertControls, 200) }
+            { "Invert Controls [Integration]", new EventInfo(FunZone.InvertControls, 200) },
+            { "Light? What is light? [Integration]", new EventInfo(FunZone.EnableFilmicMode, 100) },
+            { "Clear a hotbar slot [Integration]", new EventInfo(FunZone.ClearRandomQuickSlot, 100) },
+            { "Shuffle the hotbar [Integration]", new EventInfo(FunZone.RandomizeQuickSlots, 250) }
         };
 
         public static string getBitCosts()
