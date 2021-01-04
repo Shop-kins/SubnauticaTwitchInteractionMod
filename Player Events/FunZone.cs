@@ -116,7 +116,7 @@ namespace TwitchInteraction.Player_Events
         public static void randomSummon()
         {
             System.Random random = new System.Random();
-            string[] creatures = { "shocker", "biter", "blighter", "boneshark", "crabsnake", "crabsquid", "crash", "lavalizard", "mesmer", "reaperleviathan", "seadragon", "sandshark", "stalker", "warper", "bladderfish", "boomerang", "ghostrayred", "cutefish", "eyeye", "garryfish", "gasopod", "ghostrayblue", "holefish", "hoopfish", "hoverfish", "jellyray", "lavaboomerang", "oculus", "peeper", "rabbitray", "lavaeyeye", "reefback", "reginald", "seatreader", "spadefish", "spinefish", "bleeder", "shuttlebug", "cavecrawler", "floater", "lavalarva", "rockgrub", "jumper" };
+            string[] creatures = { "shocker", "ghostleviathan", "biter", "blighter", "boneshark", "crabsnake", "crabsquid", "crash", "lavalizard", "mesmer", "reaperleviathan", "seadragon", "sandshark", "stalker", "warper", "bladderfish", "boomerang", "ghostrayred", "cutefish", "eyeye", "garryfish", "gasopod", "ghostrayblue", "holefish", "hoopfish", "hoverfish", "jellyray", "lavaboomerang", "oculus", "peeper", "rabbitray", "lavaeyeye", "reefback", "reginald", "seatreader", "spadefish", "spinefish", "bleeder", "shuttlebug", "cavecrawler", "floater", "lavalarva", "rockgrub", "jumper" };
 
             DevConsole.SendConsoleCommand("spawn " + creatures[random.Next(creatures.Length)]);
         }
@@ -157,7 +157,7 @@ namespace TwitchInteraction.Player_Events
         public static void junkFill()
         {
             System.Random random = new System.Random();
-            TechType[] listofstuff = { TechType.AcidMushroomSpore, TechType.Lead, TechType.Diamond, TechType.Magnetite, TechType.UraniniteCrystal, TechType.SeaTreaderPoop, TechType.BloodOil, TechType.SmallFanSeed, TechType.PosterAurora, TechType.ToyCar, TechType.DepletedReactorRod, TechType.Magnesium, TechType.MercuryOre };
+            TechType[] listofstuff = { TechType.AcidMushroomSpore, TechType.Lead, TechType.Diamond, TechType.Magnetite, TechType.UraniniteCrystal, TechType.SeaTreaderPoop, TechType.BloodOil, TechType.SmallFanSeed, TechType.PosterAurora, TechType.DepletedReactorRod, TechType.Magnesium, TechType.MercuryOre };
             for (int i = 0; i < 48; i++)
             {
                 CraftData.AddToInventory(listofstuff[random.Next(listofstuff.Length)], 1, false, false);
