@@ -281,6 +281,36 @@ namespace TwitchInteraction.Player_Events
 
         }
 
+        public static void RemoveRandomBattery()
+        {
+            PlayerTool[] playerTools = Inventory.main.gameObject.GetAllComponentsInChildren<PlayerTool>();
+            List<EnergyMixin> toolMixins = new List<EnergyMixin>();
+
+            foreach(PlayerTool playerTool in playerTools)
+            {
+                EnergyMixin toolEnergyMixin = playerTool.GetComponent<EnergyMixin>();
+                if (toolEnergyMixin != null && toolEnergyMixin.HasItem())
+                {
+                    toolMixins.Add(toolEnergyMixin);
+                }
+            }
+
+            if (toolMixins.Count == 0)
+            {
+                // Prevent OutOfBounds errors
+                return;
+            }
+
+            System.Random random = new System.Random();
+            int randomMixin = random.Next(0, toolMixins.Count);
+            EnergyMixin energyMixin = toolMixins[randomMixin];
+
+            InventoryItem storedBattery = energyMixin.batterySlot.storedItem;
+            energyMixin.batterySlot.RemoveItem();
+            Inventory.main.ForcePickup(storedBattery.item);
+
+        }
+
     }
 }
 
