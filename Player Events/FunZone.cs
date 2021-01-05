@@ -132,11 +132,11 @@ namespace TwitchInteraction.Player_Events
         {
             System.Random random = new System.Random();
 
-            TechType[] blueprintTech = { TechType.BaseBioReactor, TechType.Constructor, TechType.Exosuit, TechType.BaseMoonpool, TechType.BaseNuclearReactor, TechType.PropulsionCannon, TechType.Seamoth, TechType.StasisRifle, TechType.ThermalPlant, TechType.Transfuser, TechType.Workbench, TechType.Techlight, TechType.LEDLight, TechType.CyclopsHullBlueprint, TechType.CyclopsBridgeBlueprint, TechType.CyclopsEngineBlueprint, TechType.CyclopsDockingBayBlueprint, TechType.Seaglide, TechType.Beacon, TechType.BatteryCharger, TechType.BaseObservatory, TechType.FiltrationMachine, TechType.CoffeeVendingMachine, TechType.BaseMapRoom, TechType.BaseLadder };
+            TechType[] blueprintTech = { TechType.BaseBioReactor, TechType.RocketBase, TechType.Constructor, TechType.Exosuit, TechType.BaseMoonpool, TechType.BaseNuclearReactor, TechType.PropulsionCannon, TechType.Seamoth, TechType.StasisRifle, TechType.ThermalPlant, TechType.Transfuser, TechType.Workbench, TechType.Techlight, TechType.LEDLight, TechType.CyclopsHullBlueprint, TechType.CyclopsBridgeBlueprint, TechType.CyclopsEngineBlueprint, TechType.CyclopsDockingBayBlueprint, TechType.Seaglide, TechType.Beacon, TechType.BatteryCharger, TechType.BaseObservatory, TechType.FiltrationMachine, TechType.CoffeeVendingMachine, TechType.BaseMapRoom, TechType.BaseLadder };
             int randomNum = random.Next(blueprintTech.Length);
 
             int counter = 0;
-            while (CrafterLogic.IsCraftRecipeUnlocked(blueprintTech[randomNum]) || counter > 50)
+            while (CrafterLogic.IsCraftRecipeUnlocked(blueprintTech[randomNum]) && counter < 50)
             {
                 randomNum = random.Next(blueprintTech.Length);
                 counter++;
