@@ -21,9 +21,7 @@ namespace TwitchInteraction
             }
             if (e.Host == BitsHost())
             {
-                string message = EventLookup.Lookup(e.Text, Int32.Parse(e.Text.Split(':')[0]));
-                if(message != "" && MainPatcher.TextChannel != null)
-                    MainPatcher.TextChannel.SendMessageAsync(e.User + " " + message, MainPatcher.cts);
+                EventLookup.Lookup(e.Text, Int32.Parse(e.Text.Split(':')[0]));
             }
         }
 
