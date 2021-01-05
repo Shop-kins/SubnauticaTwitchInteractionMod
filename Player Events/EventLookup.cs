@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using TwitchInteraction.Player_Events.Models;
+using System.Collections.Concurrent;
 
 namespace TwitchInteraction.Player_Events
 {
     public static class EventLookup
     {
+        public static ConcurrentQueue<Action> ActionQueue = new ConcurrentQueue<Action>();
 
         //MAP OF FUNZONE AND DANGER ZONE KEYS TO THEIR APPROPRIATE FUNCTIONS
         private static readonly Dictionary<string, EventInfo> EventDictionary = new Dictionary<string, EventInfo>(){
@@ -52,24 +54,16 @@ namespace TwitchInteraction.Player_Events
         public static void Lookup(string EventText)
         {
             if (EventDictionary.Keys.Contains(EventText))
-                EventDictionary[EventText].Action.Invoke();
+                ActionQueue.Enqueue(EventDictionary[EventText].Action);
         }
 
-        public static string Lookup(string EventText, int bits)
+        public static void Lookup(string EventText, int bits)
         {
             KeyValuePair<string, EventInfo> Event = EventDictionary.FirstOrDefault(it => EventText.Contains(it.Key));
-            if (!Event.Equals(default(KeyValuePair<string, EventInfo>)))
+            if (!Event.Equals(default(KeyValuePair<string, EventInfo>)) && bits > Event.Value.BitCost)
             {
-                if (bits >= Event.Value.BitCost)
-                {
-                    Event.Value.Action.Invoke();
-                    return Event.Key + ":Activated";
-                } else
-                {
-                    return Event.Key + ":Not enough Bits";
-                }
+                ActionQueue.Enqueue(Event.Value.Action);
             }
-            return "";
             
         }
    
