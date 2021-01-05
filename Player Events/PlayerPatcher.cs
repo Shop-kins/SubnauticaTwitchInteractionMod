@@ -19,6 +19,7 @@ namespace TwitchInteraction.Player_Events
             } catch (Exception e)
             {
                 Console.WriteLine("Failed to invoke action " + e.Message);
+                Console.WriteLine(e.StackTrace);
             }
         }
     }
