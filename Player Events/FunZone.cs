@@ -193,6 +193,11 @@ namespace TwitchInteraction.Player_Events
                 initialFOV = MiscSettings.fieldOfView;
             }
 
+
+            // this is bad
+            // i did it because atto said to
+            // blame him
+            // it works tho
             System.Random random = new System.Random();
 
             int lowRandNum = random.Next(1, 45);
