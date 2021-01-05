@@ -112,7 +112,6 @@ namespace TwitchInteraction.Player_Events
 
         }
 
-
         public static void randomSummon()
         {
             System.Random random = new System.Random();
@@ -341,13 +340,17 @@ namespace TwitchInteraction.Player_Events
 
         public static void DumpEquipment()
         {
-            // Dump all of the hotbar tools
+        	int equipmentCount = 0;
+
+            // Count the hotbar tools
             List<ItemsContainer.ItemGroup> itemGroups = new List<ItemsContainer.ItemGroup>(Inventory.main.quickSlots.container._items.Values);
+            List<InventoryItem> hotbarTools = new List<InventoryItem>();
             for (int i = 0; i < Inventory.main.quickSlots.binding.Length; i++)
             {
                 if (Inventory.main.quickSlots.binding[i] != null)
                 {
-                    Inventory.main.InternalDropItem(Inventory.main.quickSlots.binding[i].item, true);
+                	equipmentCount++;
+                	hotbarTools.Add(Inventory.main.quickSlots.binding[i]);
                 }
             }
 
@@ -364,17 +367,35 @@ namespace TwitchInteraction.Player_Events
                 "Tank"
             };
 
-            // Dump all equipment (O2 tank, rebreather, etc.)
+            List<string> equipment = new List<string>();
+
+            // Count all equipment (O2 tank, rebreather, etc.)
             foreach (string equipmentSlot in inventoryEquipmentSlots)
             {
-                // This is basically the Equipment.RemoveItem function, but a little modified
                 InventoryItem equipmentItem;
                 Inventory.main.equipment.equipment.TryGetValue(equipmentSlot, out equipmentItem);
                 if (equipmentItem == null)
                 {
                     continue;
                 }
+                equipment.Add(equipmentSlot);
+                equipmentCount++;
+            }
 
+            System.Random random = new System.Random();
+            int randomEquipment = random.Next(0, equipmentCount);
+
+            if (randomEquipment < hotbarTools.Count) {
+            	// Drop a hotbar tool
+                Inventory.main.InternalDropItem(hotbarTools[randomEquipment].item, true);
+            } else {
+                // Drop a piece of equipment
+                string equipmentSlot = equipment[randomEquipment - hotbarTools.Count];
+
+                InventoryItem equipmentItem;
+                Inventory.main.equipment.equipment.TryGetValue(equipmentSlot, out equipmentItem);
+
+                // This is basically the Equipment.RemoveItem function, but a little modified
                 Inventory.main.equipment.equipment[equipmentSlot] = null;
                 TechType equipmentType = equipmentItem.item.GetTechType();
                 Inventory.main.equipment.UpdateCount(equipmentType, false);
