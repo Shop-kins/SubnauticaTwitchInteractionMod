@@ -15,10 +15,10 @@ namespace TwitchInteraction.Player_Events
             {
                 Action localAction;
                 EventLookup.ActionQueue.TryDequeue(out localAction);
-                localAction.Invoke();
+                localAction?.Invoke();
             } catch (Exception e)
             {
-                Console.WriteLine("Failed to invoke action");
+                Console.WriteLine("Failed to invoke action " + e.Message);
             }
         }
     }
