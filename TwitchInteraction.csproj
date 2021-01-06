@@ -24,7 +24,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
-	<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -34,7 +34,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
-	<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
   <PropertyGroup>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -113,9 +113,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EscapePod_Patcher.cs" />
+    <Compile Include="Input\InputPatch.cs" />
     <Compile Include="Player Events\EventLookup.cs" />
     <Compile Include="Player Events\FunZone.cs" />
     <Compile Include="Player Events\Models\EventInfo.cs" />
+    <Compile Include="Player Events\PlayerPatcher.cs" />
     <Compile Include="TwitchClients\Models\ChannelPointRedemptionMessageData.cs" />
     <Compile Include="TwitchClients\Models\ChannelPointRedemptionMessage.cs" />
     <Compile Include="TwitchClients\Models\ListenRequestData.cs" />
