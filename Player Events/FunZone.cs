@@ -1,5 +1,8 @@
 ﻿using System;
+<<<<<<< Updated upstream
 using System.Collections.Generic;
+=======
+>>>>>>> Stashed changes
 using System.Threading;
 using UnityEngine;
 
@@ -21,7 +24,11 @@ namespace TwitchInteraction.Player_Events
             if (!flag)
             {
                 dayNight.timePassedAsDouble += 1200.0 - DayNightCycle.main.timePassed % 1200.0 + 600.0;
+<<<<<<< Updated upstream
 
+=======
+                
+>>>>>>> Stashed changes
                 dayNight.dayNightCycleChangedEvent.Trigger(true);
             }
             else
@@ -44,6 +51,7 @@ namespace TwitchInteraction.Player_Events
 
         public static void FillOxygen()
         {
+<<<<<<< Updated upstream
             Player.main.oxygenMgr.AddOxygen(Player.main.GetOxygenCapacity() - Player.main.GetOxygenAvailable());
         }
 
@@ -99,11 +107,44 @@ namespace TwitchInteraction.Player_Events
         }
 
 
+=======
+            Player.main.oxygenMgr.AddOxygen(Player.main.GetOxygenAvailable() + 3);            
+        }
+
+        public static void RandomMouseSens()
+        {
+
+            float currentSens = GameInput.GetMouseSensitivity();
+            System.Random random = new System.Random();
+            GameInput.SetMouseSensitivity((float)random.NextDouble());
+
+            var timer = new Timer(async (e) =>
+            {
+                GameInput.SetMouseSensitivity(currentSens);
+            }, null, TimeSpan.FromMinutes(1), Timeout.InfiniteTimeSpan);
+
+        }
+
+        public static void hideHUD()
+        {
+            HideForScreenshots.Hide(HideForScreenshots.HideType.Mask | HideForScreenshots.HideType.HUD);
+        }
+
+        public static void showHUD()
+        {
+            HideForScreenshots.Hide(HideForScreenshots.HideType.None);
+        }
+        
+>>>>>>> Stashed changes
         public static void LifePodWarp_Shallows()
         {
             Vector3 newHome = RandomStart.main.GetRandomStartPoint();
             EscapePod.main.transform.position = newHome;
+<<<<<<< Updated upstream
             EscapePod.main.anchorPosition = newHome;
+=======
+            EscapePod.main.anchorPosition = newHome;            
+>>>>>>> Stashed changes
         }
 
         public static void giveTooth()
@@ -111,14 +152,23 @@ namespace TwitchInteraction.Player_Events
             DevConsole.SendConsoleCommand("item stalkertooth");
         }
 
+<<<<<<< Updated upstream
         public static void randomSummon()
         {
             System.Random random = new System.Random();
             string[] creatures = { "shocker", "ghostleviathan", "biter", "blighter", "boneshark", "crabsnake", "crabsquid", "crash", "lavalizard", "mesmer", "reaperleviathan", "seadragon", "sandshark", "stalker", "warper", "bladderfish", "boomerang", "ghostrayred", "cutefish", "eyeye", "garryfish", "gasopod", "ghostrayblue", "holefish", "hoopfish", "hoverfish", "jellyray", "lavaboomerang", "oculus", "peeper", "rabbitray", "lavaeyeye", "reefback", "reginald", "seatreader", "spadefish", "spinefish", "bleeder", "shuttlebug", "cavecrawler", "floater", "lavalarva", "rockgrub", "jumper" };
+=======
+
+        public static void randomSummon()
+        {
+            System.Random random = new System.Random();
+            string[] creatures = { "shocker", "biter", "blighter", "boneshark", "crabsnake", "crabsquid", "crash", "lavalizard", "mesmer", "reaperleviathan", "seadragon", "sandshark", "stalker", "warper", "bladderfish", "boomerang", "ghostrayred", "cutefish", "eyeye", "garryfish", "gasopod", "ghostrayblue", "holefish", "hoopfish", "hoverfish", "jellyray", "lavaboomerang", "oculus", "peeper", "rabbitray", "lavaeyeye", "reefback", "reginald", "seatreader", "spadefish", "spinefish", "bleeder", "shuttlebug", "cavecrawler", "floater", "lavalarva", "rockgrub", "jumper" };
+>>>>>>> Stashed changes
 
             DevConsole.SendConsoleCommand("spawn " + creatures[random.Next(creatures.Length)]);
         }
 
+<<<<<<< Updated upstream
         public static void fillFoodWater()
         {
             Survival component = Player.main.GetComponent<Survival>();
@@ -146,6 +196,8 @@ namespace TwitchInteraction.Player_Events
             }
         }
 
+=======
+>>>>>>> Stashed changes
         public static void randomItem()
         {
             System.Random random = new System.Random();
@@ -300,6 +352,7 @@ namespace TwitchInteraction.Player_Events
             {
                 quickSlots.binding[i] = allSlots[i];
             }
+<<<<<<< Updated upstream
             // Notify the game that the slots have changed
             for (int i = 0; i < quickSlots.slotCount; i++)
             {
@@ -340,3 +393,9 @@ namespace TwitchInteraction.Player_Events
 
     }
 }
+=======
+        }
+    }
+}
+
+>>>>>>> Stashed changes

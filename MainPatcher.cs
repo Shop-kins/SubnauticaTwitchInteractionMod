@@ -20,9 +20,9 @@ namespace TwitchInteraction
         
         public static void Patch()
         {
-            secrets = new Secrets();
+            //secrets = new Secrets();
             //StartTwitchChatClient(); Turned off cause the ping pong doesnt work and when it disconnects it crashes the game
-            StartTwitchPubSubClient();
+            //StartTwitchPubSubClient();
 
             var harmony = HarmonyInstance.Create("subnautica.mod.twitchinteraction"); 
             harmony.PatchAll(Assembly.GetExecutingAssembly());

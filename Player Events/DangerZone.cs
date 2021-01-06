@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 using Random = UnityEngine.Random;
+
 namespace TwitchInteraction.Player_Events
 {
     //Add functions to the EventLookup.cs class
@@ -47,6 +48,7 @@ namespace TwitchInteraction.Player_Events
             Player.main.transform.position = spawnPosition;
         }
 
+<<<<<<< Updated upstream
         public static void TeleportLifepod()
         {
             bool isBad;
@@ -70,6 +72,53 @@ namespace TwitchInteraction.Player_Events
 
             EscapePod.main.transform.position = spawnPosition;
             EscapePod.main.anchorPosition = spawnPosition;
+=======
+        public static void LifePodWarpToTheDeepEnd()
+        {
+            Vector3 newHome = GetRandomLifePodPosition();
+            EscapePod.main.transform.position = newHome;
+            EscapePod.main.anchorPosition = newHome;
+        }
+
+        private static Vector3 GetRandomLifePodPosition()
+        {
+            for (int index = 0; index < 1000; ++index)
+            {
+                Vector3 point = new Vector3(Random.Range(-2048f, 2048f), 0.0f, Random.Range(-2048f, 2048f));
+                if (IsInTheDeepEnd(point))
+                    return point;
+            }
+            Debug.LogWarning((object)"Could not find valid position. Using (0,0,0) instead.");
+            return Vector3.zero;
+        }
+
+        private static Boolean IsInTheDeepEnd(Vector3 point)
+        {
+            //Texture2D validPosition = Resources.Load<Texture2D>("ValidConstructorPlacementMask");
+            var validPosition = FindMap();
+            float num1 = Mathf.Clamp01((float)(((double)point.x + 2048.0) / 4096.0));
+            double num2 = (double)Mathf.Clamp01((float)(((double)point.z + 2048.0) / 4096.0));
+            int x = (int)((double)num1 * (double)validPosition.width);
+            double height = (double)validPosition.height;
+            int y = (int)(num2 * height);
+            return (double)validPosition.GetPixel(x, y).g > 0.5;
+        }
+
+        private static Texture2D FindMap()
+        {
+            AssetBundleManager.
+            var assets = AssetBundleManager.FindObjectsOfType<Texture2D>();
+            foreach (Texture2D asset in assets)
+            {
+                Debug.LogWarning((object)"Found asset: " + asset.name);
+                if (asset.name == "ValidConstructorPlacementMask")
+                {
+                    return asset;
+                }
+            }
+            Debug.LogWarning((object)"Unable to find the texture map in the asset bundle manager :(");
+            return null;
+>>>>>>> Stashed changes
         }
     }
 }
