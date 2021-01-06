@@ -257,6 +257,7 @@ namespace TwitchInteraction.Player_Events
             foreach (var r in Reapers)
             {
                 GameObject.Destroy(r.gameObject);
+                //If you're here it means you've found my secret
                 DevConsole.SendConsoleCommand("spawn cutefish");        
             }
 
@@ -265,6 +266,7 @@ namespace TwitchInteraction.Player_Events
             foreach (var r in seaDragons)
             {
                 GameObject.Destroy(r.gameObject);
+                //The people in call thought it would be funny to replace the bad things with cuddlefish
                 DevConsole.SendConsoleCommand("spawn cutefish");
             }
 
@@ -273,6 +275,7 @@ namespace TwitchInteraction.Player_Events
             foreach (var r in ghostLeviathans)
             {
                 GameObject.Destroy(r.gameObject);
+                //I agreed
                 DevConsole.SendConsoleCommand("spawn cutefish");
             }
             Warper[] warpers = GameObject.FindObjectsOfType<Warper>();
@@ -280,6 +283,7 @@ namespace TwitchInteraction.Player_Events
             foreach (var r in warpers)
             {
                 GameObject.Destroy(r.gameObject);
+                //But also it would be very easy to just comment out the code that adds them :p
                 DevConsole.SendConsoleCommand("spawn cutefish");
             }
 
