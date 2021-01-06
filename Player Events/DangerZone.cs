@@ -27,24 +27,46 @@ namespace TwitchInteraction.Player_Events
         }
         public static void TeleportPlayer()
         {
-            bool isBad;
-            Vector3 spawnPosition;
+            // First, pick a depth at random
+            var depth = Random.Range(-20, -1500);
+            var xPos = 0f;
+            var zPos = 0f;
 
-            do
+            // Our goal here it to be close to being in bounds if possible
+            if (depth > -200f)
             {
-                spawnPosition = new Vector3(Random.Range(-1250f, 1250f), Random.Range(-10, -1300), Random.Range(-1250f, 1250f));
+                // Close to the surface, place in the shallows and surrounding
+                xPos = Random.Range(-900f, 540f); // Avoid the aurora
+                zPos = Random.Range(-550f, 750f); // Avoid Mountain Island
+            }
+            else if (depth > -400f)
+            {
+                // Slightly deeper, include the edges of the map
+                // Likely to be OOB if under the shallows
+                xPos = Random.Range(-1500, 1500);
+                zPos = Random.Range(-1500, 1500);
+            }
+            else if (depth > -1000)
+            {
+                // Lost River
+                xPos = Random.Range(-1200, 0);
+                zPos = Random.Range(-700, 900);
+            }
+            else if (depth > -1300)
+            {
+                // Inactive Lava Zone
+                xPos = Random.Range(-600, 300);
+                zPos = Random.Range(-315, 550);
+            }
+            else
+            {
+                // Lava Zone
+                xPos = Random.Range(-66, 400);
+                zPos = Random.Range(-190, 166);
+            }
 
-                if (spawnPosition.x > 543 && spawnPosition.x < 1724 && spawnPosition.z > -574 && spawnPosition.z < 400) // near the aurora, bad spawn
-                    isBad = true;
-                else if (spawnPosition.x > 231 && spawnPosition.x < 437 && spawnPosition.y >= -10 && spawnPosition.y < -100 && spawnPosition.z > 750 && spawnPosition.z < 1154) // near the QEP island, bad spawn
-                    isBad = true;
-                else if (spawnPosition.x > -917 && spawnPosition.x < -606 && spawnPosition.y >= -10 && spawnPosition.y < -100 && spawnPosition.z > -1224 && spawnPosition.z < -897) // near the floating island, bad spawn
-                    isBad = true;
-                else
-                    isBad = false;
-            } while (isBad);
-
-            Player.main.transform.position = spawnPosition;
+            var newPosition = new Vector3(xPos, depth, zPos);
+            Player.main.transform.position = newPosition;
         }
 
         public static void TeleportLifepod()
