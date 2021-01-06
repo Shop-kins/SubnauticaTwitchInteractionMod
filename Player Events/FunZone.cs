@@ -198,9 +198,11 @@ namespace TwitchInteraction.Player_Events
             // i did it because atto said to
             // blame him
             // it works tho
+            // the weird random number thing that is 
+            // I completely agree with doing random fov
             System.Random random = new System.Random();
 
-            int lowRandNum = random.Next(1, 45);
+            int lowRandNum = random.Next(5, 45);
             int highRandNum = random.Next(85, 150);
 
             double randCoinFlip = random.NextDouble();
@@ -215,7 +217,7 @@ namespace TwitchInteraction.Player_Events
             }
 
             ErrorMessage.AddMessage(randNum.ToString());
-            if (randNum < 35)
+            if (randNum < 40)
             {
                 HideForScreenshots.Hide(HideForScreenshots.HideType.Mask);
             }
