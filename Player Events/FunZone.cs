@@ -179,7 +179,6 @@ namespace TwitchInteraction.Player_Events
 
             FMODUWE.PlayOneShot(CraftData.GetPrefabForTechType(TechType.Stalker).GetComponent<Stalker>().loseToothSound, new Vector3(Player.main.transform.position.x - random.Next(-8, 8), Player.main.transform.position.y - random.Next(-8, 7), Player.main.transform.position.z - random.Next(-7, 8)), 1f);
 
-
         }
 
         private static Timer changeFOVTimer;
@@ -289,12 +288,23 @@ namespace TwitchInteraction.Player_Events
                 DevConsole.SendConsoleCommand("spawn cutefish");
             }
 
+            CrabSquid[] crabSquids = GameObject.FindObjectsOfType<CrabSquid>();
+
+            foreach ( var r in crabSquids)
+            {
+                GameObject.Destroy(r.gameObject);
+                DevConsole.SendConsoleCommand("spawn cutefish");
+            }
+
 
         }
 
         public static void returnToShallows()
         {
-            Player.main.transform.position = new Vector3(23, -30, 243);
+            Vector3 spawnPos = RandomStart.main.GetRandomStartPoint();
+            spawnPos.y = -2;
+            Player.main.SetPosition(spawnPos);
+
         }
 
 

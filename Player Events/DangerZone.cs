@@ -66,7 +66,7 @@ namespace TwitchInteraction.Player_Events
             }
 
             var newPosition = new Vector3(xPos, depth, zPos);
-            Player.main.transform.position = newPosition;
+            Player.main.SetPosition(newPosition);
         }
 
         public static void TeleportLifepod()
