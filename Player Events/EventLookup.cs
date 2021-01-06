@@ -35,8 +35,13 @@ namespace TwitchInteraction.Player_Events
             { "Play tooth drop sound [Integration]", new EventInfo(FunZone.playToothSound, 10) },
             { "Light? What is light? [Integration]", new EventInfo(FunZone.EnableFilmicMode, 100) },
             { "Clear a hotbar slot [Integration]", new EventInfo(FunZone.ClearRandomQuickSlot, 100) },
-            { "Shuffle the hotbar [Integration]", new EventInfo(FunZone.RandomizeQuickSlots, 150) },
-            { "Steal a battery [Integration]", new EventInfo(FunZone.RemoveRandomBattery, 150) }
+            { "Shuffle the hotbar [Integration]", new EventInfo(FunZone.RandomizeQuickSlots, 250) },
+            { "Steal a battery [Integration]", new EventInfo(FunZone.RemoveRandomBattery, 150) },
+            { "Steal some equipment [Integration]", new EventInfo(FunZone.DumpEquipment, 250) },
+            { "Random FOV [Integration]", new EventInfo(FunZone.fovRandom, 1000) },
+            { "Kill bad things [Integration]", new EventInfo(FunZone.killBadThings, 150) },
+            { "Go back home [Integration]", new EventInfo(FunZone.returnToShallows, 150) },
+            { "Crafted Resource Roulette [Integration]", new EventInfo(FunZone.randomAdvancedResources, 60) }
         };
 
         public static string getBitCosts()
