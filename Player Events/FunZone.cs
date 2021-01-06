@@ -160,6 +160,14 @@ namespace TwitchInteraction.Player_Events
             DevConsole.SendConsoleCommand("item " + resources[random.Next(resources.Length)]);
         }
 
+        public static void randomAdvancedResources()
+        {
+            System.Random random = new System.Random();
+            string[] resources = { "bleach", "enameledglass", "fibermesh", "glass", "lubricant", "plasteelingot", "silicone", "titaniumingot", "titanium", "aerogel", "benzene", "hydrochloricacid", "polyaniline", "aramidfibers"};
+
+            DevConsole.SendConsoleCommand("item " + resources[random.Next(resources.Length)]);
+        }
+
         public static void junkFill()
         {
             System.Random random = new System.Random();
@@ -176,8 +184,135 @@ namespace TwitchInteraction.Player_Events
 
             FMODUWE.PlayOneShot(CraftData.GetPrefabForTechType(TechType.Stalker).GetComponent<Stalker>().loseToothSound, new Vector3(Player.main.transform.position.x - random.Next(-8, 8), Player.main.transform.position.y - random.Next(-8, 7), Player.main.transform.position.z - random.Next(-7, 8)), 1f);
 
+        }
+
+        private static Timer changeFOVTimer;
+        private static bool changeFOVTimerRunning = false;
+        private static float initialFOV;
+        public static void fovRandom()
+        {
+            if (!changeFOVTimerRunning)
+            {
+                // Only update this when there is no timer running
+                initialFOV = MiscSettings.fieldOfView;
+            }
+
+
+            // this is bad
+            // i did it because atto said to
+            // blame him
+            // it works tho
+            // the weird random number thing that is 
+            // I completely agree with doing random fov
+            System.Random random = new System.Random();
+
+            int lowRandNum = random.Next(5, 45);
+            int highRandNum = random.Next(85, 150);
+
+            double randCoinFlip = random.NextDouble();
+            int randNum;
+            if (randCoinFlip > 0.5)
+            {
+                randNum = highRandNum;
+            }
+            else
+            {
+                randNum = lowRandNum;
+            }
+
+            ErrorMessage.AddMessage(randNum.ToString());
+            if (randNum < 40)
+            {
+                HideForScreenshots.Hide(HideForScreenshots.HideType.Mask);
+            }
+            MiscSettings.fieldOfView = randNum;
+            if (SNCameraRoot.main != null)
+            {
+                SNCameraRoot.main.SyncFieldOfView();
+            }
+
+            if (changeFOVTimerRunning)
+            {
+                // Stop the timer and immediately apply the next effect to prevent overlaps
+                changeFOVTimer.Change(Timeout.Infinite, Timeout.Infinite);
+                changeFOVTimer.Dispose();
+            }
+
+            changeFOVTimer = new Timer(async (e) =>
+            {
+                MiscSettings.fieldOfView = initialFOV;
+                if (SNCameraRoot.main != null)
+                {
+                    SNCameraRoot.main.SyncFieldOfView();
+                }
+
+                HideForScreenshots.Hide(HideForScreenshots.HideType.None);
+
+                changeFOVTimerRunning = false;
+
+
+            }, null, TimeSpan.FromMinutes(1), Timeout.InfiniteTimeSpan);
+            changeFOVTimerRunning = true;
+        }
+
+
+        public static void killBadThings()
+        {
+            ReaperLeviathan[] Reapers = GameObject.FindObjectsOfType<ReaperLeviathan>();
+
+            foreach (var r in Reapers)
+            {
+                GameObject.Destroy(r.gameObject);
+                //If you're here it means you've found my secret
+                DevConsole.SendConsoleCommand("spawn cutefish");        
+            }
+
+            SeaDragon[] seaDragons = GameObject.FindObjectsOfType<SeaDragon>();
+
+            foreach (var r in seaDragons)
+            {
+                GameObject.Destroy(r.gameObject);
+                //The people in call thought it would be funny to replace the bad things with cuddlefish
+                DevConsole.SendConsoleCommand("spawn cutefish");
+            }
+
+            GhostLeviathan[] ghostLeviathans = GameObject.FindObjectsOfType<GhostLeviathan>();
+
+            foreach (var r in ghostLeviathans)
+            {
+                GameObject.Destroy(r.gameObject);
+                //I agreed
+                DevConsole.SendConsoleCommand("spawn cutefish");
+            }
+            Warper[] warpers = GameObject.FindObjectsOfType<Warper>();
+
+            foreach (var r in warpers)
+            {
+                GameObject.Destroy(r.gameObject);
+                //But also it would be very easy to just comment out the code that adds them :p
+                DevConsole.SendConsoleCommand("spawn cutefish");
+            }
+
+            CrabSquid[] crabSquids = GameObject.FindObjectsOfType<CrabSquid>();
+
+            foreach ( var r in crabSquids)
+            {
+                GameObject.Destroy(r.gameObject);
+                DevConsole.SendConsoleCommand("spawn cutefish");
+            }
+
 
         }
+
+        public static void returnToShallows()
+        {
+            Vector3 spawnPos = RandomStart.main.GetRandomStartPoint();
+            spawnPos.y = -2;
+            Player.main.SetPosition(spawnPos);
+
+        }
+
+
 
         private static Timer invertControlsTimer;
         private static bool invertControlsTimerRunning = false;
