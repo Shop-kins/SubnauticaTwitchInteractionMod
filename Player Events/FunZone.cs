@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+using TwitchInteraction.UI;
 using UnityEngine;
 
 namespace TwitchInteraction.Player_Events
@@ -70,6 +71,8 @@ namespace TwitchInteraction.Player_Events
                 randomMouseSensTimer.Dispose();
             }
 
+            TimerCooldown.ShowMessage("Random Mouse Sensivity", 60);
+
             randomMouseSensTimer = new Timer(async (e) =>
             {
                 GameInput.SetMouseSensitivity(initialMouseSens);
@@ -89,6 +92,8 @@ namespace TwitchInteraction.Player_Events
                 hideHudTimer.Dispose();
             }
             HideForScreenshots.Hide(HideForScreenshots.HideType.Mask | HideForScreenshots.HideType.HUD);
+
+            TimerCooldown.ShowMessage("Hide HUD", 60);
 
             hideHudTimer = new Timer(async (e) =>
             {
@@ -192,6 +197,8 @@ namespace TwitchInteraction.Player_Events
                 invertControlsTimer.Dispose();
             }
 
+            TimerCooldown.ShowMessage("Invert Controls", 60);
+
             invertControlsTimer = new Timer(async (e) =>
             {
                 InputPatch.InputPatch.invertKeyboardAxisX = false;
@@ -218,6 +225,8 @@ namespace TwitchInteraction.Player_Events
                 disableControlsTimer.Dispose();
             }
 
+            TimerCooldown.ShowMessage("Disable Controls", 10);
+
             disableControlsTimer = new Timer(async (e) =>
             {
                 InputPatch.InputPatch.controlsEnabled = true;
@@ -239,6 +248,8 @@ namespace TwitchInteraction.Player_Events
                 enableFilmicModeTimer.Change(Timeout.Infinite, Timeout.Infinite);
                 enableFilmicModeTimer.Dispose();
             }
+
+            TimerCooldown.ShowMessage("Filmic Mode", 10);
 
             enableFilmicModeTimer = new Timer(async (e) =>
             {
