@@ -2,15 +2,31 @@
 
 namespace TwitchInteraction.Player_Events.Models
 {
-    class EventInfo
+    public class EventInfo
     {
         public Action Action;
         public int BitCost;
+        public int CooldownSeconds;
 
-        public EventInfo(Action act, int cst)
+        public EventInfo(Action action, int bitCost, int cooldownSeconds)
         {
-            Action = act;
-            BitCost = cst;
+            Action = action;
+            BitCost = bitCost;
+            CooldownSeconds = cooldownSeconds;
         }
     }
+
+    public class TimedEventInfo : EventInfo
+    {
+        public Action TimedAction;
+        public int TimerLength;
+
+        public TimedEventInfo(Action action, int bitCost, int cooldownSeconds, Action timedAction, int timerLength) : base(action, bitCost, cooldownSeconds)
+        {
+            TimedAction = timedAction;
+            TimerLength = timerLength;
+        }
+
+    }
+
 }
