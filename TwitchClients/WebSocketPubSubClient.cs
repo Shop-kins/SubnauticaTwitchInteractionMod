@@ -102,16 +102,19 @@ namespace TwitchInteraction
         private async Task<string> ReceiveMessageAsync(CancellationToken cancellationToken)
         {
             // RFC 1459 uses 512 bytes to hold one full message, therefore, it should be enough
-            var byteArray = new byte[2500];
+            var byteArray = new byte[4096];
             var receiveBuffer = new ArraySegment<byte>(byteArray);
-
-            var receivedResult = await _webSocketClient.ReceiveAsync(receiveBuffer, cancellationToken);
-
-            var msgBytes = receiveBuffer.Skip(receiveBuffer.Offset)
-                .Take(receivedResult.Count)
-                .ToArray();
-
-            var receivedMessage = Encoding.UTF8.GetString(msgBytes);
+            string receivedMessage = "";
+            while(true)
+            {
+                var receivedResult = await _webSocketClient.ReceiveAsync(receiveBuffer, cancellationToken);
+                var msgBytes = receiveBuffer.Skip(receiveBuffer.Offset)
+                    .Take(receivedResult.Count)
+                    .ToArray();
+                receivedMessage += Encoding.UTF8.GetString(msgBytes);
+                if (receivedResult.EndOfMessage)
+                    break;
+            }
 
             return receivedMessage;
         }
