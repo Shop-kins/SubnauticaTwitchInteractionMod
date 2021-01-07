@@ -12,8 +12,6 @@ namespace TwitchInteraction
     class CustomText
     {
 
-        private static int defaultX = Screen.width / 2 - 300, defaultY = Screen.height / 2 - 75;
-
         private GameObject textObject;
         private Text textText;
         private uGUI_TextFade textFade;
@@ -24,10 +22,10 @@ namespace TwitchInteraction
         private Mesh progressMesh;
         private Texture2D progressTexture;
 
-        private int x = Screen.width / 2 - 200, y = Screen.height / 2 - 50;
-
         private float duration;
         private float startTime;
+
+        private float yOffset;
 
         private bool isFadingOut;
 
@@ -37,9 +35,8 @@ namespace TwitchInteraction
 
         public CustomText(string text, float duration, int yOffset = 0, bool showProgress = false)
         {
-            x = defaultX;
-            y = defaultY + yOffset;
             this.duration = duration;
+            this.yOffset = yOffset;
             startTime = Time.time;
             isFadingOut = false;
 
@@ -124,7 +121,7 @@ namespace TwitchInteraction
 
         public void Update(int yOffset = 0)
         {
-            y = defaultY + yOffset;
+            this.yOffset = yOffset;
             AlignText();
 
             float elapsedTime = Time.time - startTime;
@@ -222,6 +219,11 @@ namespace TwitchInteraction
             }
         }
 
+        public float getTextWidth()
+        {
+            return textText.preferredWidth;
+        }
+
         public void SetTimedEvent(KeyValuePair<string, TimedEventInfo> timedEvent)
         {
             this.timedEvent = timedEvent;
@@ -250,7 +252,17 @@ namespace TwitchInteraction
 
         private void AlignText()
         {
+            float scaleX = (1920f / Screen.width);
+            float scaleY = (1920f / Screen.width);
+
             float width = textText.preferredWidth;
+
+            float x = Screen.width / 2 - (Screen.width / 1920f * TimerCooldown.widestText) - TimerCooldown.timerHeadingHeight;
+            float y = -Screen.height / 2 - yOffset + TimerCooldown.timerHeadingHeight;
+
+            x *= scaleX;
+            y *= scaleY;
+
             float displayX;
             switch (textText.alignment)
             {
@@ -284,13 +296,15 @@ namespace TwitchInteraction
         private static CustomText activeEffectsText, queueText, cooldownText;
 
         private static List<CustomText> customTimerTexts;
-        public static int timerTextHeight = 20;
-        private static int timerHeadingHeight = 32;
+        public static int timerTextHeight;
+        public static int timerHeadingHeight;
 
         private static List<KeyValuePair<string, CustomText>> actionQueueTexts;
         private static List<KeyValuePair<string, CustomText>> cooldownTexts;
 
         private static bool initialised = false;
+
+        public static float widestText = 0;
 
         public static void AddCooldown(string text, float duration, EventInfo eventInfo)
         {
@@ -319,6 +333,10 @@ namespace TwitchInteraction
 
         public static void Update()
         {
+            timerTextHeight = (int) (20 * (Screen.width / 1920f));
+            timerHeadingHeight = (int)(32 * (Screen.width / 1920f));
+
+            float newWidestText = 0;
             if (!initialised)
             {
                 Initialise();
@@ -326,21 +344,40 @@ namespace TwitchInteraction
 
             try
             {
-                activeEffectsText.Update();
-                cooldownText.Update(-(customTimerTexts.Count * timerTextHeight) - 2 * timerHeadingHeight);
-                queueText.Update(-((customTimerTexts.Count + cooldownTexts.Count) * timerTextHeight) - 4 * timerHeadingHeight);
+                activeEffectsText.Update(-((actionQueueTexts.Count + cooldownTexts.Count + customTimerTexts.Count - 1) * timerTextHeight) - 5 * timerHeadingHeight);
+                cooldownText.Update(-((actionQueueTexts.Count + cooldownTexts.Count - 1) * timerTextHeight) - 3 * timerHeadingHeight);
+                queueText.Update(-((actionQueueTexts.Count - 1) * timerTextHeight + timerHeadingHeight));
+
+                if (activeEffectsText.getTextWidth() > newWidestText)
+                {
+                    newWidestText = activeEffectsText.getTextWidth();
+                }
+                if (cooldownText.getTextWidth() > newWidestText)
+                {
+                    newWidestText = cooldownText.getTextWidth();
+                }
+                if (queueText.getTextWidth() > newWidestText)
+                {
+                    newWidestText = queueText.getTextWidth();
+                }
             }
             catch (Exception e)
             {
                 Initialise();
-                activeEffectsText.Update();
-                cooldownText.Update(-(customTimerTexts.Count * timerTextHeight) - 2 * timerHeadingHeight);
-                queueText.Update(-((customTimerTexts.Count + cooldownTexts.Count) * timerTextHeight) - 4 * timerHeadingHeight);
+                activeEffectsText.Update(-((actionQueueTexts.Count + cooldownTexts.Count + customTimerTexts.Count - 1) * timerTextHeight) - 5 * timerHeadingHeight);
+                cooldownText.Update(-((actionQueueTexts.Count + cooldownTexts.Count - 1) * timerTextHeight) - 3 * timerHeadingHeight);
+                queueText.Update(-((actionQueueTexts.Count - 1) * timerTextHeight + timerHeadingHeight));
             }
 
             for (int i = 0; i < customTimerTexts.Count; i++)
             {
-                customTimerTexts[i].Update(-i * timerTextHeight - timerHeadingHeight);
+                customTimerTexts[i].Update(-((actionQueueTexts.Count + cooldownTexts.Count + i) * timerTextHeight) - 4 * timerHeadingHeight);
+
+                if (customTimerTexts[i].getTextWidth() > newWidestText)
+                {
+                    newWidestText = customTimerTexts[i].getTextWidth();
+                }
+
                 if (customTimerTexts[i].IsFinished())
                 {
                     if (customTimerTexts[i].HasTimedEvent())
@@ -361,8 +398,13 @@ namespace TwitchInteraction
             int j = 0;
             foreach (KeyValuePair<string, CustomText> actionQueueText in actionQueueTexts)
             {
-                actionQueueText.Value.Update(-((j + customTimerTexts.Count + cooldownTexts.Count) * timerTextHeight) - 5 * timerHeadingHeight);
+                actionQueueText.Value.Update(-(j * timerTextHeight));
                 j++;
+
+                if (actionQueueText.Value.getTextWidth() > newWidestText)
+                {
+                    newWidestText = actionQueueText.Value.getTextWidth();
+                }
             }
 
             List<string> finishedCooldowns = new List<string>();
@@ -370,7 +412,7 @@ namespace TwitchInteraction
             int k = 0;
             foreach (KeyValuePair<string, CustomText> cooldownText in cooldownTexts)
             {
-                cooldownText.Value.Update(-((k + customTimerTexts.Count) * timerTextHeight) - 3 * timerHeadingHeight);
+                cooldownText.Value.Update(-((actionQueueTexts.Count + k) * timerTextHeight) - 2 * timerHeadingHeight);
                 k++;
 
                 KeyValuePair<string, EventInfo> eventInfo = cooldownText.Value.GetEvent();
@@ -380,6 +422,10 @@ namespace TwitchInteraction
                     finishedCooldowns.Add(eventInfo.Key);
                 }
 
+                if (cooldownText.Value.getTextWidth() > newWidestText)
+                {
+                    newWidestText = cooldownText.Value.getTextWidth();
+                }
             }
 
             foreach (string finishedCooldown in finishedCooldowns)
@@ -388,6 +434,7 @@ namespace TwitchInteraction
                 EventLookup.Cooldowns.Remove(finishedCooldown);
             }
 
+            widestText = newWidestText;
         }
 
         public static void AddCooldownText(string text, float duration, EventInfo eventInfo)
@@ -440,11 +487,11 @@ namespace TwitchInteraction
             customTimerTexts = new List<CustomText>();
             actionQueueTexts = new List<KeyValuePair<string, CustomText>>();
             cooldownTexts = new List<KeyValuePair<string, CustomText>>();
-            activeEffectsText = new CustomText("Active Effects", float.MaxValue);
+            activeEffectsText = new CustomText("Active", float.MaxValue);
             activeEffectsText.SetSize(24);
-            queueText = new CustomText("Effect Queue", float.MaxValue);
+            queueText = new CustomText("Queue", float.MaxValue);
             queueText.SetSize(24);
-            cooldownText = new CustomText("Effect Cooldown", float.MaxValue);
+            cooldownText = new CustomText("Cooldowns", float.MaxValue);
             cooldownText.SetSize(24);
 
             initialised = true;
