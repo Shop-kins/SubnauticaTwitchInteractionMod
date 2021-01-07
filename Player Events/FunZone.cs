@@ -69,7 +69,15 @@ namespace TwitchInteraction.Player_Events
 
         public static void showHUD()
         {
-            HUDHandler.Hide(HideForScreenshots.HideType.None);
+            if (MiscSettings.fieldOfView < 40)
+            {
+                HUDHandler.Hide(HideForScreenshots.HideType.None);
+                HUDHandler.Hide(HideForScreenshots.HideType.Mask);
+            } else
+            {
+                HUDHandler.Hide(HideForScreenshots.HideType.None);
+            }
+           
         }
 
         public static void LifePodWarp_Shallows()
