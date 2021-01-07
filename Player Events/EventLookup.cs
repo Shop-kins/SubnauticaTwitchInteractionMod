@@ -80,10 +80,12 @@ namespace TwitchInteraction.Player_Events
         public static void Lookup(string EventText, int bits)
         {
             KeyValuePair<string, EventInfo> Event = EventDictionary.FirstOrDefault(it => EventText.Contains(it.Key));
-            if (!Event.Equals(default(KeyValuePair<string, EventInfo>)) && bits > Event.Value.BitCost)
+            Console.WriteLine(Event.Key);
+            if (!Event.Equals(default(KeyValuePair<string, EventInfo>)) && bits >= Event.Value.BitCost)
             {
+                Console.WriteLine(Event.Key);
                 ActionQueue.Add(Event);
-                TimerCooldown.AddQueueText(EventText);
+                TimerCooldown.AddQueueText(Event.Key);
             }
 
         }
