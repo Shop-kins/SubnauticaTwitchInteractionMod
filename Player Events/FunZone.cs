@@ -69,7 +69,15 @@ namespace TwitchInteraction.Player_Events
 
         public static void showHUD()
         {
-            HUDHandler.Hide(HideForScreenshots.HideType.None);
+            if (MiscSettings.fieldOfView < 40)
+            {
+                HUDHandler.Hide(HideForScreenshots.HideType.None);
+                HUDHandler.Hide(HideForScreenshots.HideType.Mask);
+            } else
+            {
+                HUDHandler.Hide(HideForScreenshots.HideType.None);
+            }
+           
         }
 
         public static void LifePodWarp_Shallows()
@@ -213,8 +221,6 @@ namespace TwitchInteraction.Player_Events
             foreach (var r in Reapers)
             {
                 GameObject.Destroy(r.gameObject);
-                //If you're here it means you've found my secret
-                DevConsole.SendConsoleCommand("spawn cutefish");
             }
 
             SeaDragon[] seaDragons = GameObject.FindObjectsOfType<SeaDragon>();
@@ -222,8 +228,6 @@ namespace TwitchInteraction.Player_Events
             foreach (var r in seaDragons)
             {
                 GameObject.Destroy(r.gameObject);
-                //The people in call thought it would be funny to replace the bad things with cuddlefish
-                DevConsole.SendConsoleCommand("spawn cutefish");
             }
 
             GhostLeviathan[] ghostLeviathans = GameObject.FindObjectsOfType<GhostLeviathan>();
@@ -231,16 +235,12 @@ namespace TwitchInteraction.Player_Events
             foreach (var r in ghostLeviathans)
             {
                 GameObject.Destroy(r.gameObject);
-                //I agreed
-                DevConsole.SendConsoleCommand("spawn cutefish");
             }
             Warper[] warpers = GameObject.FindObjectsOfType<Warper>();
 
             foreach (var r in warpers)
             {
                 GameObject.Destroy(r.gameObject);
-                //But also it would be very easy to just comment out the code that adds them :p
-                DevConsole.SendConsoleCommand("spawn cutefish");
             }
 
             CrabSquid[] crabSquids = GameObject.FindObjectsOfType<CrabSquid>();
@@ -248,7 +248,6 @@ namespace TwitchInteraction.Player_Events
             foreach ( var r in crabSquids)
             {
                 GameObject.Destroy(r.gameObject);
-                DevConsole.SendConsoleCommand("spawn cutefish");
             }
 
         }

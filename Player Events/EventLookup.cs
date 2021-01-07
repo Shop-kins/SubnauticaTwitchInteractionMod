@@ -47,7 +47,7 @@ namespace TwitchInteraction.Player_Events
             { "Steal some equipment [Integration]", new EventInfo(FunZone.DumpEquipment, 250, 60) },
             { "Kill bad things [Integration]", new EventInfo(FunZone.killBadThings, 150, 60) },
             { "Go back home [Integration]", new EventInfo(FunZone.returnToShallows, 150, 180) },
-            { "Crafted Resource Roulette [Integration]", new EventInfo(FunZone.randomAdvancedResources, 60, 30) },
+            { "Crafted Roulette [Integration]", new EventInfo(FunZone.randomAdvancedResources, 60, 30) },
             // Parameter: ID, Action, BitCost, CooldownSeconds, TimedAction (Cleanup), TimerDuration
             { "Random Mouse Sensitivity [Integration]", new TimedEventInfo(FunZone.RandomMouseSens, 200, 60, FunZone.CleanupRandomMouseSens, 15) },
             { "Hide HUD [Integration]", new TimedEventInfo(FunZone.hideHUD, 50, 60, FunZone.showHUD, 60) },
@@ -80,10 +80,12 @@ namespace TwitchInteraction.Player_Events
         public static void Lookup(string EventText, int bits)
         {
             KeyValuePair<string, EventInfo> Event = EventDictionary.FirstOrDefault(it => EventText.Contains(it.Key));
-            if (!Event.Equals(default(KeyValuePair<string, EventInfo>)) && bits > Event.Value.BitCost)
+            Console.WriteLine(Event.Key);
+            if (!Event.Equals(default(KeyValuePair<string, EventInfo>)) && bits >= Event.Value.BitCost)
             {
+                Console.WriteLine(Event.Key);
                 ActionQueue.Add(Event);
-                TimerCooldown.AddQueueText(EventText);
+                TimerCooldown.AddQueueText(Event.Key);
             }
 
         }
