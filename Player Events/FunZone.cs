@@ -48,56 +48,29 @@ namespace TwitchInteraction.Player_Events
         }
 
         private static float initialMouseSens;
-        private static Timer randomMouseSensTimer;
-        private static bool randomMouseSensTimerRunning = false;
 
         public static void RandomMouseSens()
         {
-
-            if (!randomMouseSensTimerRunning)
-            {
-                // Only update this when there is no timer running
-                initialMouseSens = GameInput.GetMouseSensitivity();
-            }
+            initialMouseSens = GameInput.GetMouseSensitivity();
 
             System.Random random = new System.Random();
             GameInput.SetMouseSensitivity((float)random.NextDouble());
-
-            if (randomMouseSensTimerRunning)
-            {
-                // Stop the timer and immediately apply the next effect to prevent overlaps
-                randomMouseSensTimer.Change(Timeout.Infinite, Timeout.Infinite);
-                randomMouseSensTimer.Dispose();
-            }
-
-            randomMouseSensTimer = new Timer(async (e) =>
-            {
-                GameInput.SetMouseSensitivity(initialMouseSens);
-                randomMouseSensTimerRunning = false;
-            }, null, TimeSpan.FromMinutes(1), Timeout.InfiniteTimeSpan);
-            randomMouseSensTimerRunning = true;
         }
 
-        private static Timer hideHudTimer;
-        private static bool hideHudTimerRunning = false;
+        public static void CleanupRandomMouseSens()
+        {
+            GameInput.SetMouseSensitivity(initialMouseSens);
+        }
+
         public static void hideHUD()
         {
-            if (hideHudTimerRunning)
-            {
-                // Stop the timer and immediately apply the next effect to prevent overlaps
-                hideHudTimer.Change(Timeout.Infinite, Timeout.Infinite);
-                hideHudTimer.Dispose();
-            }
-            HideForScreenshots.Hide(HideForScreenshots.HideType.Mask | HideForScreenshots.HideType.HUD);
-
-            hideHudTimer = new Timer(async (e) =>
-            {
-                HideForScreenshots.Hide(HideForScreenshots.HideType.None);
-                hideHudTimerRunning = false;
-            }, null, TimeSpan.FromMinutes(1), Timeout.InfiniteTimeSpan);
-            hideHudTimerRunning = true;
+            HUDHandler.Hide(HideForScreenshots.HideType.Mask | HideForScreenshots.HideType.HUD);
         }
 
+        public static void showHUD()
+        {
+            HUDHandler.Hide(HideForScreenshots.HideType.None);
+        }
 
         public static void LifePodWarp_Shallows()
         {
@@ -181,16 +154,10 @@ namespace TwitchInteraction.Player_Events
 
         }
 
-        private static Timer changeFOVTimer;
-        private static bool changeFOVTimerRunning = false;
         private static float initialFOV;
         public static void fovRandom()
         {
-            if (!changeFOVTimerRunning)
-            {
-                // Only update this when there is no timer running
-                initialFOV = MiscSettings.fieldOfView;
-            }
+            initialFOV = MiscSettings.fieldOfView;
 
 
             // this is bad
@@ -215,7 +182,7 @@ namespace TwitchInteraction.Player_Events
                 randNum = lowRandNum;
             }
 
-            ErrorMessage.AddMessage(randNum.ToString());
+            //ErrorMessage.AddMessage(randNum.ToString());
             if (randNum < 40)
             {
                 HideForScreenshots.Hide(HideForScreenshots.HideType.Mask);
@@ -225,29 +192,17 @@ namespace TwitchInteraction.Player_Events
             {
                 SNCameraRoot.main.SyncFieldOfView();
             }
+        }
 
-            if (changeFOVTimerRunning)
+        public static void fovNormal()
+        {
+            MiscSettings.fieldOfView = initialFOV;
+            if (SNCameraRoot.main != null)
             {
-                // Stop the timer and immediately apply the next effect to prevent overlaps
-                changeFOVTimer.Change(Timeout.Infinite, Timeout.Infinite);
-                changeFOVTimer.Dispose();
+                SNCameraRoot.main.SyncFieldOfView();
             }
 
-            changeFOVTimer = new Timer(async (e) =>
-            {
-                MiscSettings.fieldOfView = initialFOV;
-                if (SNCameraRoot.main != null)
-                {
-                    SNCameraRoot.main.SyncFieldOfView();
-                }
-
-                HideForScreenshots.Hide(HideForScreenshots.HideType.None);
-
-                changeFOVTimerRunning = false;
-
-
-            }, null, TimeSpan.FromMinutes(1), Timeout.InfiniteTimeSpan);
-            changeFOVTimerRunning = true;
+            HideForScreenshots.Hide(HideForScreenshots.HideType.None);
         }
 
 
@@ -259,7 +214,7 @@ namespace TwitchInteraction.Player_Events
             {
                 GameObject.Destroy(r.gameObject);
                 //If you're here it means you've found my secret
-                DevConsole.SendConsoleCommand("spawn cutefish");        
+                DevConsole.SendConsoleCommand("spawn cutefish");
             }
 
             SeaDragon[] seaDragons = GameObject.FindObjectsOfType<SeaDragon>();
@@ -296,7 +251,6 @@ namespace TwitchInteraction.Player_Events
                 DevConsole.SendConsoleCommand("spawn cutefish");
             }
 
-
         }
 
         public static void returnToShallows()
@@ -307,11 +261,6 @@ namespace TwitchInteraction.Player_Events
 
         }
 
-
-
-        private static Timer invertControlsTimer;
-        private static bool invertControlsTimerRunning = false;
-
         public static void InvertControls()
         {
             InputPatch.InputPatch.invertKeyboardAxisX = true;
@@ -319,68 +268,35 @@ namespace TwitchInteraction.Player_Events
             InputPatch.InputPatch.invertKeyboardAxisZ = true;
             InputPatch.InputPatch.invertMouseAxisX = true;
             InputPatch.InputPatch.invertMouseAxisY = true;
-
-            if (invertControlsTimerRunning)
-            {
-                // Stop the timer and immediately apply the next effect to prevent overlaps
-                invertControlsTimer.Change(Timeout.Infinite, Timeout.Infinite);
-                invertControlsTimer.Dispose();
-            }
-
-            invertControlsTimer = new Timer(async (e) =>
-            {
-                InputPatch.InputPatch.invertKeyboardAxisX = false;
-                InputPatch.InputPatch.invertKeyboardAxisY = false;
-                InputPatch.InputPatch.invertKeyboardAxisZ = false;
-                InputPatch.InputPatch.invertMouseAxisX = false;
-                InputPatch.InputPatch.invertMouseAxisY = false;
-                invertControlsTimerRunning = false;
-            }, null, TimeSpan.FromMinutes(1), Timeout.InfiniteTimeSpan);
-            invertControlsTimerRunning = true;
         }
 
-        private static Timer disableControlsTimer;
-        private static bool disableControlsTimerRunning = false;
+        public static void NormalControls()
+        {
+            InputPatch.InputPatch.invertKeyboardAxisX = false;
+            InputPatch.InputPatch.invertKeyboardAxisY = false;
+            InputPatch.InputPatch.invertKeyboardAxisZ = false;
+            InputPatch.InputPatch.invertMouseAxisX = false;
+            InputPatch.InputPatch.invertMouseAxisY = false;
+        }
 
         public static void DisableControls()
         {
             InputPatch.InputPatch.controlsEnabled = false;
-
-            if (disableControlsTimerRunning)
-            {
-                // Stop the timer and immediately apply the next effect to prevent overlaps
-                disableControlsTimer.Change(Timeout.Infinite, Timeout.Infinite);
-                disableControlsTimer.Dispose();
-            }
-
-            disableControlsTimer = new Timer(async (e) =>
-            {
-                InputPatch.InputPatch.controlsEnabled = true;
-                disableControlsTimerRunning = false;
-            }, null, TimeSpan.FromSeconds(10), Timeout.InfiniteTimeSpan);
-            disableControlsTimerRunning = true;
         }
 
-        private static Timer enableFilmicModeTimer;
-        private static bool enableFilmicModeTimerRunning = false;
+        public static void EnableControls()
+        {
+            InputPatch.InputPatch.controlsEnabled = true;
+        }
 
         public static void EnableFilmicMode()
         {
             UwePostProcessingManager.SetColorGradingMode(2);
+        }
 
-            if (enableFilmicModeTimerRunning)
-            {
-                // Stop the timer and immediately apply the next effect to prevent overlaps
-                enableFilmicModeTimer.Change(Timeout.Infinite, Timeout.Infinite);
-                enableFilmicModeTimer.Dispose();
-            }
-
-            enableFilmicModeTimer = new Timer(async (e) =>
-            {
-                UwePostProcessingManager.SetColorGradingMode(0);
-                enableFilmicModeTimerRunning = false;
-            }, null, TimeSpan.FromMinutes(1), Timeout.InfiniteTimeSpan);
-            enableFilmicModeTimerRunning = true;
+        public static void DisableFilmicMode()
+        {
+            UwePostProcessingManager.SetColorGradingMode(0);
         }
 
         public static void ClearRandomQuickSlot()
