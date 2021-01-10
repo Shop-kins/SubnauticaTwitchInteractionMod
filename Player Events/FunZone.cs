@@ -48,56 +48,37 @@ namespace TwitchInteraction.Player_Events
         }
 
         private static float initialMouseSens;
-        private static Timer randomMouseSensTimer;
-        private static bool randomMouseSensTimerRunning = false;
 
         public static void RandomMouseSens()
         {
-
-            if (!randomMouseSensTimerRunning)
-            {
-                // Only update this when there is no timer running
-                initialMouseSens = GameInput.GetMouseSensitivity();
-            }
+            initialMouseSens = GameInput.GetMouseSensitivity();
 
             System.Random random = new System.Random();
             GameInput.SetMouseSensitivity((float)random.NextDouble());
-
-            if (randomMouseSensTimerRunning)
-            {
-                // Stop the timer and immediately apply the next effect to prevent overlaps
-                randomMouseSensTimer.Change(Timeout.Infinite, Timeout.Infinite);
-                randomMouseSensTimer.Dispose();
-            }
-
-            randomMouseSensTimer = new Timer(async (e) =>
-            {
-                GameInput.SetMouseSensitivity(initialMouseSens);
-                randomMouseSensTimerRunning = false;
-            }, null, TimeSpan.FromMinutes(1), Timeout.InfiniteTimeSpan);
-            randomMouseSensTimerRunning = true;
         }
 
-        private static Timer hideHudTimer;
-        private static bool hideHudTimerRunning = false;
+        public static void CleanupRandomMouseSens()
+        {
+            GameInput.SetMouseSensitivity(initialMouseSens);
+        }
+
         public static void hideHUD()
         {
-            if (hideHudTimerRunning)
-            {
-                // Stop the timer and immediately apply the next effect to prevent overlaps
-                hideHudTimer.Change(Timeout.Infinite, Timeout.Infinite);
-                hideHudTimer.Dispose();
-            }
-            HideForScreenshots.Hide(HideForScreenshots.HideType.Mask | HideForScreenshots.HideType.HUD);
-
-            hideHudTimer = new Timer(async (e) =>
-            {
-                HideForScreenshots.Hide(HideForScreenshots.HideType.None);
-                hideHudTimerRunning = false;
-            }, null, TimeSpan.FromMinutes(1), Timeout.InfiniteTimeSpan);
-            hideHudTimerRunning = true;
+            HUDHandler.Hide(HideForScreenshots.HideType.Mask | HideForScreenshots.HideType.HUD);
         }
 
+        public static void showHUD()
+        {
+            if (MiscSettings.fieldOfView < 40)
+            {
+                HUDHandler.Hide(HideForScreenshots.HideType.None);
+                HUDHandler.Hide(HideForScreenshots.HideType.Mask);
+            } else
+            {
+                HUDHandler.Hide(HideForScreenshots.HideType.None);
+            }
+           
+        }
 
         public static void LifePodWarp_Shallows()
         {
@@ -109,8 +90,8 @@ namespace TwitchInteraction.Player_Events
         public static void giveTooth()
         {
             DevConsole.SendConsoleCommand("item stalkertooth");
-        }
 
+        }
 
         public static void randomSummon()
         {
@@ -155,6 +136,14 @@ namespace TwitchInteraction.Player_Events
             DevConsole.SendConsoleCommand("item " + resources[random.Next(resources.Length)]);
         }
 
+        public static void randomAdvancedResources()
+        {
+            System.Random random = new System.Random();
+            string[] resources = { "bleach", "enameledglass", "fibermesh", "glass", "lubricant", "plasteelingot", "silicone", "titaniumingot", "titanium", "aerogel", "benzene", "hydrochloricacid", "polyaniline", "aramidfibers"};
+
+            DevConsole.SendConsoleCommand("item " + resources[random.Next(resources.Length)]);
+        }
+
         public static void junkFill()
         {
             System.Random random = new System.Random();
@@ -162,7 +151,7 @@ namespace TwitchInteraction.Player_Events
             for (int i = 0; i < 48; i++)
             {
                 CraftData.AddToInventory(listofstuff[random.Next(listofstuff.Length)], 1, false, false);
-            }           
+            }
         }
 
         public static void playToothSound()
@@ -170,12 +159,106 @@ namespace TwitchInteraction.Player_Events
             System.Random random = new System.Random();
 
             FMODUWE.PlayOneShot(CraftData.GetPrefabForTechType(TechType.Stalker).GetComponent<Stalker>().loseToothSound, new Vector3(Player.main.transform.position.x - random.Next(-8, 8), Player.main.transform.position.y - random.Next(-8, 7), Player.main.transform.position.z - random.Next(-7, 8)), 1f);
-         
 
         }
 
-        private static Timer invertControlsTimer;
-        private static bool invertControlsTimerRunning = false;
+        private static float initialFOV;
+        public static void fovRandom()
+        {
+            initialFOV = MiscSettings.fieldOfView;
+
+
+            // this is bad
+            // i did it because atto said to
+            // blame him
+            // it works tho
+            // the weird random number thing that is 
+            // I completely agree with doing random fov
+            System.Random random = new System.Random();
+
+            int lowRandNum = random.Next(5, 45);
+            int highRandNum = random.Next(85, 150);
+
+            double randCoinFlip = random.NextDouble();
+            int randNum;
+            if (randCoinFlip > 0.5)
+            {
+                randNum = highRandNum;
+            }
+            else
+            {
+                randNum = lowRandNum;
+            }
+
+            //ErrorMessage.AddMessage(randNum.ToString());
+            if (randNum < 40)
+            {
+                HideForScreenshots.Hide(HideForScreenshots.HideType.Mask);
+            }
+            MiscSettings.fieldOfView = randNum;
+            if (SNCameraRoot.main != null)
+            {
+                SNCameraRoot.main.SyncFieldOfView();
+            }
+        }
+
+        public static void fovNormal()
+        {
+            MiscSettings.fieldOfView = initialFOV;
+            if (SNCameraRoot.main != null)
+            {
+                SNCameraRoot.main.SyncFieldOfView();
+            }
+
+            HideForScreenshots.Hide(HideForScreenshots.HideType.None);
+        }
+
+
+        public static void killBadThings()
+        {
+            ReaperLeviathan[] Reapers = GameObject.FindObjectsOfType<ReaperLeviathan>();
+
+            foreach (var r in Reapers)
+            {
+                GameObject.Destroy(r.gameObject);
+            }
+
+            SeaDragon[] seaDragons = GameObject.FindObjectsOfType<SeaDragon>();
+
+            foreach (var r in seaDragons)
+            {
+                GameObject.Destroy(r.gameObject);
+            }
+
+            GhostLeviathan[] ghostLeviathans = GameObject.FindObjectsOfType<GhostLeviathan>();
+
+            foreach (var r in ghostLeviathans)
+            {
+                GameObject.Destroy(r.gameObject);
+            }
+            Warper[] warpers = GameObject.FindObjectsOfType<Warper>();
+
+            foreach (var r in warpers)
+            {
+                GameObject.Destroy(r.gameObject);
+            }
+
+            CrabSquid[] crabSquids = GameObject.FindObjectsOfType<CrabSquid>();
+
+            foreach ( var r in crabSquids)
+            {
+                GameObject.Destroy(r.gameObject);
+            }
+
+        }
+
+        public static void returnToShallows()
+        {
+            Vector3 spawnPos = RandomStart.main.GetRandomStartPoint();
+            spawnPos.y = -2;
+            Player.main.SetPosition(spawnPos);
+
+        }
 
         public static void InvertControls()
         {
@@ -184,68 +267,35 @@ namespace TwitchInteraction.Player_Events
             InputPatch.InputPatch.invertKeyboardAxisZ = true;
             InputPatch.InputPatch.invertMouseAxisX = true;
             InputPatch.InputPatch.invertMouseAxisY = true;
-
-            if (invertControlsTimerRunning)
-            {
-                // Stop the timer and immediately apply the next effect to prevent overlaps
-                invertControlsTimer.Change(Timeout.Infinite, Timeout.Infinite);
-                invertControlsTimer.Dispose();
-            }
-
-            invertControlsTimer = new Timer(async (e) =>
-            {
-                InputPatch.InputPatch.invertKeyboardAxisX = false;
-                InputPatch.InputPatch.invertKeyboardAxisY = false;
-                InputPatch.InputPatch.invertKeyboardAxisZ = false;
-                InputPatch.InputPatch.invertMouseAxisX = false;
-                InputPatch.InputPatch.invertMouseAxisY = false;
-                invertControlsTimerRunning = false;
-            }, null, TimeSpan.FromMinutes(1), Timeout.InfiniteTimeSpan);
-            invertControlsTimerRunning = true;
         }
 
-        private static Timer disableControlsTimer;
-        private static bool disableControlsTimerRunning = false;
+        public static void NormalControls()
+        {
+            InputPatch.InputPatch.invertKeyboardAxisX = false;
+            InputPatch.InputPatch.invertKeyboardAxisY = false;
+            InputPatch.InputPatch.invertKeyboardAxisZ = false;
+            InputPatch.InputPatch.invertMouseAxisX = false;
+            InputPatch.InputPatch.invertMouseAxisY = false;
+        }
 
         public static void DisableControls()
         {
             InputPatch.InputPatch.controlsEnabled = false;
-
-            if (disableControlsTimerRunning)
-            {
-                // Stop the timer and immediately apply the next effect to prevent overlaps
-                disableControlsTimer.Change(Timeout.Infinite, Timeout.Infinite);
-                disableControlsTimer.Dispose();
-            }
-
-            disableControlsTimer = new Timer(async (e) =>
-            {
-                InputPatch.InputPatch.controlsEnabled = true;
-                disableControlsTimerRunning = false;
-            }, null, TimeSpan.FromSeconds(10), Timeout.InfiniteTimeSpan);
-            disableControlsTimerRunning = true;
         }
 
-        private static Timer enableFilmicModeTimer;
-        private static bool enableFilmicModeTimerRunning = false;
+        public static void EnableControls()
+        {
+            InputPatch.InputPatch.controlsEnabled = true;
+        }
 
         public static void EnableFilmicMode()
         {
             UwePostProcessingManager.SetColorGradingMode(2);
+        }
 
-            if (enableFilmicModeTimerRunning)
-            {
-                // Stop the timer and immediately apply the next effect to prevent overlaps
-                enableFilmicModeTimer.Change(Timeout.Infinite, Timeout.Infinite);
-                enableFilmicModeTimer.Dispose();
-            }
-
-            enableFilmicModeTimer = new Timer(async (e) =>
-            {
-                UwePostProcessingManager.SetColorGradingMode(0);
-                enableFilmicModeTimerRunning = false;
-            }, null, TimeSpan.FromMinutes(1), Timeout.InfiniteTimeSpan);
-            enableFilmicModeTimerRunning = true;
+        public static void DisableFilmicMode()
+        {
+            UwePostProcessingManager.SetColorGradingMode(0);
         }
 
         public static void ClearRandomQuickSlot()
@@ -314,9 +364,11 @@ namespace TwitchInteraction.Player_Events
             PlayerTool[] playerTools = Inventory.main.gameObject.GetAllComponentsInChildren<PlayerTool>();
             List<EnergyMixin> toolMixins = new List<EnergyMixin>();
 
-            foreach(PlayerTool playerTool in playerTools)
+            foreach (PlayerTool playerTool in playerTools)
             {
                 EnergyMixin toolEnergyMixin = playerTool.GetComponent<EnergyMixin>();
+
+                // This is a tool, not something like a floater
                 if (toolEnergyMixin != null && toolEnergyMixin.HasItem())
                 {
                     toolMixins.Add(toolEnergyMixin);
@@ -336,8 +388,82 @@ namespace TwitchInteraction.Player_Events
             InventoryItem storedBattery = energyMixin.batterySlot.storedItem;
             energyMixin.batterySlot.RemoveItem();
             Inventory.main.ForcePickup(storedBattery.item);
+        }
+
+        public static void DumpEquipment()
+        {
+        	int equipmentCount = 0;
+
+            // Count the hotbar tools
+            List<ItemsContainer.ItemGroup> itemGroups = new List<ItemsContainer.ItemGroup>(Inventory.main.quickSlots.container._items.Values);
+            List<InventoryItem> hotbarTools = new List<InventoryItem>();
+            for (int i = 0; i < Inventory.main.quickSlots.binding.Length; i++)
+            {
+                if (Inventory.main.quickSlots.binding[i] != null)
+                {
+                	equipmentCount++;
+                	hotbarTools.Add(Inventory.main.quickSlots.binding[i]);
+                }
+            }
+
+
+            // These are hardcoded in the Inventory class to, so why bother
+            string[] inventoryEquipmentSlots = new string[]
+            {
+                "Head",
+                "Body",
+                "Gloves",
+                "Foots",
+                "Chip1",
+                "Chip2",
+                "Tank"
+            };
+
+            List<string> equipment = new List<string>();
+
+            // Count all equipment (O2 tank, rebreather, etc.)
+            foreach (string equipmentSlot in inventoryEquipmentSlots)
+            {
+                InventoryItem equipmentItem;
+                Inventory.main.equipment.equipment.TryGetValue(equipmentSlot, out equipmentItem);
+                if (equipmentItem == null)
+                {
+                    continue;
+                }
+                equipment.Add(equipmentSlot);
+                equipmentCount++;
+            }
+
+            System.Random random = new System.Random();
+            int randomEquipment = random.Next(0, equipmentCount);
+
+            if (randomEquipment < hotbarTools.Count) {
+            	// Drop a hotbar tool
+                Inventory.main.InternalDropItem(hotbarTools[randomEquipment].item, true);
+            } else {
+                // Drop a piece of equipment
+                string equipmentSlot = equipment[randomEquipment - hotbarTools.Count];
+
+                InventoryItem equipmentItem;
+                Inventory.main.equipment.equipment.TryGetValue(equipmentSlot, out equipmentItem);
+
+                // This is basically the Equipment.RemoveItem function, but a little modified
+                Inventory.main.equipment.equipment[equipmentSlot] = null;
+                TechType equipmentType = equipmentItem.item.GetTechType();
+                Inventory.main.equipment.UpdateCount(equipmentType, false);
+                Equipment.SendEquipmentEvent(equipmentItem.item, 1, Inventory.main.equipment.owner, equipmentSlot);
+                Inventory.main.equipment.NotifyUnequip(equipmentSlot, equipmentItem);
+                equipmentItem.container = null;
+                
+                // Put the equipment in the inventory
+                Inventory.main._container.UnsafeAdd(equipmentItem);
+
+                // Imediately dump it again
+                Inventory.main.InternalDropItem(equipmentItem.item, true);
+            }
 
         }
 
     }
 }
+
