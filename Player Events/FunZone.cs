@@ -257,7 +257,7 @@ namespace TwitchInteraction.Player_Events
             Vector3 spawnPos = RandomStart.main.GetRandomStartPoint();
             spawnPos.y = -2;
             Player.main.SetPosition(spawnPos);
-
+            Player.main.OnPlayerPositionCheat();
         }
 
         public static void InvertControls()
@@ -462,6 +462,11 @@ namespace TwitchInteraction.Player_Events
                 Inventory.main.InternalDropItem(equipmentItem.item, true);
             }
 
+        }
+
+        public static void  RestoreCrashedShip()
+        {
+            DevConsole.SendConsoleCommand("restoreship");
         }
 
     }

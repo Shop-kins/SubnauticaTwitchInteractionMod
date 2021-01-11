@@ -54,7 +54,8 @@ namespace TwitchInteraction.Player_Events
             { "Invert Controls [Integration]", new TimedEventInfo(FunZone.InvertControls, 200, 60, FunZone.NormalControls, 60) },
             { "Disable Controls [Integration]", new TimedEventInfo(FunZone.DisableControls, 200, 60, FunZone.EnableControls, 10) },
             { "Light? What is light? [Integration]", new TimedEventInfo(FunZone.EnableFilmicMode, 100, 60, FunZone.DisableFilmicMode, 60) },
-            { "Random FOV [Integration]", new TimedEventInfo(FunZone.fovRandom, 1000, 60, FunZone.fovNormal, 60) }
+            { "Random FOV [Integration]", new TimedEventInfo(FunZone.fovRandom, 1000, 60, FunZone.fovNormal, 60) },
+            { "What explosion? [Integration]", new EventInfo(FunZone.RestoreCrashedShip, 30, 30) }
         };
 
         public static string getBitCosts()
