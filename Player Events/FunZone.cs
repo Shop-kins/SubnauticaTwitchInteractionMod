@@ -464,6 +464,10 @@ namespace TwitchInteraction.Player_Events
 
         }
 
+        public static void RestoreCrashedShip()
+        {
+            DevConsole.SendConsoleCommand("restoreship");
+        }
     }
 }
 
