@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 using Random = UnityEngine.Random;
+
 namespace TwitchInteraction.Player_Events
 {
     //Add functions to the EventLookup.cs class
@@ -25,7 +26,8 @@ namespace TwitchInteraction.Player_Events
         {
             DevConsole.SendConsoleCommand("spawn reaperleviathan");
         }
-        public static void TeleportPlayer()
+
+        public static void TeleportPlayerOOB()
         {
             // First, pick a depth at random
             var depth = Random.Range(-20, -1500);
@@ -67,6 +69,29 @@ namespace TwitchInteraction.Player_Events
 
             var newPosition = new Vector3(xPos, depth, zPos);
             Player.main.SetPosition(newPosition);
+            Player.main.OnPlayerPositionCheat();
+        }
+
+        public static void TeleportPlayer()
+        {
+            var biomeTeleportData = BiomeConsoleCommand.main.data;
+            var locationTeleportData = GotoConsoleCommand.main.data;
+
+            var totalCount = biomeTeleportData.locations.Length + locationTeleportData.locations.Length;
+            var newPositionNum = Random.Range(0, totalCount);
+
+            TeleportPosition newPositionData;
+            if (newPositionNum < biomeTeleportData.locations.Length)
+            {
+                newPositionData = biomeTeleportData.locations[newPositionNum];
+            }
+            else
+            {
+                newPositionData = locationTeleportData.locations[newPositionNum - biomeTeleportData.locations.Length];
+            }
+
+            Player.main.SetPosition(newPositionData.position);
+            Player.main.OnPlayerPositionCheat();
         }
 
         public static void TeleportLifepod()
