@@ -468,7 +468,5 @@ namespace TwitchInteraction.Player_Events
         {
             DevConsole.SendConsoleCommand("restoreship");
         }
-
     }
 }
-
