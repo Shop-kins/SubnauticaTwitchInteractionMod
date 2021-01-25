@@ -2,8 +2,10 @@
 using TwitchLib.Client;
 using TwitchLib.Unity;
 using TwitchLib.PubSub;
+using TwitchInteraction.CrowdControl;
 using System;
 using Harmony;
+using System.Threading;
 
 namespace TwitchInteraction
 {
@@ -20,9 +22,10 @@ namespace TwitchInteraction
         
         public static void Patch()
         {
-            secrets = new Secrets();
+            //secrets = new Secrets();
             //StartTwitchChatClient(); Turned off cause the ping pong doesnt work and when it disconnects it crashes the game
             //StartTwitchPubSubClient();
+            StartCrowdControlServer();
 
             var harmony = HarmonyInstance.Create("subnautica.mod.twitchinteraction"); 
             harmony.PatchAll(Assembly.GetExecutingAssembly());
@@ -44,6 +47,16 @@ namespace TwitchInteraction
             await otherpubsub.ConnectAsync(secrets.api_token, secrets.nick_id, cts2);
             PubSubChannel = await otherpubsub.JoinChannelAsync(secrets.username, cts);
             PubSubChannel.MessageReceived += TwitchEventManager.PubSubMessageReceived;
+        }
+
+        private static void StartCrowdControlServer()
+        {
+            // https://codereview.stackexchange.com/questions/24758/tcp-async-socket-server-client-communication
+            var client = new CrowdControlClient();
+            client.Connected += new ConnectedHandler(CrowdControlEventManager.ClientConnected);
+            client.MessageReceived += new ClientMessageReceivedHandler(CrowdControlEventManager.ClientMessageReceived);
+            client.MessageSubmitted += new ClientMessageSubmittedHandler(CrowdControlEventManager.ClientMessageSent);
+            new Thread(new ThreadStart(client.StartClient)).Start();
         }
     }
 
