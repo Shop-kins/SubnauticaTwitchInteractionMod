@@ -47,7 +47,7 @@ namespace TwitchInteraction
 
             textFitter.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
             textFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
-
+            
             textText.font = uGUI.main.intro.mainText.text.font;
             textText.fontSize = 16;
             textText.fontStyle = uGUI.main.intro.mainText.text.fontStyle;
@@ -209,7 +209,7 @@ namespace TwitchInteraction
         public void SetText(string text, float seconds)
         {
             textFade.SetText(text.Replace(" [Integration]", ""), false);
-            AlignText();
+            //AlignText();
             textFade.SetState(true);
             textObject.SetActive(true);
             if (seconds > 0f && !isFadingOut)
@@ -221,7 +221,11 @@ namespace TwitchInteraction
 
         public float getTextWidth()
         {
-            return textText.preferredWidth;
+            //return textText.preferredWidth;
+            //TextGenerationSettings settings = textText.GetGenerationSettings(textText.rectTransform.rect.size);
+            //float width = textText.cachedTextGeneratorForLayout.GetPreferredWidth(textText.text, settings);
+            //return width;
+            return 200f;
         }
 
         public void SetTimedEvent(KeyValuePair<string, TimedEventInfo> timedEvent)
@@ -255,7 +259,8 @@ namespace TwitchInteraction
             float scaleX = (1920f / Screen.width);
             float scaleY = (1920f / Screen.width);
 
-            float width = textText.preferredWidth;
+            //float width = textText.preferredWidth;
+            float width = getTextWidth();
 
             float x = Screen.width / 2 - (Screen.width / 1920f * TimerCooldown.widestText) - TimerCooldown.timerHeadingHeight;
             float y = -Screen.height / 2 - yOffset + TimerCooldown.timerHeadingHeight;
