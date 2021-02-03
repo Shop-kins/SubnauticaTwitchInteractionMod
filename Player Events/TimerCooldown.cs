@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using System;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
 using TwitchInteraction.Player_Events;
 using TwitchInteraction.Player_Events.Models;
 using UnityEngine;
@@ -221,11 +222,7 @@ namespace TwitchInteraction
 
         public float getTextWidth()
         {
-            //return textText.preferredWidth;
-            //TextGenerationSettings settings = textText.GetGenerationSettings(textText.rectTransform.rect.size);
-            //float width = textText.cachedTextGeneratorForLayout.GetPreferredWidth(textText.text, settings);
-            //return width;
-            return 200f;
+            return textText.preferredWidth;
         }
 
         public void SetTimedEvent(KeyValuePair<string, TimedEventInfo> timedEvent)
@@ -301,11 +298,13 @@ namespace TwitchInteraction
         private static CustomText activeEffectsText, queueText, cooldownText;
 
         private static List<CustomText> customTimerTexts;
+
         public static int timerTextHeight;
         public static int timerHeadingHeight;
 
         private static List<KeyValuePair<string, CustomText>> actionQueueTexts;
         private static List<KeyValuePair<string, CustomText>> cooldownTexts;
+        private static ConcurrentQueue<string> newEventsList; // Allow for events from threads other than the main Unity UI thread.
 
         private static bool initialised = false;
 
@@ -347,6 +346,9 @@ namespace TwitchInteraction
                 Initialise();
             }
 
+            // First step is to add actions to the queue based on newly added events.
+            CreateNewText();
+
             try
             {
                 activeEffectsText.Update(-((actionQueueTexts.Count + cooldownTexts.Count + customTimerTexts.Count - 1) * timerTextHeight) - 5 * timerHeadingHeight);
@@ -366,7 +368,7 @@ namespace TwitchInteraction
                     newWidestText = queueText.getTextWidth();
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 Initialise();
                 activeEffectsText.Update(-((actionQueueTexts.Count + cooldownTexts.Count + customTimerTexts.Count - 1) * timerTextHeight) - 5 * timerHeadingHeight);
@@ -442,6 +444,23 @@ namespace TwitchInteraction
             widestText = newWidestText;
         }
 
+        private static void CreateNewText()
+        {
+            string eventName;
+            while(newEventsList.TryDequeue(out eventName))
+            {
+                AddQueueText(eventName);
+            }
+        }
+
+        /**
+         * This is necessary with CC because events come in off of the main thread, and we cannot create UI elements.
+         */
+        public static void AddNewEventText(string text)
+        {
+            newEventsList.Enqueue(text);
+        }
+
         public static void AddCooldownText(string text, float duration, EventInfo eventInfo)
         {
             CustomText cooldownText = new CustomText(text, duration, 0, true);
@@ -449,7 +468,7 @@ namespace TwitchInteraction
             cooldownTexts.Add(new KeyValuePair<string, CustomText>(text, cooldownText));
         }
 
-        public static void AddQueueText(string text)
+        private static void AddQueueText(string text)
         {
             CustomText cooldownText = new CustomText(text, float.MaxValue);
             actionQueueTexts.Add(new KeyValuePair<string, CustomText>(text, cooldownText));
@@ -487,6 +506,11 @@ namespace TwitchInteraction
             }
         }
 
+        public static Boolean IsInitialised()
+        {
+            return initialised;
+        }
+
         public static void Initialise()
         {
             customTimerTexts = new List<CustomText>();
@@ -498,6 +522,8 @@ namespace TwitchInteraction
             queueText.SetSize(24);
             cooldownText = new CustomText("Cooldowns", float.MaxValue);
             cooldownText.SetSize(24);
+
+            newEventsList = new ConcurrentQueue<string>();
 
             initialised = true;
 

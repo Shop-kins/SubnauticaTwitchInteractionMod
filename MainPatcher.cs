@@ -5,6 +5,7 @@ using TwitchLib.Unity;
 using TwitchLib.PubSub;
 using System;
 using HarmonyLib;
+using System.Threading;
 
 namespace TwitchInteraction
 {
@@ -64,10 +65,13 @@ namespace TwitchInteraction
 		{
             // https://codereview.stackexchange.com/questions/24758/tcp-async-socket-server-client-communication
             var client = new CrowdControlClient();
+            // Setup handlers
+
             client.Connected += new ConnectedHandler(CrowdControlEventManager.ClientConnected);
             client.MessageReceived += new ClientMessageReceivedHandler(CrowdControlEventManager.ClientMessageReceived);
             client.MessageSubmitted += new ClientMessageSubmittedHandler(CrowdControlEventManager.ClientMessageSent);
-            new Thread(new ThreadStart(client.StartClient)).Start();
+            client.StartClient();
+            //new Thread(new ThreadStart(client.StartClient)).Start();
         }
     }
 }

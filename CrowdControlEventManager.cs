@@ -70,15 +70,24 @@ namespace TwitchInteraction
                 // Do the thing
                 var eventName = EventNameDict[request.Code];
                 var status = 0;
-                try
+
+                if (TimerCooldown.IsInitialised())
                 {
-                    EventLookup.Lookup(eventName);
-                } catch (Exception)
+                    try
+                    {
+                        EventLookup.Lookup(eventName);
+                    }
+                    catch (Exception)
+                    {
+                        // On exception set failed flag
+                        status = 1;
+                    }
+                } else
                 {
-                    // On exception set failed flag
-                    status = 1;
+                    // Game is not yet ready for events, retry until it is.
+                    status = 3;
                 }
-                
+
 
                 // Send the result to CC
                 var response = new CrowdControlResponse();

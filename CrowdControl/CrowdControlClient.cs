@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace TwitchInteraction.CrowdControl
 {
@@ -84,46 +85,48 @@ namespace TwitchInteraction.CrowdControl
     public delegate void ClientMessageSubmittedHandler(CrowdControlClient c, bool close);
 
     public sealed class CrowdControlClient { 
-        private const ushort Port = 8888;
+        private const ushort Port = 2679;
 
         private Socket listener;
         private bool close;
 
-        private readonly ManualResetEvent connected = new ManualResetEvent(false);
-        private readonly ManualResetEvent sent = new ManualResetEvent(false);
-        private readonly ManualResetEvent received = new ManualResetEvent(false);
-
         public event ConnectedHandler Connected;
-
         public event ClientMessageReceivedHandler MessageReceived;
-
         public event ClientMessageSubmittedHandler MessageSubmitted;
 
-        public void StartClient()
+        public async void StartClient()
         {
             // var host = Dns.GetHostEntry(string.Empty);
             // var ip = host.AddressList[3];
             var ip = IPAddress.Loopback;
             var endpoint = new IPEndPoint(ip, Port);
 
-            try
-            {
-                this.listener = new Socket(endpoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-                Console.WriteLine("Starting client. IP: " + ip + ", Port: " + Port);
-                this.listener.BeginConnect(endpoint, this.OnConnectCallback, this.listener);
-                this.connected.WaitOne();
-
-                var connectedHandler = this.Connected;
-
-                if (connectedHandler != null)
+            while(true) { 
+                try
                 {
-                    connectedHandler(this);
+                    this.listener = new Socket(endpoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+                    Console.WriteLine("Starting client. IP: " + ip + ", Port: " + Port);
+                    await this.ConnectTaskAsync(endpoint);
+                
+                    var connectedHandler = this.Connected;
+
+                    if (connectedHandler != null)
+                    {
+                        connectedHandler(this);
+                    }
+                    return;
+                }
+                catch (SocketException)
+                {
+                    Console.WriteLine("Failed to connect to CrowdControl. Retrying in 30 seconds");
+                    await Task.Delay(1000 * 30);
                 }
             }
-            catch (SocketException e)
-            {
-                Console.WriteLine(e);
-            }
+        }
+
+        private Task ConnectTaskAsync(IPEndPoint endpoint) 
+        {
+            return Task.Factory.FromAsync(this.listener.BeginConnect, this.listener.EndConnect, endpoint, null);
         }
 
         public bool IsConnected()
@@ -131,31 +134,25 @@ namespace TwitchInteraction.CrowdControl
             return !(this.listener.Poll(1000, SelectMode.SelectRead) && this.listener.Available == 0);
         }
 
-        private void OnConnectCallback(IAsyncResult result)
-        {
-            var server = (Socket)result.AsyncState;
-            Console.WriteLine("OnConnectCallback");
-            try
-            {
-                server.EndConnect(result);
-                this.connected.Set();
-            }
-            catch (SocketException e)
-            {
-                Console.WriteLine(e);
-            }
-        }
-
         #region Receive data
-        public void Receive()
+        public async void Receive()
         {
             var state = new StateObject(this.listener);
 
+            await this.ReceiveTaskAsync(state);
             state.Listener.BeginReceive(state.Buffer, 0, state.BufferSize, SocketFlags.None, this.ReceiveCallback, state);
-            this.received.WaitOne();
+            
         }
 
-        private void ReceiveCallback(IAsyncResult result)
+        private Task ReceiveTaskAsync(StateObject state)
+        {
+            return Task.Factory.FromAsync(
+                       (cb, s) => state.Listener.BeginReceive(state.Buffer, 0, state.BufferSize, SocketFlags.None, cb, s),
+                       ias => this.ReceiveCallback(ias),
+                       state);
+        }
+
+        private async void ReceiveCallback(IAsyncResult result)
         {
             var state = (StateObject)result.AsyncState;
             var receive = state.Listener.EndReceive(result);
@@ -168,7 +165,7 @@ namespace TwitchInteraction.CrowdControl
             // Await null terminated message
             if (receive == state.BufferSize || !state.Text.EndsWith("\0"))
             {
-                state.Listener.BeginReceive(state.Buffer, 0, state.BufferSize, SocketFlags.None, this.ReceiveCallback, state);
+                await this.ReceiveTaskAsync(state);
             }
             else
             {
@@ -180,13 +177,12 @@ namespace TwitchInteraction.CrowdControl
                 }
 
                 state.Reset();
-                this.received.Set();
             }
         }
         #endregion
 
         #region Send data
-        public void Send(string msg, bool close)
+        public async void Send(string msg, bool close)
         {
             if (!this.IsConnected())
             {
@@ -197,17 +193,23 @@ namespace TwitchInteraction.CrowdControl
             var response = Encoding.UTF8.GetBytes(msg + "\0");
 
             this.close = close;
-            this.listener.BeginSend(response, 0, response.Length, SocketFlags.None, this.SendCallback, this.listener);
-            this.sent.WaitOne();
+            await this.SendTaskAsync(response);            
+        }
+
+        private Task SendTaskAsync(byte[] response)
+        {
+            return Task.Factory.FromAsync(
+                    (sb, s) => this.listener.BeginSend(response, 0, response.Length, SocketFlags.None, this.SendCallback, this.listener),
+                    (ias) => this.SendCallback(ias),
+                    null
+            );            
         }
 
         private void SendCallback(IAsyncResult result)
         {
             try
             {
-                var resceiver = (Socket)result.AsyncState;
-
-                resceiver.EndSend(result);
+                var receiver = (Socket)result.AsyncState;
             }
             catch (SocketException)
             {
@@ -224,8 +226,6 @@ namespace TwitchInteraction.CrowdControl
             {
                 messageSubmitted(this, this.close);
             }
-
-            this.sent.Set();
         }
         #endregion
 
@@ -249,9 +249,6 @@ namespace TwitchInteraction.CrowdControl
 
         public void Dispose()
         {
-            this.connected.Dispose();
-            this.sent.Dispose();
-            this.received.Dispose();
             this.Close();
         }
     }

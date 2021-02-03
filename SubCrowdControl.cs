@@ -8,7 +8,7 @@ public class Subnautica : SimpleTCPPack
 {
     public override string Host => "127.0.0.1";
 
-    public override ushort Port => 8888;
+    public override ushort Port => 2679;
 
     public Subnautica(IPlayer player, Func<CrowdControlBlock, bool> responseHandler, Action<object> statusUpdateHandler) : base(player, responseHandler, statusUpdateHandler) { }
 
