@@ -1,4 +1,5 @@
 ﻿{
+	"client": "Use 'crowdcontrol' for crowd control client, or 'twitch' for twitch client",
 	"client_id": "TwitchTokenGenerator client_id",
 	"bot_access_token": "Access token of the account that will be using chat",
 	"username_token": "Access token for your account",

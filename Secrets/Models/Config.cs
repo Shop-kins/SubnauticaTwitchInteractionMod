@@ -4,6 +4,10 @@ namespace TwitchInteraction
 {
     class Config
     {
+
+        [JsonPropertyName("client")]
+        public string Client { get; set; }
+
         [JsonPropertyName("client_id")]
         public string ClientId { get; set; }
 
