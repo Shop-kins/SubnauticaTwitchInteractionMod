@@ -62,16 +62,15 @@ namespace TwitchInteraction
         }
 		
         private static void StartCrowdControlServer()
-		{
-            // https://codereview.stackexchange.com/questions/24758/tcp-async-socket-server-client-communication
+	{
             var client = new CrowdControlClient();
-            // Setup handlers
 
+            // Setup handlers
             client.Connected += new ConnectedHandler(CrowdControlEventManager.ClientConnected);
             client.MessageReceived += new ClientMessageReceivedHandler(CrowdControlEventManager.ClientMessageReceived);
             client.MessageSubmitted += new ClientMessageSubmittedHandler(CrowdControlEventManager.ClientMessageSent);
+
             client.StartClient();
-            //new Thread(new ThreadStart(client.StartClient)).Start();
         }
     }
 }
