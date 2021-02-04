@@ -1,9 +1,11 @@
-﻿using QModManager.API.ModLoading;
+using QModManager.API.ModLoading;
 using System.Reflection;
+using TwitchInteraction.CrowdControl;
 using TwitchLib.Unity;
 using TwitchLib.PubSub;
 using System;
 using HarmonyLib;
+using System.Threading;
 
 namespace TwitchInteraction
 {
@@ -25,8 +27,18 @@ namespace TwitchInteraction
         public static void Patch()
         {
             secrets = new Secrets();
-            //StartTwitchChatClient(); Turned off cause the ping pong doesnt work and when it disconnects it crashes the game
-            StartTwitchPubSubClient();
+
+            if (secrets.client == "crowdcontrol")
+            {
+                Console.WriteLine("CrowdControl client active");
+                StartCrowdControlServer();
+
+            } else {
+
+                Console.WriteLine("Twitch client active");
+                //StartTwitchChatClient(); Turned off cause the ping pong doesnt work and when it disconnects it crashes the game
+                StartTwitchPubSubClient();
+            }
 
             Harmony.CreateAndPatchAll(myAssembly, "subnautica.mod.twitchinteraction");
         }
@@ -48,8 +60,18 @@ namespace TwitchInteraction
             PubSubChannel = await otherpubsub.JoinChannelAsync(secrets.username, cts);
             PubSubChannel.MessageReceived += TwitchEventManager.PubSubMessageReceived;
         }
+		
+        private static void StartCrowdControlServer()
+		{
+            // https://codereview.stackexchange.com/questions/24758/tcp-async-socket-server-client-communication
+            var client = new CrowdControlClient();
+            // Setup handlers
+
+            client.Connected += new ConnectedHandler(CrowdControlEventManager.ClientConnected);
+            client.MessageReceived += new ClientMessageReceivedHandler(CrowdControlEventManager.ClientMessageReceived);
+            client.MessageSubmitted += new ClientMessageSubmittedHandler(CrowdControlEventManager.ClientMessageSent);
+            client.StartClient();
+            //new Thread(new ThreadStart(client.StartClient)).Start();
+        }
     }
-
-
-
 }

@@ -74,7 +74,7 @@ namespace TwitchInteraction.Player_Events
             if (EventDictionary.Keys.Contains(EventText))
             {
                 ActionQueue.Add(new KeyValuePair<string, EventInfo>(EventText, EventDictionary[EventText]));
-                TimerCooldown.AddQueueText(EventText);
+                TimerCooldown.AddNewEventText(EventText);
             }
         }
 
@@ -86,7 +86,7 @@ namespace TwitchInteraction.Player_Events
             {
                 Console.WriteLine(Event.Key);
                 ActionQueue.Add(Event);
-                TimerCooldown.AddQueueText(Event.Key);
+                TimerCooldown.AddNewEventText(EventText);
             }
 
         }
