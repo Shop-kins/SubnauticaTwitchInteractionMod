@@ -32,7 +32,7 @@ When packaging the mod, include the following files:
 - SubCrowdControl.cs 
 - dependencies/
 
-Where the dependencies folder contains all the referenced dlls that are not already including in Subnautica and QMod (TwitchLib.Unity, Microsoft.Bcl.AsyncInterfaces and the System dlls)
+Where the dependencies folder contains all the referenced dlls that are not already included in Subnautica and QMod (TwitchLib.Unity, Microsoft.Bcl.AsyncInterfaces and the System dlls)
 
 ## Usage
 
