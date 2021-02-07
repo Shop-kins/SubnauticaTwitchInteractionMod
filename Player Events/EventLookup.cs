@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using TwitchInteraction.Player_Events.Models;
-using System.Collections.Concurrent;
 
 namespace TwitchInteraction.Player_Events
 {
@@ -91,5 +90,17 @@ namespace TwitchInteraction.Player_Events
 
         }
 
+        public static void ConfigureEventCost(List<ConfigEventInfo> configInfo)
+        {
+            foreach (ConfigEventInfo i in configInfo)
+            {
+                if (EventDictionary.Keys.Contains(i.EventName))
+                {
+                    EventDictionary[i.EventName].BitCost = i.BitCost;
+                    EventDictionary[i.EventName].CooldownSeconds = i.Cooldown;
+                    Console.WriteLine("Updating " + i.EventName + " to cost " + i.BitCost + " with a cooldown of " + i.Cooldown);
+                }           
+            }
+        }
     }
 }

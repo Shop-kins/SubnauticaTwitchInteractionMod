@@ -6,6 +6,8 @@ using TwitchLib.PubSub;
 using System;
 using HarmonyLib;
 using System.Threading;
+using System.Collections.Generic;
+using TwitchInteraction.Player_Events;
 
 namespace TwitchInteraction
 {
@@ -28,14 +30,19 @@ namespace TwitchInteraction
         {
             secrets = new Secrets();
 
+            // Customize event configuration
+            EventLookup.ConfigureEventCost(secrets.eventConfigList);
+
             if (secrets.client == "crowdcontrol")
             {
                 Console.WriteLine("CrowdControl client active");
                 StartCrowdControlServer();
 
-            } else {
-
+            } else {              
                 Console.WriteLine("Twitch client active");
+                // Customize the bit costs (if present)
+                
+
                 //StartTwitchChatClient(); Turned off cause the ping pong doesnt work and when it disconnects it crashes the game
                 StartTwitchPubSubClient();
             }
