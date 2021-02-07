@@ -12,7 +12,7 @@ public class Subnautica : SimpleTCPPack
 
     public Subnautica(IPlayer player, Func<CrowdControlBlock, bool> responseHandler, Action<object> statusUpdateHandler) : base(player, responseHandler, statusUpdateHandler) { }
 
-    public override Game Game => new Game(60, "Subnautica", "subnautica", "PC", ConnectorType.SimpleTCPConnector);
+    public override Game Game => new Game(91, "Subnautica", "Subnautica", "PC", ConnectorType.SimpleTCPConnector);
 
     public override List<Effect> Effects => new List<Effect>
     {
