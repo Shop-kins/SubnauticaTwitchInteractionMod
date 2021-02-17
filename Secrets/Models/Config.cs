@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace TwitchInteraction
 {
@@ -24,5 +25,20 @@ namespace TwitchInteraction
 
         [JsonPropertyName("bot_name")]
         public string BotName { get; set; }
+
+        [JsonPropertyName("events")]
+        public List<ConfigEventInfo> EventInfoList { get; set; }
+    }
+
+    public class ConfigEventInfo
+    {
+        [JsonPropertyName("event")]
+        public string EventName { get; set; }
+
+        [JsonPropertyName("bit_cost")]
+        public int BitCost { get; set; }
+
+        [JsonPropertyName("cooldown")]
+        public int Cooldown { get; set; }
     }
 }

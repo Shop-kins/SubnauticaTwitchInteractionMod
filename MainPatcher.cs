@@ -4,6 +4,7 @@ using TwitchLib.Unity;
 using TwitchLib.PubSub;
 using System;
 using HarmonyLib;
+using TwitchInteraction.Player_Events;
 
 namespace TwitchInteraction
 {
@@ -25,6 +26,10 @@ namespace TwitchInteraction
         public static void Patch()
         {
             secrets = new Secrets();
+
+            // Customize event configuration
+            EventLookup.ConfigureEventCost(secrets.eventConfigList);
+
             //StartTwitchChatClient(); Turned off cause the ping pong doesnt work and when it disconnects it crashes the game
             StartTwitchPubSubClient();
 
