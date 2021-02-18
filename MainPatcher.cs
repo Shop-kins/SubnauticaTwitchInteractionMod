@@ -28,6 +28,9 @@ namespace TwitchInteraction
         {
             secrets = new Secrets();
 
+            // Customize event configuration
+            EventLookup.ConfigureEventCost(secrets.eventConfigList);
+
             if (secrets.client == "crowdcontrol")
             {
                 Console.WriteLine("CrowdControl client active");
