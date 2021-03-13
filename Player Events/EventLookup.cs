@@ -99,7 +99,7 @@ namespace TwitchInteraction.Player_Events
                     EventDictionary[i.EventName].BitCost = i.BitCost;
                     EventDictionary[i.EventName].CooldownSeconds = i.Cooldown;
                     Console.WriteLine("Updating " + i.EventName + " to cost " + i.BitCost + " with a cooldown of " + i.Cooldown);
-                }           
+                }
             }
         }
     }

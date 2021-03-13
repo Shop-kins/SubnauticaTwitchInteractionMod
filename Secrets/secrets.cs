@@ -20,6 +20,7 @@ namespace TwitchInteraction
         public string nick_id;
         public string username;
         public string botname;
+
         public List<ConfigEventInfo> eventConfigList = new List<ConfigEventInfo>();
 
         public Secrets()
