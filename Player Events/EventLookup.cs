@@ -48,14 +48,14 @@ namespace TwitchInteraction.Player_Events
             { "Kill bad things [Integration]", new EventInfo(FunZone.killBadThings, 150, 60) },
             { "Go back home [Integration]", new EventInfo(FunZone.returnToShallows, 150, 180) },
             { "Crafted Roulette [Integration]", new EventInfo(FunZone.randomAdvancedResources, 60, 30) },
+            { "What explosion? [Integration]", new EventInfo(FunZone.RestoreCrashedShip, 30, 30) },
             // Parameter: ID, Action, BitCost, CooldownSeconds, TimedAction (Cleanup), TimerDuration
             { "Random Mouse Sensitivity [Integration]", new TimedEventInfo(FunZone.RandomMouseSens, 200, 60, FunZone.CleanupRandomMouseSens, 15) },
             { "Hide HUD [Integration]", new TimedEventInfo(FunZone.hideHUD, 50, 60, FunZone.showHUD, 60) },
             { "Invert Controls [Integration]", new TimedEventInfo(FunZone.InvertControls, 200, 60, FunZone.NormalControls, 60) },
             { "Disable Controls [Integration]", new TimedEventInfo(FunZone.DisableControls, 200, 60, FunZone.EnableControls, 10) },
             { "Light? What is light? [Integration]", new TimedEventInfo(FunZone.EnableFilmicMode, 100, 60, FunZone.DisableFilmicMode, 60) },
-            { "Random FOV [Integration]", new TimedEventInfo(FunZone.fovRandom, 1000, 60, FunZone.fovNormal, 60) },
-            { "What explosion? [Integration]", new EventInfo(FunZone.RestoreCrashedShip, 30, 30) }
+            { "Random FOV [Integration]", new TimedEventInfo(FunZone.fovRandom, 1000, 60, FunZone.fovNormal, 60) }
         };
 
         public static string getBitCosts()
@@ -74,7 +74,7 @@ namespace TwitchInteraction.Player_Events
             if (EventDictionary.Keys.Contains(EventText))
             {
                 ActionQueue.Add(new KeyValuePair<string, EventInfo>(EventText, EventDictionary[EventText]));
-                TimerCooldown.AddQueueText(EventText);
+                TimerCooldown.AddNewEventText(EventText);
             }
         }
 
@@ -86,7 +86,7 @@ namespace TwitchInteraction.Player_Events
             {
                 Console.WriteLine(Event.Key);
                 ActionQueue.Add(Event);
-                TimerCooldown.AddQueueText(Event.Key);
+                TimerCooldown.AddNewEventText(EventText);
             }
 
         }

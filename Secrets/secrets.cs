@@ -13,7 +13,7 @@ namespace TwitchInteraction
         private static string ConfigFilePath { get => _configFilePath ?? (_configFilePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Config.txt")); }
 
 
-
+        public string client;
         public string client_id;
         public string access_token;
         public string api_token;
@@ -25,6 +25,14 @@ namespace TwitchInteraction
         public Secrets()
         {
             Config config = JsonSerializer.Deserialize<Config>(File.ReadAllText(ConfigFilePath));
+            if (config.Client != null)
+            {
+                client = config.Client;
+            } else
+            {
+                client = "twitch";
+            }
+
             client_id = config.ClientId;
             access_token = config.BotAccessToken;
             api_token = config.UsernameToken;
