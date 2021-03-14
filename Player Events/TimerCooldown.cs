@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using System;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
 using TwitchInteraction.Player_Events;
 using TwitchInteraction.Player_Events.Models;
 using UnityEngine;
@@ -28,11 +29,12 @@ namespace TwitchInteraction
         private float yOffset;
 
         private bool isFadingOut;
-        private bool isVisible;
 
         private KeyValuePair<string, TimedEventInfo> timedEvent;
         private KeyValuePair<string, EventInfo> normalEvent;
         private bool hasTimedEvent = false;
+
+        private bool isVisible = true;
 
         public CustomText(string text, float duration, int yOffset = 0, bool showProgress = false)
         {
@@ -48,7 +50,7 @@ namespace TwitchInteraction
 
             textFitter.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
             textFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
-
+            
             textText.font = uGUI.main.intro.mainText.text.font;
             textText.fontSize = 16;
             textText.fontStyle = uGUI.main.intro.mainText.text.fontStyle;
@@ -115,29 +117,24 @@ namespace TwitchInteraction
             Update();
         }
 
-        public void SetVisible(bool visible)
-        {
-            isVisible = visible;
-        }
-
         public void SetSize(int textSize)
         {
             textText.fontSize = textSize;
         }
 
+        public void SetVisible(bool visible) {
+            isVisible = visible;
+        }
+
         public void Update(int yOffset = 0)
         {
-            if (!isVisible)
-            {
-                startTime = Time.time;
-                textObject.active = false;
-            } else
-            {
-                textObject.active = true;
-            }
-
             this.yOffset = yOffset;
             AlignText();
+
+            if (!isVisible) {
+                // Stop the time for this element while it's not visible
+                startTime = Time.time;
+            }
 
             float elapsedTime = Time.time - startTime;
             float remainingSeconds = duration - elapsedTime;
@@ -149,6 +146,7 @@ namespace TwitchInteraction
                 isFadingOut = true;
             }
 
+            // TODO progress circle (as in fabricator) => thats what percentage is for
             if (progressIcon != null)
             {
                 progressIcon.SetProgress(percentage);
@@ -223,7 +221,7 @@ namespace TwitchInteraction
         public void SetText(string text, float seconds)
         {
             textFade.SetText(text.Replace(" [Integration]", ""), false);
-            AlignText();
+            //AlignText();
             textFade.SetState(true);
             textObject.SetActive(true);
             if (seconds > 0f && !isFadingOut)
@@ -269,7 +267,8 @@ namespace TwitchInteraction
             float scaleX = (1920f / Screen.width);
             float scaleY = (1920f / Screen.width);
 
-            float width = textText.preferredWidth;
+            //float width = textText.preferredWidth;
+            float width = getTextWidth();
 
             float x = Screen.width / 2 - (Screen.width / 1920f * TimerCooldown.widestText) - TimerCooldown.timerHeadingHeight;
             float y = -Screen.height / 2 - yOffset + TimerCooldown.timerHeadingHeight;
@@ -310,11 +309,15 @@ namespace TwitchInteraction
         private static CustomText activeEffectsText, queueText, cooldownText;
 
         private static List<CustomText> customTimerTexts;
+
         public static int timerTextHeight;
         public static int timerHeadingHeight;
 
         private static List<KeyValuePair<string, CustomText>> actionQueueTexts;
         private static List<KeyValuePair<string, CustomText>> cooldownTexts;
+        // Key: Event name, Value: Pair<User, BitCost>
+        private static ConcurrentQueue<KeyValuePair<string, KeyValuePair<string, int>>> newEventsList; // Allow for events from threads other than the main Unity UI thread.
+
         private static List<CustomText> redemptionTexts;
 
         private static bool initialised = false;
@@ -357,6 +360,9 @@ namespace TwitchInteraction
                 Initialise();
             }
 
+            // First step is to add actions to the queue based on newly added events.
+            CreateNewText();
+
             try
             {
                 activeEffectsText.Update(-((actionQueueTexts.Count + cooldownTexts.Count + customTimerTexts.Count - 1) * timerTextHeight) - 5 * timerHeadingHeight);
@@ -376,7 +382,7 @@ namespace TwitchInteraction
                     newWidestText = queueText.getTextWidth();
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 Initialise();
                 activeEffectsText.Update(-((actionQueueTexts.Count + cooldownTexts.Count + customTimerTexts.Count - 1) * timerTextHeight) - 5 * timerHeadingHeight);
@@ -469,6 +475,24 @@ namespace TwitchInteraction
             widestText = newWidestText;
         }
 
+        private static void CreateNewText()
+        {
+            KeyValuePair<string, KeyValuePair<string, int>> eventInfo;
+            while(newEventsList.TryDequeue(out eventInfo))
+            {
+                AddQueueText(eventInfo.Key, eventInfo.Value.Key, eventInfo.Value.Value);
+            }
+        }
+
+        /**
+         * This is necessary with CC because events come in off of the main thread, and we cannot create UI elements.
+         */
+        public static void AddNewEventText(string text, string user, int bits = -1)
+        {
+            KeyValuePair<string, int> userBitPair = new KeyValuePair<string, int>(user, bits);
+            newEventsList.Enqueue(new KeyValuePair<string, KeyValuePair<string, int>>(text, userBitPair));
+        }
+
         public static void AddCooldownText(string text, float duration, EventInfo eventInfo)
         {
             CustomText cooldownText = new CustomText(text, duration, 0, true);
@@ -528,18 +552,24 @@ namespace TwitchInteraction
             }
         }
 
+        public static Boolean IsInitialised()
+        {
+            return initialised;
+        }
+
         public static void Initialise()
         {
             customTimerTexts = new List<CustomText>();
             actionQueueTexts = new List<KeyValuePair<string, CustomText>>();
             cooldownTexts = new List<KeyValuePair<string, CustomText>>();
-            redemptionTexts = new List<CustomText>();
             activeEffectsText = new CustomText("Active", float.MaxValue);
             activeEffectsText.SetSize(24);
             queueText = new CustomText("Queue", float.MaxValue);
             queueText.SetSize(24);
             cooldownText = new CustomText("Cooldowns", float.MaxValue);
             cooldownText.SetSize(24);
+
+            newEventsList = new ConcurrentQueue<KeyValuePair<string, KeyValuePair<string, int>>>();
 
             initialised = true;
 
