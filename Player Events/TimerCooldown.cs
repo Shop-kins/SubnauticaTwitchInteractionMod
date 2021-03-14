@@ -28,6 +28,7 @@ namespace TwitchInteraction
         private float yOffset;
 
         private bool isFadingOut;
+        private bool isVisible;
 
         private KeyValuePair<string, TimedEventInfo> timedEvent;
         private KeyValuePair<string, EventInfo> normalEvent;
@@ -114,6 +115,11 @@ namespace TwitchInteraction
             Update();
         }
 
+        public void SetVisible(bool visible)
+        {
+            isVisible = visible;
+        }
+
         public void SetSize(int textSize)
         {
             textText.fontSize = textSize;
@@ -121,6 +127,15 @@ namespace TwitchInteraction
 
         public void Update(int yOffset = 0)
         {
+            if (!isVisible)
+            {
+                startTime = Time.time;
+                textObject.active = false;
+            } else
+            {
+                textObject.active = true;
+            }
+
             this.yOffset = yOffset;
             AlignText();
 
@@ -134,7 +149,6 @@ namespace TwitchInteraction
                 isFadingOut = true;
             }
 
-            // TODO progress circle (as in fabricator) => thats what percentage is for
             if (progressIcon != null)
             {
                 progressIcon.SetProgress(percentage);
@@ -301,6 +315,7 @@ namespace TwitchInteraction
 
         private static List<KeyValuePair<string, CustomText>> actionQueueTexts;
         private static List<KeyValuePair<string, CustomText>> cooldownTexts;
+        private static List<CustomText> redemptionTexts;
 
         private static bool initialised = false;
 
@@ -369,6 +384,21 @@ namespace TwitchInteraction
                 queueText.Update(-((actionQueueTexts.Count - 1) * timerTextHeight + timerHeadingHeight));
             }
 
+            // Redemption messages
+            for (int i = 0; i < redemptionTexts.Count; i++)
+            {
+                redemptionTexts[i].SetVisible(i == 0);
+                redemptionTexts[i].Update(-((actionQueueTexts.Count + cooldownTexts.Count + customTimerTexts.Count + i) * timerTextHeight) - 6 * timerHeadingHeight);
+
+                if (redemptionTexts[i].IsFinished())
+                {
+                    redemptionTexts[i].Destroy();
+                    redemptionTexts.RemoveAt(i);
+                    i--;
+                }
+            }
+
+            // Active effects
             for (int i = 0; i < customTimerTexts.Count; i++)
             {
                 customTimerTexts[i].Update(-((actionQueueTexts.Count + cooldownTexts.Count + i) * timerTextHeight) - 4 * timerHeadingHeight);
@@ -395,6 +425,7 @@ namespace TwitchInteraction
                 }
             }
 
+            // Queue
             int j = 0;
             foreach (KeyValuePair<string, CustomText> actionQueueText in actionQueueTexts)
             {
@@ -407,6 +438,7 @@ namespace TwitchInteraction
                 }
             }
 
+            // Cooldown
             List<string> finishedCooldowns = new List<string>();
 
             int k = 0;
@@ -444,10 +476,24 @@ namespace TwitchInteraction
             cooldownTexts.Add(new KeyValuePair<string, CustomText>(text, cooldownText));
         }
 
-        public static void AddQueueText(string text)
+        public static void AddQueueText(string text, string User, int Bits = -1)
         {
             CustomText cooldownText = new CustomText(text, float.MaxValue);
             actionQueueTexts.Add(new KeyValuePair<string, CustomText>(text, cooldownText));
+
+            string redeptionMessage = "";
+            if (Bits == -1)
+            {
+                redeptionMessage = User + " has redeemed " + text + "!";
+            }
+            else
+            {
+                redeptionMessage = User + " has redeemed " + text + " using " + Bits + " bits!";
+            }
+
+            CustomText redemptionText = new CustomText(redeptionMessage, 5);
+            redemptionText.SetVisible(false);
+            redemptionTexts.Add(redemptionText);
         }
 
         public static void RemoveCooldownText(string text)
@@ -487,6 +533,7 @@ namespace TwitchInteraction
             customTimerTexts = new List<CustomText>();
             actionQueueTexts = new List<KeyValuePair<string, CustomText>>();
             cooldownTexts = new List<KeyValuePair<string, CustomText>>();
+            redemptionTexts = new List<CustomText>();
             activeEffectsText = new CustomText("Active", float.MaxValue);
             activeEffectsText.SetSize(24);
             queueText = new CustomText("Queue", float.MaxValue);
