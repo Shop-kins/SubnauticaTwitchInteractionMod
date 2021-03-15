@@ -6,6 +6,7 @@ using TwitchInteraction.Player_Events;
 using TwitchInteraction.Player_Events.Models;
 using UnityEngine;
 using UnityEngine.UI;
+using System.IO;
 
 namespace TwitchInteraction
 {
@@ -29,19 +30,20 @@ namespace TwitchInteraction
         private float yOffset;
 
         private bool isFadingOut;
+        private bool useGlobalTextWidth;
 
         private KeyValuePair<string, TimedEventInfo> timedEvent;
         private KeyValuePair<string, EventInfo> normalEvent;
         private bool hasTimedEvent = false;
 
-        private bool isVisible = true;
 
-        public CustomText(string text, float duration, int yOffset = 0, bool showProgress = false)
+        public CustomText(string text, float duration, int yOffset = 0, bool showProgress = false, bool useGlobalTextWidth = true)
         {
             this.duration = duration;
             this.yOffset = yOffset;
             startTime = Time.time;
             isFadingOut = false;
+            this.useGlobalTextWidth = useGlobalTextWidth;
 
             textObject = new GameObject("TwitchInteractionTimerCooldown");
             textText = textObject.AddComponent<Text>();
@@ -122,19 +124,10 @@ namespace TwitchInteraction
             textText.fontSize = textSize;
         }
 
-        public void SetVisible(bool visible) {
-            isVisible = visible;
-        }
-
         public void Update(int yOffset = 0)
         {
             this.yOffset = yOffset;
             AlignText();
-
-            if (!isVisible) {
-                // Stop the time for this element while it's not visible
-                startTime = Time.time;
-            }
 
             float elapsedTime = Time.time - startTime;
             float remainingSeconds = duration - elapsedTime;
@@ -270,7 +263,9 @@ namespace TwitchInteraction
             //float width = textText.preferredWidth;
             float width = getTextWidth();
 
-            float x = Screen.width / 2 - (Screen.width / 1920f * TimerCooldown.widestText) - TimerCooldown.timerHeadingHeight;
+            float widestText = useGlobalTextWidth ? TimerCooldown.widestText : getTextWidth();
+
+            float x = Screen.width / 2 - (Screen.width / 1920f * widestText) - TimerCooldown.timerHeadingHeight;
             float y = -Screen.height / 2 - yOffset + TimerCooldown.timerHeadingHeight;
 
             x *= scaleX;
@@ -318,7 +313,8 @@ namespace TwitchInteraction
         // Key: Event name, Value: Pair<User, BitCost>
         private static ConcurrentQueue<KeyValuePair<string, KeyValuePair<string, int>>> newEventsList; // Allow for events from threads other than the main Unity UI thread.
 
-        private static List<CustomText> redemptionTexts;
+        private static ConcurrentQueue<string> redemptionTexts;
+        private static CustomText currentRedemptionText;
 
         private static bool initialised = false;
 
@@ -391,16 +387,33 @@ namespace TwitchInteraction
             }
 
             // Redemption messages
-            for (int i = 0; i < redemptionTexts.Count; i++)
+            if (currentRedemptionText != null)
             {
-                redemptionTexts[i].SetVisible(i == 0);
-                redemptionTexts[i].Update(-((actionQueueTexts.Count + cooldownTexts.Count + customTimerTexts.Count + i) * timerTextHeight) - 6 * timerHeadingHeight);
+                currentRedemptionText.Update(-((actionQueueTexts.Count + cooldownTexts.Count + customTimerTexts.Count) * timerTextHeight) - 6 * timerHeadingHeight);
 
-                if (redemptionTexts[i].IsFinished())
+                if (currentRedemptionText.IsFinished())
                 {
-                    redemptionTexts[i].Destroy();
-                    redemptionTexts.RemoveAt(i);
-                    i--;
+                    currentRedemptionText.Destroy();
+                    currentRedemptionText = null;
+                    
+                }
+            }
+            if (currentRedemptionText == null)
+            {
+                string newRedemptionText;
+                if (redemptionTexts.TryDequeue(out newRedemptionText))
+                {
+                    currentRedemptionText = new CustomText(newRedemptionText, 5, 0, false, false);
+
+                    // Only do this in the main thread, to hopefully prevent errors
+                    if (MainPatcher.secrets.saveRedemptionMessages)
+                    {
+                        string filePath = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "redemptions.txt");
+                        using (StreamWriter sw = File.AppendText(filePath))
+                        {
+                            sw.WriteLine(newRedemptionText);
+                        }
+                    }
                 }
             }
 
@@ -505,19 +518,19 @@ namespace TwitchInteraction
             CustomText cooldownText = new CustomText(text, float.MaxValue);
             actionQueueTexts.Add(new KeyValuePair<string, CustomText>(text, cooldownText));
 
-            string redeptionMessage = "";
-            if (Bits == -1)
+            if (MainPatcher.secrets.showRedemptionMessages)
             {
-                redeptionMessage = User + " has redeemed " + text + "!";
+                string redeptionMessage = "";
+                if (Bits == -1)
+                {
+                    redeptionMessage = User + " has redeemed " + text + "!";
+                }
+                else
+                {
+                    redeptionMessage = User + " has redeemed " + text + " using " + Bits + " bits!";
+                }
+                redemptionTexts.Enqueue(redeptionMessage);
             }
-            else
-            {
-                redeptionMessage = User + " has redeemed " + text + " using " + Bits + " bits!";
-            }
-
-            CustomText redemptionText = new CustomText(redeptionMessage, 5);
-            redemptionText.SetVisible(false);
-            redemptionTexts.Add(redemptionText);
         }
 
         public static void RemoveCooldownText(string text)
@@ -570,6 +583,7 @@ namespace TwitchInteraction
             cooldownText.SetSize(24);
 
             newEventsList = new ConcurrentQueue<KeyValuePair<string, KeyValuePair<string, int>>>();
+            redemptionTexts = new ConcurrentQueue<string>();
 
             initialised = true;
 
