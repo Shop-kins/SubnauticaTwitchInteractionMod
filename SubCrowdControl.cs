@@ -12,7 +12,11 @@ public class Subnautica : SimpleTCPPack
 
     public Subnautica(IPlayer player, Func<CrowdControlBlock, bool> responseHandler, Action<object> statusUpdateHandler) : base(player, responseHandler, statusUpdateHandler) { }
 
+<<<<<<< HEAD
     public override Game Game => new Game(60, "Subnautica", "subnautica", "PC", ConnectorType.SimpleTCPConnector);
+=======
+    public override Game Game => new Game(91, "Subnautica", "Subnautica", "PC", ConnectorType.SimpleTCPConnector);
+>>>>>>> c53970f94c55dd9b9c3eb81ccde974343ff1ff01
 
     public override List<Effect> Effects => new List<Effect>
     {
@@ -40,6 +44,7 @@ public class Subnautica : SimpleTCPPack
         new Effect("Kill bad things", "kill_enemies"),
         new Effect("Go back home", "teleport_player_shallows"),
         new Effect("Crafted Roulette", "advanced_roulette"),
+<<<<<<< HEAD
         new Effect("Random Mouse Sensitivity", "random_mouse"),
         new Effect("Hide HUD", "hide_hud"),
         new Effect("Invert Controls", "invert_controls"),
@@ -47,5 +52,14 @@ public class Subnautica : SimpleTCPPack
         new Effect("Light? What is light?", "filmic_mode"),
         new Effect("Random FOV", "random_fov"),
         new Effect("What explosion?", "restore_ship")
+=======
+        new Effect("What explosion?", "restore_ship"),
+        new Effect("Random Mouse Sensitivity (15 seconds)", "random_mouse"),
+        new Effect("Hide HUD (60 seconds)", "hide_hud"),
+        new Effect("Invert Controls (60 seconds)", "invert_controls"),
+        new Effect("Disable Controls (10 seconds)", "disable_controls"),
+        new Effect("Light? What is light? (60 seconds)", "filmic_mode"),
+        new Effect("Random FOV (60 seconds)", "random_fov")
+>>>>>>> c53970f94c55dd9b9c3eb81ccde974343ff1ff01
     };
 }
