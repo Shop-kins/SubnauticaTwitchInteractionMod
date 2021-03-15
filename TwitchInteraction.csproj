@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -290,6 +290,7 @@
     <Compile Include="CrowdControl\CrowdControlClient.cs" />
     <Compile Include="Input\InputPatch.cs" />
     <Compile Include="Player Events\HUDHandler.cs" />
+    <Compile Include="Player Events\LiveMixinPatcher.cs" />
     <Compile Include="Player Events\Models\EventInfo.cs" />
     <Compile Include="Player Events\EventLookup.cs" />
     <Compile Include="Player Events\FunZone.cs" />

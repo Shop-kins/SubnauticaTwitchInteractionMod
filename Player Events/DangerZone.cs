@@ -118,5 +118,15 @@ namespace TwitchInteraction.Player_Events
             EscapePod.main.transform.position = spawnPosition;
             EscapePod.main.anchorPosition = spawnPosition;
         }
+
+        public static void ActivateOHKO()
+        {
+            OneHitKnockout.active = true;
+        }
+
+        public static void DeactiveOHKO()
+        {
+            OneHitKnockout.active = false;
+        }
     }
 }
