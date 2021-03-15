@@ -6,9 +6,6 @@ using TwitchLib.PubSub;
 using System;
 using HarmonyLib;
 using System.Threading;
-<<<<<<< HEAD
-using System.Collections.Generic;
-using TwitchInteraction.Player_Events;
 
 namespace TwitchInteraction
 {
@@ -33,49 +30,15 @@ namespace TwitchInteraction
 
             // Customize event configuration
             EventLookup.ConfigureEventCost(secrets.eventConfigList);
-=======
-
-namespace TwitchInteraction
-{
-    [QModCore]
-    public class MainPatcher
-    {
-        public static TwitchChatClient otherclient;
-        public static TwitchPubSubClient otherpubsub;
-        public static Channel TextChannel;
-        public static Channel PubSubChannel;
-        public static System.Threading.CancellationToken cts;
-        public static System.Threading.CancellationToken cts2;
-        public static Api api;
-        public static Secrets secrets;
-
-        internal static Assembly myAssembly = Assembly.GetExecutingAssembly();
-
-        [QModPatch]
-        public static void Patch()
-        {
-            secrets = new Secrets();
-
-            // Customize event configuration
-            EventLookup.ConfigureEventCost(secrets.eventConfigList);
->>>>>>> c53970f94c55dd9b9c3eb81ccde974343ff1ff01
 
             if (secrets.client == "crowdcontrol")
             {
                 Console.WriteLine("CrowdControl client active");
                 StartCrowdControlServer();
 
-<<<<<<< HEAD
-            } else {              
-                Console.WriteLine("Twitch client active");
-                // Customize the bit costs (if present)
-                
-
-=======
             } else {
 
                 Console.WriteLine("Twitch client active");
->>>>>>> c53970f94c55dd9b9c3eb81ccde974343ff1ff01
                 //StartTwitchChatClient(); Turned off cause the ping pong doesnt work and when it disconnects it crashes the game
                 StartTwitchPubSubClient();
             }
@@ -102,21 +65,6 @@ namespace TwitchInteraction
         }
 		
         private static void StartCrowdControlServer()
-<<<<<<< HEAD
-		{
-            // https://codereview.stackexchange.com/questions/24758/tcp-async-socket-server-client-communication
-            var client = new CrowdControlClient();
-            // Setup handlers
-
-            client.Connected += new ConnectedHandler(CrowdControlEventManager.ClientConnected);
-            client.MessageReceived += new ClientMessageReceivedHandler(CrowdControlEventManager.ClientMessageReceived);
-            client.MessageSubmitted += new ClientMessageSubmittedHandler(CrowdControlEventManager.ClientMessageSent);
-            client.StartClient();
-            //new Thread(new ThreadStart(client.StartClient)).Start();
-        }
-    }
-}
-=======
 	{
             var client = new CrowdControlClient();
 
@@ -129,4 +77,3 @@ namespace TwitchInteraction
         }
     }
 }
->>>>>>> c53970f94c55dd9b9c3eb81ccde974343ff1ff01
