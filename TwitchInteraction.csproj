@@ -287,6 +287,7 @@
   <ItemGroup>
     <Compile Include="Input\InputPatch.cs" />
     <Compile Include="Player Events\HUDHandler.cs" />
+	<Compile Include="Player Events\LiveMixinPatcher.cs" />
     <Compile Include="Player Events\Models\EventInfo.cs" />
     <Compile Include="Player Events\EventLookup.cs" />
     <Compile Include="Player Events\FunZone.cs" />
