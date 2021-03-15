@@ -6,6 +6,7 @@ using TwitchLib.PubSub;
 using System;
 using HarmonyLib;
 using System.Threading;
+using TwitchInteraction.Player_Events;
 
 namespace TwitchInteraction
 {
