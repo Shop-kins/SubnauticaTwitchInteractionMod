@@ -6,6 +6,8 @@
 	"username_id": "Id of your account",
 	"username": "name of your account",
 	"bot_name": "name of the account using chat",
+	"show_redemption_messages": "true if you want redemption messages to be shown, false if not",
+	"save_redemption_messages": "true if you want redemptions to be saved to a file in the mod folder, false if not",
 	"events": [
         { "event": "Rip Riley [Integration]", "bit_cost": 500, "cooldown": 60 },
 		{ "event": "Heal Riley [Integration]", "bit_cost": 50, "cooldown": 15 },
