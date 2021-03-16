@@ -12,7 +12,7 @@ namespace TwitchInteraction.Player_Events
     internal class LiveMixin_TakeDamage_Patch
     {
         [HarmonyPrefix]
-        static bool Prefix(ref LiveMixin __instance, ref bool __result)
+        static bool Prefix(LiveMixin __instance, ref bool __result)
         {
             if((Object)__instance.gameObject.GetComponent<Player>() == (Object)null)
             {
