@@ -42,7 +42,8 @@ namespace TwitchInteraction
             { "disable_controls", "Disable Controls [Integration]" },
             { "filmic_mode", "Light? What is light? [Integration]" },
             { "random_fov", "Random FOV [Integration]" },
-            { "restore_ship", "What explosion? [Integration]"  }
+            { "restore_ship", "What explosion? [Integration]"  },
+            { "ohko", "Be careful Riley [Integration]" }
         };
 
         internal static void MessageReceived(int sender, string message)

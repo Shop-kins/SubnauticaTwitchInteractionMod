@@ -37,6 +37,7 @@
         { "event": "Disable Controls [Integration]", "bit_cost": 200, "cooldown": 60 },
         { "event": "Light? What is light? [Integration]", "bit_cost": 100, "cooldown": 60 },
         { "event": "Random FOV [Integration]", "bit_cost": 1000, "cooldown": 60 },
-        { "event": "What explosion? [Integration]", "bit_cost": 30, "cooldown": 30 }	
+        { "event": "What explosion? [Integration]", "bit_cost": 30, "cooldown": 30 },
+		{ "event": "Be careful Riley [Integration]", "bit_cost": 500, "cooldown": 60 }
 	]	
 }
