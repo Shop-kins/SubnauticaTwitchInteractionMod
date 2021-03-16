@@ -76,7 +76,7 @@ namespace TwitchInteraction
                 {
                     try
                     {
-                        EventLookup.Lookup(eventName);
+                        EventLookup.Lookup(eventName, request.Viewer);
                     }
                     catch (Exception)
                     {

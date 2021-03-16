@@ -69,16 +69,16 @@ namespace TwitchInteraction.Player_Events
             return message;
         }
 
-        public static void Lookup(string EventText)
+        public static void Lookup(string EventText, string User)
         {
             if (EventDictionary.Keys.Contains(EventText))
             {
                 ActionQueue.Add(new KeyValuePair<string, EventInfo>(EventText, EventDictionary[EventText]));
-                TimerCooldown.AddNewEventText(EventText);
+                TimerCooldown.AddNewEventText(EventText, User);
             }
         }
 
-        public static void Lookup(string EventText, int bits)
+        public static void Lookup(string EventText, string User, int bits)
         {
             KeyValuePair<string, EventInfo> Event = EventDictionary.FirstOrDefault(it => EventText.Contains(it.Key));
             Console.WriteLine(Event.Key);
@@ -86,7 +86,7 @@ namespace TwitchInteraction.Player_Events
             {
                 Console.WriteLine(Event.Key);
                 ActionQueue.Add(Event);
-                TimerCooldown.AddNewEventText(EventText);
+                TimerCooldown.AddNewEventText(Event.Key, User, bits);
             }
 
         }

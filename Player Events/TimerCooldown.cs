@@ -6,6 +6,7 @@ using TwitchInteraction.Player_Events;
 using TwitchInteraction.Player_Events.Models;
 using UnityEngine;
 using UnityEngine.UI;
+using System.IO;
 
 namespace TwitchInteraction
 {
@@ -29,17 +30,20 @@ namespace TwitchInteraction
         private float yOffset;
 
         private bool isFadingOut;
+        private bool useGlobalTextWidth;
 
         private KeyValuePair<string, TimedEventInfo> timedEvent;
         private KeyValuePair<string, EventInfo> normalEvent;
         private bool hasTimedEvent = false;
 
-        public CustomText(string text, float duration, int yOffset = 0, bool showProgress = false)
+
+        public CustomText(string text, float duration, int yOffset = 0, bool showProgress = false, bool useGlobalTextWidth = true)
         {
             this.duration = duration;
             this.yOffset = yOffset;
             startTime = Time.time;
             isFadingOut = false;
+            this.useGlobalTextWidth = useGlobalTextWidth;
 
             textObject = new GameObject("TwitchInteractionTimerCooldown");
             textText = textObject.AddComponent<Text>();
@@ -259,7 +263,9 @@ namespace TwitchInteraction
             //float width = textText.preferredWidth;
             float width = getTextWidth();
 
-            float x = Screen.width / 2 - (Screen.width / 1920f * TimerCooldown.widestText) - TimerCooldown.timerHeadingHeight;
+            float widestText = useGlobalTextWidth ? TimerCooldown.widestText : getTextWidth();
+
+            float x = Screen.width / 2 - (Screen.width / 1920f * widestText) - TimerCooldown.timerHeadingHeight;
             float y = -Screen.height / 2 - yOffset + TimerCooldown.timerHeadingHeight;
 
             x *= scaleX;
@@ -304,7 +310,11 @@ namespace TwitchInteraction
 
         private static List<KeyValuePair<string, CustomText>> actionQueueTexts;
         private static List<KeyValuePair<string, CustomText>> cooldownTexts;
-        private static ConcurrentQueue<string> newEventsList; // Allow for events from threads other than the main Unity UI thread.
+        // Key: Event name, Value: Pair<User, BitCost>
+        private static ConcurrentQueue<KeyValuePair<string, KeyValuePair<string, int>>> newEventsList; // Allow for events from threads other than the main Unity UI thread.
+
+        private static ConcurrentQueue<string> redemptionTexts;
+        private static CustomText currentRedemptionText;
 
         private static bool initialised = false;
 
@@ -376,6 +386,38 @@ namespace TwitchInteraction
                 queueText.Update(-((actionQueueTexts.Count - 1) * timerTextHeight + timerHeadingHeight));
             }
 
+            // Redemption messages
+            if (currentRedemptionText != null)
+            {
+                currentRedemptionText.Update(-((actionQueueTexts.Count + cooldownTexts.Count + customTimerTexts.Count) * timerTextHeight) - 6 * timerHeadingHeight);
+
+                if (currentRedemptionText.IsFinished())
+                {
+                    currentRedemptionText.Destroy();
+                    currentRedemptionText = null;
+                    
+                }
+            }
+            if (currentRedemptionText == null)
+            {
+                string newRedemptionText;
+                if (redemptionTexts.TryDequeue(out newRedemptionText))
+                {
+                    currentRedemptionText = new CustomText(newRedemptionText, 5, 0, false, false);
+
+                    // Only do this in the main thread, to hopefully prevent errors
+                    if (MainPatcher.secrets.saveRedemptionMessages)
+                    {
+                        string filePath = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "redemptions.txt");
+                        using (StreamWriter sw = File.AppendText(filePath))
+                        {
+                            sw.WriteLine(newRedemptionText);
+                        }
+                    }
+                }
+            }
+
+            // Active effects
             for (int i = 0; i < customTimerTexts.Count; i++)
             {
                 customTimerTexts[i].Update(-((actionQueueTexts.Count + cooldownTexts.Count + i) * timerTextHeight) - 4 * timerHeadingHeight);
@@ -402,6 +444,7 @@ namespace TwitchInteraction
                 }
             }
 
+            // Queue
             int j = 0;
             foreach (KeyValuePair<string, CustomText> actionQueueText in actionQueueTexts)
             {
@@ -414,6 +457,7 @@ namespace TwitchInteraction
                 }
             }
 
+            // Cooldown
             List<string> finishedCooldowns = new List<string>();
 
             int k = 0;
@@ -446,19 +490,20 @@ namespace TwitchInteraction
 
         private static void CreateNewText()
         {
-            string eventName;
-            while(newEventsList.TryDequeue(out eventName))
+            KeyValuePair<string, KeyValuePair<string, int>> eventInfo;
+            while(newEventsList.TryDequeue(out eventInfo))
             {
-                AddQueueText(eventName);
+                AddQueueText(eventInfo.Key, eventInfo.Value.Key, eventInfo.Value.Value);
             }
         }
 
         /**
          * This is necessary with CC because events come in off of the main thread, and we cannot create UI elements.
          */
-        public static void AddNewEventText(string text)
+        public static void AddNewEventText(string text, string user, int bits = -1)
         {
-            newEventsList.Enqueue(text);
+            KeyValuePair<string, int> userBitPair = new KeyValuePair<string, int>(user, bits);
+            newEventsList.Enqueue(new KeyValuePair<string, KeyValuePair<string, int>>(text, userBitPair));
         }
 
         public static void AddCooldownText(string text, float duration, EventInfo eventInfo)
@@ -468,10 +513,24 @@ namespace TwitchInteraction
             cooldownTexts.Add(new KeyValuePair<string, CustomText>(text, cooldownText));
         }
 
-        private static void AddQueueText(string text)
+        public static void AddQueueText(string text, string User, int Bits = -1)
         {
             CustomText cooldownText = new CustomText(text, float.MaxValue);
             actionQueueTexts.Add(new KeyValuePair<string, CustomText>(text, cooldownText));
+
+            if (MainPatcher.secrets.showRedemptionMessages)
+            {
+                string redeptionMessage = "";
+                if (Bits == -1)
+                {
+                    redeptionMessage = User + " has redeemed " + text + "!";
+                }
+                else
+                {
+                    redeptionMessage = User + " has redeemed " + text + " using " + Bits + " bits!";
+                }
+                redemptionTexts.Enqueue(redeptionMessage);
+            }
         }
 
         public static void RemoveCooldownText(string text)
@@ -523,7 +582,8 @@ namespace TwitchInteraction
             cooldownText = new CustomText("Cooldowns", float.MaxValue);
             cooldownText.SetSize(24);
 
-            newEventsList = new ConcurrentQueue<string>();
+            newEventsList = new ConcurrentQueue<KeyValuePair<string, KeyValuePair<string, int>>>();
+            redemptionTexts = new ConcurrentQueue<string>();
 
             initialised = true;
 
