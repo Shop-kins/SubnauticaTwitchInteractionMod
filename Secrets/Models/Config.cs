@@ -30,6 +30,12 @@ namespace TwitchInteraction
         [JsonPropertyName("bot_name")]
         public string BotName { get; set; }
 
+        [JsonPropertyName("show_redemption_messages")]
+        public bool ShowRedemptionMessages { get; set; }
+
+        [JsonPropertyName("save_redemption_messages")]
+        public bool SaveRedemptionMessages { get; set; }
+
         [JsonPropertyName("events")]
         public List<ConfigEventInfo> EventInfoList { get; set; }
     }

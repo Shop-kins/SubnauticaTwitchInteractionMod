@@ -20,6 +20,8 @@ namespace TwitchInteraction
         public string nick_id;
         public string username;
         public string botname;
+        public bool showRedemptionMessages;
+        public bool saveRedemptionMessages;
 
         public List<ConfigEventInfo> eventConfigList = new List<ConfigEventInfo>();
 
@@ -40,7 +42,8 @@ namespace TwitchInteraction
             nick_id = config.UsernameId;
             username = config.Username;
             botname = config.BotName;
-
+            showRedemptionMessages = config.ShowRedemptionMessages;
+            saveRedemptionMessages = config.SaveRedemptionMessages;
             if (config.EventInfoList != null)
             {
                 eventConfigList = config.EventInfoList;
