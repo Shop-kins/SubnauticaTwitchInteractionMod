@@ -78,6 +78,11 @@ namespace TwitchInteraction.Player_Events
             }
         }
 
+        public static Boolean IsRunningOrCooldown(string Key)
+        {
+            return (RunningEventIDs.Contains(Key) || Cooldowns.ContainsKey(Key));
+        }
+
         public static void Lookup(string EventText, string User, int bits)
         {
             KeyValuePair<string, EventInfo> Event = EventDictionary.FirstOrDefault(it => EventText.Contains(it.Key));
