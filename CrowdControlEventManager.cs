@@ -72,11 +72,30 @@ namespace TwitchInteraction
                 var eventName = EventNameDict[request.Code];
                 var status = 0;
 
+                if (request.Id == 0 && request.Type == 255)
+                {
+                    // Test message, ignore
+                    return;
+                }
+
                 if (TimerCooldown.IsInitialised())
                 {
                     try
                     {
-                        EventLookup.Lookup(eventName, request.Viewer);
+                        // Check to see if the event can fire currently fire, or is on cooldown.
+                        if (!EventLookup.IsRunningOrCooldown(eventName))
+                        {
+                            // Not running or on cooldown, activate it if the type is "start"
+                            if (request.Type == 1)
+                            {
+                                EventLookup.Lookup(eventName, request.Viewer);
+                            }                            
+                        }
+                        else
+                        {
+                            // Event in use, retry.
+                            status = 3;
+                        }
                     }
                     catch (Exception)
                     {
