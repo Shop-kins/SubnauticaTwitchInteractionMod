@@ -254,10 +254,7 @@ namespace TwitchInteraction.Player_Events
 
         public static void returnToShallows()
         {
-            Vector3 spawnPos = RandomStart.main.GetRandomStartPoint();
-            spawnPos.y = -2;
-            Player.main.SetPosition(spawnPos);
-
+            EscapePod.main.RespawnPlayer();
         }
 
         public static void InvertControls()
