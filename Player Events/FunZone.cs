@@ -125,7 +125,9 @@ namespace TwitchInteraction.Player_Events
             if (CraftData.IsAllowed(blueprintTech[randomNum]) && KnownTech.Add(blueprintTech[randomNum], true))
             {
                 ErrorMessage.AddDebug("Unlocked " + Language.main.Get(blueprintTech[randomNum].AsString(false)));
+                return;
             }
+            CraftData.AddToInventory(TechType.Titanium, 2);
         }
 
         public static void randomItem()
