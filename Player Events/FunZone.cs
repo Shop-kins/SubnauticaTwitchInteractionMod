@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
+using UWE;
 
 namespace TwitchInteraction.Player_Events
 {
@@ -258,6 +260,13 @@ namespace TwitchInteraction.Player_Events
 
         public static void returnToShallows()
         {
+            CoroutineHost.StartCoroutine(ReturnToShallowsAsync());
+        }
+        
+        private static IEnumerator ReturnToShallowsAsync()
+        {
+            yield return new WaitUntil(() => !Player.main.isPiloting && !Player.main.cinematicModeActive);
+            
             EscapePod.main.RespawnPlayer();
         }
 
