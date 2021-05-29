@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
+using UWE;
 
 namespace TwitchInteraction.Player_Events
 {
@@ -126,14 +128,18 @@ namespace TwitchInteraction.Player_Events
             {
                 ErrorMessage.AddDebug("Unlocked " + Language.main.Get(blueprintTech[randomNum].AsString(false)));
             }
+            else
+                CraftData.AddToInventory(TechType.Titanium, 2);
         }
 
         public static void randomItem()
         {
             System.Random random = new System.Random();
-            string[] resources = { "acidmushroom", "seatreaderpoop", "bloodoil", "coralchunk", "crashpowder", "copper", "creepvinepiece", "creepvineseedcluster", "sulphur", "whitemushroom", "diamond", "treemushroompiece", "gaspod", "jellyplant", "gold", "kyanite", "lead", "lithium", "magnetite", "scrapmetal", "nickel", "pinkmushroom", "quartz", "aluminumoxide", "salt", "silver", "smallmelon", "purplerattle", "stalkertooth", "jeweleddiskpiece", "titanium", "uraninitecrystal" };
-
-            DevConsole.SendConsoleCommand("item " + resources[random.Next(resources.Length)]);
+            TechType[] resources = { TechType.AcidMushroom, TechType.SeaTreaderPoop, TechType.BloodOil, TechType.CoralChunk, TechType.CrashPowder, TechType.Copper, TechType.CreepvinePiece, TechType.CreepvineSeedCluster, TechType.Sulphur, TechType.WhiteMushroom, TechType.Diamond, TechType.TreeMushroomPiece, TechType.GasPod, TechType.JellyPlant, TechType.Gold, TechType.Kyanite, TechType.Lead, TechType.Lithium, TechType.Magnetite, TechType.ScrapMetal, TechType.Nickel, TechType.PinkMushroom, TechType.Quartz, TechType.AluminumOxide, TechType.Salt, TechType.Silver, TechType.SmallMelon, TechType.PurpleRattle, TechType.StalkerTooth, TechType.JeweledDiskPiece, TechType.Titanium, TechType.UraniniteCrystal };
+            
+            var pickupable = CraftData.InstantiateFromPrefab(resources[random.Next(resources.Length)]).GetComponent<Pickupable>();
+            if (pickupable != null)
+                Inventory.main.ForcePickup(pickupable);
         }
 
         public static void randomAdvancedResources()
@@ -254,6 +260,13 @@ namespace TwitchInteraction.Player_Events
 
         public static void returnToShallows()
         {
+            CoroutineHost.StartCoroutine(ReturnToShallowsAsync());
+        }
+        
+        private static IEnumerator ReturnToShallowsAsync()
+        {
+            yield return new WaitUntil(() => !Player.main.isPiloting && !Player.main.cinematicModeActive);
+            
             EscapePod.main.RespawnPlayer();
         }
 
