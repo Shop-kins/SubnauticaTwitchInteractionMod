@@ -174,12 +174,7 @@ namespace TwitchInteraction.Player_Events
             initialFOV = MiscSettings.fieldOfView;
 
 
-            // this is bad
-            // i did it because atto said to
-            // blame him
-            // it works tho
-            // the weird random number thing that is 
-            // I completely agree with doing random fov
+            //This is a kinda janky method of grabbing a random fov outside of the typically playable fovs
             System.Random random = new System.Random();
 
             int lowRandNum = random.Next(5, 45);

@@ -98,7 +98,7 @@ namespace TwitchInteraction.Player_Events
             }
             
             // queue the teleport until the player is not dead and not in a cinematic and not piloting and the game is not paused.
-            yield return new WaitUntil(() => Player.main.IsAlive() && !Player.main.cinematicModeActive && !Player.main.isPiloting && Time.timeScale > 0f);
+            yield return new WaitUntil(() => Player.main.liveMixin.IsAlive() && !Player.main.cinematicModeActive && !Player.main.isPiloting && Time.timeScale > 0f);
 
             Player.main.SetPosition(newPositionData.position);
             Player.main.OnPlayerPositionCheat();
