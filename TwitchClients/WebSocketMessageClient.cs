@@ -64,16 +64,14 @@ namespace TwitchInteraction
             {
                 try
                 {
-                    var message = await ReceiveMessageAsync(cancellationToken);
+                    string message = await ReceiveMessageAsync(cancellationToken);
                     MessageReceived?.Invoke(this, message);
                 }
                 catch (WebSocketException)
                 {
-                    if (_webSocketClient.State != WebSocketState.Open)
-                    {
-                        ConnectionClosed?.Invoke(this, null);
-                        return;
-                    }
+                    _webSocketClient.Abort();
+                    ConnectionClosed?.Invoke(this, null);
+                    return;
                 }
             }
         }

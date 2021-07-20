@@ -17,11 +17,11 @@ namespace TwitchInteraction
         {
             if (e.Host == ChannelPointsHost())
             {
-                EventLookup.Lookup(e.Text);
+                EventLookup.Lookup(e.Text, e.User);
             }
             if (e.Host == BitsHost())
             {
-                EventLookup.Lookup(e.Text, Int32.Parse(e.Text.Split(':')[0]));
+                EventLookup.Lookup(e.Text, e.User, Int32.Parse(e.Text.Split(':')[0]));
             }
         }
 

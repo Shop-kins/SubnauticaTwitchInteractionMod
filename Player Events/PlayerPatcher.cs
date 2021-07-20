@@ -34,13 +34,12 @@ namespace TwitchInteraction.Player_Events
                     for (int i = 0; i < EventLookup.ActionQueue.Count; i++)
                     {
                         KeyValuePair<string, EventInfo> keyValuePair = EventLookup.ActionQueue[i];
-                        if (EventLookup.RunningEventIDs.Contains(keyValuePair.Key) || EventLookup.Cooldowns.ContainsKey(keyValuePair.Key))
+                        if (!EventLookup.IsRunningOrCooldown(keyValuePair.Key))
                         {
-                            continue;
+                            // Safe to use, doesnt have cooldown / is currently in use
+                            localEventInfo = keyValuePair;
+                            eventIndex = i;
                         }
-                        // Safe to use, doesnt have cooldown / is currently in use
-                        localEventInfo = keyValuePair;
-                        eventIndex = i;
                     }
 
                     if (eventIndex >= 0)
