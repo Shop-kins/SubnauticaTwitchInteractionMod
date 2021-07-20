@@ -6,6 +6,7 @@ using TwitchLib.PubSub;
 using System;
 using HarmonyLib;
 using System.Threading;
+using TwitchInteraction.Player_Events;
 
 namespace TwitchInteraction
 {
@@ -27,6 +28,9 @@ namespace TwitchInteraction
         public static void Patch()
         {
             secrets = new Secrets();
+
+            // Customize event configuration
+            EventLookup.ConfigureEventCost(secrets.eventConfigList);
 
             if (secrets.client == "crowdcontrol")
             {
@@ -62,16 +66,15 @@ namespace TwitchInteraction
         }
 		
         private static void StartCrowdControlServer()
-		{
-            // https://codereview.stackexchange.com/questions/24758/tcp-async-socket-server-client-communication
+	{
             var client = new CrowdControlClient();
-            // Setup handlers
 
+            // Setup handlers
             client.Connected += new ConnectedHandler(CrowdControlEventManager.ClientConnected);
             client.MessageReceived += new ClientMessageReceivedHandler(CrowdControlEventManager.ClientMessageReceived);
             client.MessageSubmitted += new ClientMessageSubmittedHandler(CrowdControlEventManager.ClientMessageSent);
+
             client.StartClient();
-            //new Thread(new ThreadStart(client.StartClient)).Start();
         }
     }
 }

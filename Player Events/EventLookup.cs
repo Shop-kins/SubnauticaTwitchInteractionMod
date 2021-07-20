@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using TwitchInteraction.Player_Events.Models;
-using System.Collections.Concurrent;
 
 namespace TwitchInteraction.Player_Events
 {
@@ -48,6 +47,7 @@ namespace TwitchInteraction.Player_Events
             { "Kill bad things [Integration]", new EventInfo(FunZone.killBadThings, 150, 60) },
             { "Go back home [Integration]", new EventInfo(FunZone.returnToShallows, 150, 180) },
             { "Crafted Roulette [Integration]", new EventInfo(FunZone.randomAdvancedResources, 60, 30) },
+            { "What explosion? [Integration]", new EventInfo(FunZone.RestoreCrashedShip, 30, 30) },
             // Parameter: ID, Action, BitCost, CooldownSeconds, TimedAction (Cleanup), TimerDuration
             { "Random Mouse Sensitivity [Integration]", new TimedEventInfo(FunZone.RandomMouseSens, 200, 60, FunZone.CleanupRandomMouseSens, 15) },
             { "Hide HUD [Integration]", new TimedEventInfo(FunZone.hideHUD, 50, 60, FunZone.showHUD, 60) },
@@ -55,7 +55,7 @@ namespace TwitchInteraction.Player_Events
             { "Disable Controls [Integration]", new TimedEventInfo(FunZone.DisableControls, 200, 60, FunZone.EnableControls, 10) },
             { "Light? What is light? [Integration]", new TimedEventInfo(FunZone.EnableFilmicMode, 100, 60, FunZone.DisableFilmicMode, 60) },
             { "Random FOV [Integration]", new TimedEventInfo(FunZone.fovRandom, 1000, 60, FunZone.fovNormal, 60) },
-            { "What explosion? [Integration]", new EventInfo(FunZone.RestoreCrashedShip, 30, 30) }
+            { "Be careful Riley [Integration]", new TimedEventInfo(DangerZone.ActivateOHKO, 500, 60, DangerZone.DeactiveOHKO, 60) }
         };
 
         public static string getBitCosts()
@@ -69,16 +69,21 @@ namespace TwitchInteraction.Player_Events
             return message;
         }
 
-        public static void Lookup(string EventText)
+        public static void Lookup(string EventText, string User)
         {
             if (EventDictionary.Keys.Contains(EventText))
             {
                 ActionQueue.Add(new KeyValuePair<string, EventInfo>(EventText, EventDictionary[EventText]));
-                TimerCooldown.AddNewEventText(EventText);
+                TimerCooldown.AddNewEventText(EventText, User);
             }
         }
 
-        public static void Lookup(string EventText, int bits)
+        public static Boolean IsRunningOrCooldown(string Key)
+        {
+            return (RunningEventIDs.Contains(Key) || Cooldowns.ContainsKey(Key));
+        }
+
+        public static void Lookup(string EventText, string User, int bits)
         {
             KeyValuePair<string, EventInfo> Event = EventDictionary.FirstOrDefault(it => EventText.Contains(it.Key));
             Console.WriteLine(Event.Key);
@@ -86,10 +91,22 @@ namespace TwitchInteraction.Player_Events
             {
                 Console.WriteLine(Event.Key);
                 ActionQueue.Add(Event);
-                TimerCooldown.AddNewEventText(EventText);
+                TimerCooldown.AddNewEventText(Event.Key, User, bits);
             }
 
         }
 
+        public static void ConfigureEventCost(List<ConfigEventInfo> configInfo)
+        {
+            foreach (ConfigEventInfo i in configInfo)
+            {
+                if (EventDictionary.Keys.Contains(i.EventName))
+                {
+                    EventDictionary[i.EventName].BitCost = i.BitCost;
+                    EventDictionary[i.EventName].CooldownSeconds = i.Cooldown;
+                    Console.WriteLine("Updating " + i.EventName + " to cost " + i.BitCost + " with a cooldown of " + i.Cooldown);
+                }
+            }
+        }
     }
 }

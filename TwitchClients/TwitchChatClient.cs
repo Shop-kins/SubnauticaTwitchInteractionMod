@@ -36,16 +36,19 @@ namespace TwitchInteraction
         /// </summary>
         /// <param name="sender">IMessageClient</param>
         /// <param name="e">Raw message</param>
-        private void OnRawMessageReceived(object sender, string e)
+        private async void OnRawMessageReceived(object sender, string e)
         {
             // About once every five minutes, the server sends a PING.
             // To ensure that your connection to the server is not prematurely terminated, reply with PONG
             if (e.StartsWith("PING"))
-                SendPongResponseAsync().Wait();
-
-            if (_parser.TryParsePrivateMessage(e, out var message))
             {
-                var c = _channels.FirstOrDefault(d => d.Name == message.Channel);
+                await SendPongResponseAsync();
+                return;
+            }
+
+            if (_parser.TryParsePrivateMessage(e, out Message message))
+            {
+                Channel c = _channels.FirstOrDefault(d => d.Name == message.Channel);
                 c?.ReceiveMessage(message);
             }
         }
