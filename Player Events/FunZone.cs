@@ -476,8 +476,6 @@ namespace TwitchInteraction.Player_Events
 
         public static void EnableSonicMode()
         {
-            //Player.main.GetComponent<UnderwaterMotor>().debugSpeedMult = 1000f;
-            //Player.main.GetComponent<UnderwaterMotor>().swimDrag = 0f;
             PlayerMotor waterController = Player.main.playerController.underWaterController;
             waterController.swimDrag = 0.75f;
             waterController.forwardMaxSpeed = 50f;
@@ -490,8 +488,6 @@ namespace TwitchInteraction.Player_Events
 
         public static void DisableFastMode()
         {
-            //Player.main.GetComponent<UnderwaterMotor>().debugSpeedMult = 1f;
-            //Player.main.GetComponent<UnderwaterMotor>().swimDrag = 2.5f;
             PlayerMotor waterController = Player.main.playerController.underWaterController;
             waterController.debugSpeedMult = 1f;
             waterController.swimDrag = 2.5f;
