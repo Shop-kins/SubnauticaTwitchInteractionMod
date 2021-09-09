@@ -473,6 +473,31 @@ namespace TwitchInteraction.Player_Events
         {
             DevConsole.SendConsoleCommand("restoreship");
         }
+
+        public static void EnableSonicMode()
+        {
+            PlayerMotor waterController = Player.main.playerController.underWaterController;
+            waterController.swimDrag = 0.75f;
+            waterController.forwardMaxSpeed = 50f;
+
+            PlayerMotor groundController = Player.main.playerController.groundController;
+            groundController.forwardMaxSpeed = 35f;
+
+            FastMovement.Active = true;
+        }
+
+        public static void DisableFastMode()
+        {
+            PlayerMotor waterController = Player.main.playerController.underWaterController;
+            waterController.debugSpeedMult = 1f;
+            waterController.swimDrag = 2.5f;
+            waterController.forwardMaxSpeed = 5f;
+
+            PlayerMotor groundController = Player.main.playerController.groundController;
+            groundController.forwardMaxSpeed = 3.5f;
+
+            FastMovement.Active = false;
+        }
     }
 }
 
