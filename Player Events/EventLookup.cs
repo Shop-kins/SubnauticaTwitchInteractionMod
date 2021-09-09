@@ -85,7 +85,7 @@ namespace TwitchInteraction.Player_Events
 
         public static void Lookup(string EventText, string User, int bits)
         {
-            KeyValuePair<string, EventInfo> Event = EventDictionary.FirstOrDefault(it => EventText.Contains(it.Key));
+            KeyValuePair<string, EventInfo> Event = EventDictionary.FirstOrDefault(it => EventText.IndexOf(it.Key, StringComparison.OrdinalIgnoreCase) >= 0);
             Console.WriteLine(Event.Key);
             if (!Event.Equals(default(KeyValuePair<string, EventInfo>)) && bits >= Event.Value.BitCost)
             {
