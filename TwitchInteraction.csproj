@@ -48,43 +48,22 @@
     <Reference Include="Assembly-CSharp_publicized">
       <HintPath>packages\publicized_assemblies\Assembly-CSharp.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>C:\Games\SteamLibrary\steamapps\common\Subnautica\QMods\TwitchInteraction\dependencies\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
-    </Reference>
     <Reference Include="netstandard, Version=2.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Games\SteamLibrary\steamapps\common\Subnautica\QMods\TwitchInteraction\dependencies\netstandard.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>C:\Games\SteamLibrary\steamapps\common\Subnautica\Subnautica_Data\Managed\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="QModInstaller">
       <HintPath>C:\Games\SteamLibrary\steamapps\common\Subnautica\BepInEx\plugins\QModManager\QModInstaller.dll</HintPath>
     </Reference>
+    <Reference Include="SMLHelper">
+      <HintPath>C:\Games\SteamLibrary\steamapps\common\Subnautica\QMods\Modding Helper\SMLHelper.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
-    </Reference>
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Numerics" />
-    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>C:\Games\SteamLibrary\steamapps\common\Subnautica\QMods\TwitchInteraction\dependencies\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Text.Encodings.Web, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>C:\Games\SteamLibrary\steamapps\common\Subnautica\QMods\TwitchInteraction\dependencies\System.Text.Encodings.Web.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Text.Json, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>C:\Games\SteamLibrary\steamapps\common\Subnautica\QMods\TwitchInteraction\dependencies\System.Text.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>C:\Games\SteamLibrary\steamapps\common\Subnautica\QMods\TwitchInteraction\dependencies\System.Threading.Tasks.Extensions.dll</HintPath>
-    </Reference>
-    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
-    </Reference>
     <Reference Include="TwitchLib.Api">
       <HintPath>C:\Games\SteamLibrary\steamapps\common\Subnautica\QMods\TwitchInteraction\dependencies\TwitchLib.Api.dll</HintPath>
     </Reference>
@@ -290,7 +269,7 @@
     <Compile Include="CrowdControl\CrowdControlMessage.cs" />
     <Compile Include="Input\InputPatch.cs" />
     <Compile Include="Player Events\HUDHandler.cs" />
-	<Compile Include="Player Events\LiveMixinPatcher.cs" />
+    <Compile Include="Player Events\LiveMixinPatcher.cs" />
     <Compile Include="Player Events\Models\EventInfo.cs" />
     <Compile Include="Player Events\EventLookup.cs" />
     <Compile Include="Player Events\FunZone.cs" />

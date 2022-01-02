@@ -2,7 +2,8 @@
 using System.Threading;
 using System.Threading.Tasks;
 using System.Net.Http;
-using System.Text.Json;
+using Newtonsoft.Json;
+using System.IO;
 
 namespace TwitchInteraction
 {
@@ -49,9 +50,15 @@ namespace TwitchInteraction
         /// <returns></returns>
         public async Task<ChatInfo> GetChatInformationAsync()
         {
+            ChatInfo chatInfo = null;
             var httpClient = new HttpClient();
             var jsonResponse = await httpClient.GetStreamAsync($"https://tmi.twitch.tv/group/user/{Name}/chatters");
-            var chatInfo = await JsonSerializer.DeserializeAsync<ChatInfo>(jsonResponse);
+            using (StreamReader sr = new StreamReader(jsonResponse))
+            using (JsonReader reader = new JsonTextReader(sr))
+            {
+                JsonSerializer serializer = new JsonSerializer();
+                chatInfo = serializer.Deserialize<ChatInfo>(reader);
+            }
 
             return chatInfo;
         }

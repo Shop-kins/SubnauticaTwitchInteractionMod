@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 using System;
-using System.Text.Json;
+using Newtonsoft.Json;
 
 namespace TwitchInteraction
 {
@@ -16,7 +16,7 @@ namespace TwitchInteraction
         {
             msg = new Message();
             
-            var redemption = JsonSerializer.Deserialize<ChannelPointRedemptionMessage>(message);
+            var redemption = JsonConvert.DeserializeObject<ChannelPointRedemptionMessage>(message);
             var regex = new Regex(".*login\":\"(?<user>.*?)\".*title\":\"(?<title>.*?)\".*");
             var regexBits = new Regex(".*user_name\":\"(?<user>.*?)\".*chat_message\":\"(?<title>.*?)\".*\"bits_used\":(?<bits>.*?),.*");
 
@@ -24,14 +24,14 @@ namespace TwitchInteraction
             //FOR SOME REASON YOU NEED THIS IN A TRY CATCH OR IT DOESN'T FUNCTION
             try
             {
-                match = regex.Match(redemption.Data.Message);
-                msg.Host = redemption.Data.Topic;
+                match = regex.Match(redemption.data.message);
+                msg.Host = redemption.data.topic;
                 if(match.Success)
                     msg.Text = match.Groups["title"].Value;
                 if (!match.Success)
                 {
-                    match = regexBits.Match(redemption.Data.Message);
-                    msg.Host = redemption.Data.Topic;
+                    match = regexBits.Match(redemption.data.message);
+                    msg.Host = redemption.data.topic;
                     if(match.Success)
                         msg.Text = match.Groups["bits"].Value + ":" + match.Groups["title"].Value;
                 }

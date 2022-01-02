@@ -5,7 +5,7 @@ using System.Net.WebSockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Text.Json;
+using Newtonsoft.Json;
 
 namespace TwitchInteraction
 {
@@ -48,13 +48,13 @@ namespace TwitchInteraction
             {
                 ListenRequest lr = new ListenRequest();
                 ListenRequestData lrd = new ListenRequestData();
-                lrd.AuthToken = token;
+                lrd.auth_token = token;
                 String[] lrdt = { "channel-points-channel-v1." + channelId, "channel-bits-events-v2." + channelId };
-                lrd.Topics = lrdt;
-                lr.Data = lrd;
-                lr.Nonce = "lkjsdhfiusdagf";
-                lr.Type = "LISTEN";
-                String jlr = JsonSerializer.Serialize<ListenRequest>(lr);
+                lrd.topics = lrdt;
+                lr.data = lrd;
+                lr.nonce = "lkjsdhfiusdagf";
+                lr.type = "LISTEN";
+                String jlr = JsonConvert.SerializeObject(lr);
                 await SendMessageAsync(jlr, cancellationToken);
 
                 var timer = new Timer(async (e) =>

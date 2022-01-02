@@ -1,13 +1,9 @@
-﻿using System.Text.Json.Serialization;
-
-namespace TwitchInteraction
+﻿namespace TwitchInteraction
 {
     public class ChannelPointRedemptionMessageData
     {
-        [JsonPropertyName("topic")]
-        public string Topic { get; set; }
+        public string topic { get; set; }
 
-        [JsonPropertyName("message")]
-        public string Message { get; set; }
+        public string message { get; set; }
     }
 }

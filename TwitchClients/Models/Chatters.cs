@@ -1,28 +1,19 @@
-﻿using System.Text.Json.Serialization;
-
-namespace TwitchInteraction
+﻿namespace TwitchInteraction
 {
     public class Chatters
     {
-        [JsonPropertyName("broadcaster")]
-        public string[] Brodcaster { get; set; }
+        public string[] broadcaster { get; set; }
 
-        [JsonPropertyName("vips")]
-        public string[] Vips { get; set; }
+        public string[] vips { get; set; }
 
-        [JsonPropertyName("moderators")]
-        public string[] Moderators { get; set; }
+        public string[] moderators { get; set; }
 
-        [JsonPropertyName("staff")]
-        public string[] Staff { get; set; }
+        public string[] staff { get; set; }
 
-        [JsonPropertyName("admins")]
-        public string[] Admins { get; set; }
+        public string[] admins { get; set; }
 
-        [JsonPropertyName("global_mods")]
-        public string[] GlobalMods { get; set; }
+        public string[] global_mods { get; set; }
 
-        [JsonPropertyName("viewers")]
-        public string[] Viewers { get; set; }
+        public string[] viewers { get; set; }
     }
 }
