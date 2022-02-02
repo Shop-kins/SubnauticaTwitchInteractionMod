@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using System.Net.Http;
-using Newtonsoft.Json;
+using Oculus.Newtonsoft.Json;
 using System.IO;
 
 namespace TwitchInteraction
