@@ -1,13 +1,9 @@
-﻿using System.Text.Json.Serialization;
-
-namespace TwitchInteraction
+﻿namespace TwitchInteraction
 {
     public class ChatInfo
     {
-        [JsonPropertyName("chatter_count")]
-        public int ChatterCount { get; set; }
+        public int chatterCount { get; set; }
 
-        [JsonPropertyName("chatters")]
-        public Chatters Chatters { get; set; }
+        public Chatters chatters { get; set; }
     }
 }

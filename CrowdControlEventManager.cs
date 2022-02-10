@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text.Json;
+using System.IO;
+using System.Text;
+using Oculus.Newtonsoft.Json;
 using TwitchInteraction.CrowdControl;
 using TwitchInteraction.Player_Events;
 
@@ -67,13 +69,13 @@ namespace TwitchInteraction
                 Console.WriteLine("Message received: " + raw);
                 // Decode the message from CC
                 // { "id":1,"code":"kill","viewer":"sdk","type":1}
-                var request = JsonSerializer.Deserialize<CrowdControlRequest>(raw);
+                var request = JsonConvert.DeserializeObject<CrowdControlRequest>(raw);
 
                 // Do the thing
-                var eventName = EventNameDict[request.Code];
+                var eventName = EventNameDict[request.code];
                 var status = 0;
 
-                if (request.Id == 0 && request.Type == 255)
+                if (request.id == 0 && request.type == 255)
                 {
                     // Test message, ignore
                     return;
@@ -87,9 +89,9 @@ namespace TwitchInteraction
                         if (!EventLookup.IsRunningOrCooldown(eventName))
                         {
                             // Not running or on cooldown, activate it if the type is "start"
-                            if (request.Type == 1)
+                            if (request.type == 1)
                             {
-                                EventLookup.Lookup(eventName, request.Viewer);
+                                EventLookup.Lookup(eventName, request.viewer);
                             }                            
                         }
                         else
@@ -112,11 +114,19 @@ namespace TwitchInteraction
 
                 // Send the result to CC
                 var response = new CrowdControlResponse();
-                response.Id = request.Id;
-                response.Status = status;
-                response.Message = "Effect: " + request.Code + ": " + response.Status;
+                response.id = request.id;
+                response.status = status;
+                response.message = "Effect: " + request.code + ": " + response.status;
 
-                var resJson = JsonSerializer.Serialize<CrowdControlResponse>(response);
+                var stringBuilder = new StringBuilder();
+                var stringWriter = new StringWriter(stringBuilder);
+                using (var jsonTextWriter = new JsonTextWriter(stringWriter))
+                {
+                    var jsonSerializer = new JsonSerializer();
+                    jsonSerializer.Serialize(jsonTextWriter, response);
+                }
+
+                var resJson = stringBuilder.ToString();
                 Console.WriteLine("Sending response: " + resJson);
 
                 c.Send(resJson, false);

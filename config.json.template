@@ -1,0 +1,12 @@
+{
+    "Client": "Use 'crowdcontrol' for crowd control client, or 'twitch' for twitch client",
+    "ClientId": "TwitchTokenGenerator client_id",
+    "BotAccessToken": "Access token of the account that will be using chat",
+    "BotRefreshToken": "Refresh token for the account that will be using chat",
+    "UsernameToken": "Access token for your account",
+    "UsernameId": "Id of your account",
+    "Username": "name of your account",
+    "BotName": "name of the account using chat",
+    "ShowRedemptionMessages": "true if you want redemption messages to be shown, false if not",
+    "SaveRedemptionMessages": "true if you want redemptions to be saved to a file in the mod folder, false if not",
+}

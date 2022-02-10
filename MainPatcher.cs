@@ -26,11 +26,8 @@ namespace TwitchInteraction
 
         [QModPatch]
         public static void Patch()
-        {
+        {            
             secrets = new Secrets();
-
-            // Customize event configuration
-            EventLookup.ConfigureEventCost(secrets.eventConfigList);
 
             if (secrets.client == "crowdcontrol")
             {

@@ -1,13 +1,9 @@
-﻿using System.Text.Json.Serialization;
-
-namespace TwitchInteraction
+﻿namespace TwitchInteraction
 {
     public class ListenRequestData
     {
-        [JsonPropertyName("topics")]
-        public string[] Topics { get; set; }
+        public string[] topics { get; set; }
 
-        [JsonPropertyName("auth_token")]
-        public string AuthToken { get; set; }
+        public string auth_token { get; set; }
     }
 }

@@ -1,16 +1,11 @@
-﻿using System.Text.Json.Serialization;
-
-namespace TwitchInteraction
+﻿namespace TwitchInteraction
 {
     public class ListenRequest
     {
-        [JsonPropertyName("type")]
-        public string Type { get; set; }
+        public string type { get; set; }
 
-        [JsonPropertyName("nonce")]
-        public string Nonce { get; set; }
+        public string nonce { get; set; }
 
-        [JsonPropertyName("data")]
-        public ListenRequestData Data { get; set; }
+        public ListenRequestData data { get; set; }
     }
 }

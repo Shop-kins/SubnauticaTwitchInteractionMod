@@ -1,18 +1,10 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
-using System.Text.Json;
-
+﻿using SMLHelper.V2.Handlers;
+using System.Collections.Generic;
 
 namespace TwitchInteraction
 {
     public class Secrets
     {
-
-        private static string _configFilePath = null;
-        private static string ConfigFilePath { get => _configFilePath ?? (_configFilePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Config.txt")); }
-
-
         public string client;
         public string client_id;
         public string access_token;
@@ -22,11 +14,17 @@ namespace TwitchInteraction
         public string botname;
         public bool showRedemptionMessages;
         public bool saveRedemptionMessages;
+
         public List<ConfigEventInfo> eventConfigList = new List<ConfigEventInfo>();
 
         public Secrets()
         {
-            Config config = JsonSerializer.Deserialize<Config>(File.ReadAllText(ConfigFilePath));
+            // Config config = new Config();
+            Config config = OptionsPanelHandler.Main.RegisterModOptions<Config>();
+            EventsFile events = OptionsPanelHandler.Main.RegisterModOptions<EventsFile>();
+
+            config.Load();
+
             if (config.Client != null)
             {
                 client = config.Client;
@@ -43,10 +41,9 @@ namespace TwitchInteraction
             botname = config.BotName;
             showRedemptionMessages = config.ShowRedemptionMessages;
             saveRedemptionMessages = config.SaveRedemptionMessages;
-            if (config.EventInfoList != null)
-            {
-                eventConfigList = config.EventInfoList;
-            }
+
+            events.Load();
+            events.UpdateEventsData();
         }
     }
 }
