@@ -1,7 +1,7 @@
 {
   "Id": "TwitchInteraction",
   "DisplayName": "TwitchInteraction",
-  "Author": "Salvner",
+  "Author": "Salvner, RazorOne, Yoshie2000, Metious & HurricaneSYG",
   "Version": "1.0.0",
   "Enable": true,
   "AssemblyName": "TwitchInteraction.dll",
