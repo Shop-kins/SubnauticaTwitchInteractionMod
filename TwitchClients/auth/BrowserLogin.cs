@@ -28,7 +28,7 @@ namespace TwitchInteraction
     public class TwitchOAuth : MonoBehaviour
     {
         [SerializeField] private string twitchAuthUrl = "https://id.twitch.tv/oauth2/authorize";
-        [SerializeField] internal string twitchClientId = "ncuqzdk0l37ovue2xn69o9matk8vw9";
+        [SerializeField] internal string twitchClientId = "ncuqzdk0l37ovue2xn69o9matk8vw9"; //This looks scary but client_id is public, confirmed by Twitch Docs
         [SerializeField] private string twitchRedirectUrl = "http://localhost:8080/";
         private string _twitchAuthStateVerify;
         internal string _code;
