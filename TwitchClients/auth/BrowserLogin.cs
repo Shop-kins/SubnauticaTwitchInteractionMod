@@ -117,10 +117,9 @@ namespace TwitchInteraction
 
             httpResponse = httpContext.Response;
 
-            // build a response to send an "ok" back to the browser for the user to see
-            if (String.IsNullOrEmpty(_code)) {
+            if (String.IsNullOrEmpty(_code)) { //If no code we want users to click a button to redirect so we can get the hash
                 Console.WriteLine("Twitch Interaction Oauth:: Waiting For User Redirect");
-                responseString = "<html><body><button onclick='redirect()'>Click Me!</button></body><script>function redirect(){const o=window.location.hash;window.location.href='http://localhost:8080/?'+o.substring(1)}</script></html>";
+                responseString = "<html><body><button onclick='redirect()'>Click Me To Save Creds!</button></body><script>function redirect(){const o=window.location.hash;window.location.href='http://localhost:8080/?'+o.substring(1)}</script></html>";
                 byte[] buffer = System.Text.Encoding.UTF8.GetBytes(responseString);
 
                 // send the output to the client browser
@@ -131,9 +130,9 @@ namespace TwitchInteraction
 
                 httpListener.BeginGetContext(new AsyncCallback(IncomingHttpRequest), httpListener);
             }else
-            {
+            { //If code we want to tell users to close browser and restart subnautica. Also close and save resources
                 Console.WriteLine("Twitch Interaction Oauth:: Got User Redirect, informing them they can close browser");
-                responseString = "<html><body><b>DONE!</b><br>(Please close this tab/window and restart SUBNAUTICA)</body></html>";
+                responseString = "<html><body><b>DONE!</b><br>(Please close this tab/window and restart SUBNAUTICA)<br>Remember to never share your config file</body></html>";
 
                 byte[] buffer = System.Text.Encoding.UTF8.GetBytes(responseString);
 
