@@ -1,7 +1,10 @@
-﻿using SMLHelper.V2.Json;
+using SMLHelper.V2.Json;
+using SMLHelper.V2.Options;
 using SMLHelper.V2.Options.Attributes;
+using System;
 using System.Collections.Generic;
 using TwitchInteraction.Player_Events;
+using UnityEngine;
 
 namespace TwitchInteraction
 {
@@ -30,6 +33,13 @@ namespace TwitchInteraction
 
         [Toggle("Save Redemption Messages")]
         public bool SaveRedemptionMessages { get; set; } = false;
+
+        [Button("Auth With Twitch (Requires Restart)")]
+        public void AuthWithTwitch()
+        {
+            var lego = (new GameObject("SomeObjName")).AddComponent<TwitchOAuth>();
+            lego.InitiateTwitchAuth(this);
+        }
     }
 
     public class ConfigEventInfo
