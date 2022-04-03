@@ -183,6 +183,7 @@ namespace TwitchInteraction
                     var objectResponse = JObject.Parse(jsonResponse);
                     _config.UsernameId = (string)objectResponse["data"][0]["id"];
                     _config.Username = (string)objectResponse["data"][0]["login"];
+                    _config.Save();
                 } catch (Exception e)
                 {
                     Console.WriteLine(e.ToString());
