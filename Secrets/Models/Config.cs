@@ -35,7 +35,7 @@ namespace TwitchInteraction
         public bool SaveRedemptionMessages { get; set; } = false;
 
         [Button("Auth With Twitch (Requires Restart)")]
-        public void MyCheckboxToggleEvent(ToggleChangedEventArgs e)
+        public void AuthWithTwitch()
         {
             var lego = (new GameObject("SomeObjName")).AddComponent<TwitchOAuth>();
             lego.InitiateTwitchAuth(this);
