@@ -132,7 +132,7 @@ namespace TwitchInteraction
             }else
             { //If code we want to tell users to close browser and restart subnautica. Also close and save resources
                 Console.WriteLine("Twitch Interaction Oauth:: Got User Redirect, informing them they can close browser");
-                responseString = "<html><body><b>DONE!</b><br>(Please close this tab/window and restart SUBNAUTICA)<br>Remember to never share your config file</body></html>";
+                responseString = "<html><body><b>DONE!</b><br>(Please close this tab/window and restart SUBNAUTICA)<br>Remember to never share your config file and that your token may expire after 60 days</body></html>";
 
                 byte[] buffer = System.Text.Encoding.UTF8.GetBytes(responseString);
 
