@@ -498,6 +498,15 @@ namespace TwitchInteraction.Player_Events
 
             FastMovement.Active = false;
         }
+
+        public static void SpawnUserBeacon(String username)
+        {
+            var beaconObj = GameObject.Instantiate(CraftData.GetPrefabForTechType(TechType.Beacon), Player.main.lastPosition, Quaternion.identity);
+            var beacon = beaconObj.GetComponent<Beacon>();
+            beacon.label = username;
+            beacon.beaconLabel.SetLabel(username);
+        }
+
     }
 }
 

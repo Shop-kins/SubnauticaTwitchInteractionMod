@@ -41,6 +41,7 @@ public class Subnautica : SimpleTCPPack
         new Effect("Go back home", "teleport_player_shallows"),
         new Effect("Crafted Roulette", "advanced_roulette"),
         new Effect("What explosion?", "restore_ship"),
+        new Effect("Put your name on the map", "custom_beacon"),
         new Effect("Random Mouse Sensitivity (15 seconds)", "random_mouse"),
         new Effect("Hide HUD (60 seconds)", "hide_hud"),
         new Effect("Invert Controls (60 seconds)", "invert_controls"),

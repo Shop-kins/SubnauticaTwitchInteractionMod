@@ -9,10 +9,10 @@ namespace TwitchInteraction.Player_Events
     {
 
         // Queue for events
-        public static List<KeyValuePair<string, EventInfo>> ActionQueue = new List<KeyValuePair<string, EventInfo>>();
+        public static List<Tuple<string, string, EventInfo>> ActionQueue = new List<Tuple<string, string, EventInfo>>();
 
         // Queue for the cleanup code of timed events
-        public static List<Action> TimedActionsQueue = new List<Action>();
+        public static List<Tuple<string, string, TimedEventInfo>> TimedActionsQueue = new List<Tuple<string, string, TimedEventInfo>>();
 
         // List with currently running timed events
         public static List<string> RunningEventIDs = new List<string>();
@@ -48,6 +48,7 @@ namespace TwitchInteraction.Player_Events
             { "Go back home [Integration]", new EventInfo(FunZone.returnToShallows, 150, 180) },
             { "Crafted Roulette [Integration]", new EventInfo(FunZone.randomAdvancedResources, 60, 30) },
             { "What explosion? [Integration]", new EventInfo(FunZone.RestoreCrashedShip, 30, 30) },
+            { "Put your name on the map! [Integration]", new EventInfo(FunZone.SpawnUserBeacon, 50, 15) },
             // Parameter: ID, Action, BitCost, CooldownSeconds, TimedAction (Cleanup), TimerDuration
             { "Random Mouse Sensitivity [Integration]", new TimedEventInfo(FunZone.RandomMouseSens, 200, 60, FunZone.CleanupRandomMouseSens, 15) },
             { "Hide HUD [Integration]", new TimedEventInfo(FunZone.hideHUD, 50, 60, FunZone.showHUD, 60) },
@@ -74,7 +75,7 @@ namespace TwitchInteraction.Player_Events
         {
             if (EventDictionary.Keys.Contains(EventText))
             {
-                ActionQueue.Add(new KeyValuePair<string, EventInfo>(EventText, EventDictionary[EventText]));
+                ActionQueue.Add(new Tuple<string, string, EventInfo>(EventText, User, EventDictionary[EventText]));
                 TimerCooldown.AddNewEventText(EventText, User);
             }
         }
@@ -91,7 +92,7 @@ namespace TwitchInteraction.Player_Events
             if (!Event.Equals(default(KeyValuePair<string, EventInfo>)) && bits >= Event.Value.BitCost)
             {
                 Console.WriteLine(Event.Key);
-                ActionQueue.Add(Event);
+                ActionQueue.Add(new Tuple<string, string, EventInfo>(Event.Key, User, Event.Value));
                 TimerCooldown.AddNewEventText(Event.Key, User, bits);
             }
 
