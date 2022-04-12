@@ -47,6 +47,7 @@ namespace TwitchInteraction
             { "restore_ship", "What explosion? [Integration]"  },
             { "ohko", "Be careful Riley [Integration]" },
             { "go_really_fast", "Go REALLY fast [Integration]" },
+            { "custom_beacon", "Put your name on the map! [Integration]" },
         };
 
         internal static void MessageReceived(int sender, string message)

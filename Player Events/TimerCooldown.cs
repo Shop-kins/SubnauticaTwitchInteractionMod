@@ -32,8 +32,8 @@ namespace TwitchInteraction
         private bool isFadingOut;
         private bool useGlobalTextWidth;
 
-        private KeyValuePair<string, TimedEventInfo> timedEvent;
-        private KeyValuePair<string, EventInfo> normalEvent;
+        private Tuple<string, string, TimedEventInfo> timedEvent;
+        private Tuple<string, string, EventInfo> normalEvent;
         private bool hasTimedEvent = false;
 
 
@@ -229,23 +229,23 @@ namespace TwitchInteraction
             return textText.preferredWidth;
         }
 
-        public void SetTimedEvent(KeyValuePair<string, TimedEventInfo> timedEvent)
+        public void SetTimedEvent(Tuple<string, string, TimedEventInfo> timedEvent)
         {
             this.timedEvent = timedEvent;
             hasTimedEvent = true;
         }
 
-        public KeyValuePair<string, TimedEventInfo> GetTimedEvent()
+        public Tuple<string, string, TimedEventInfo> GetTimedEvent()
         {
             return timedEvent;
         }
 
-        public void SetEvent(KeyValuePair<string, EventInfo> normalEvent)
+        public void SetEvent(Tuple<string, string, EventInfo> normalEvent)
         {
             this.normalEvent = normalEvent;
         }
 
-        public KeyValuePair<string, EventInfo> GetEvent()
+        public Tuple<string, string, EventInfo> GetEvent()
         {
             return normalEvent;
         }
@@ -330,7 +330,7 @@ namespace TwitchInteraction
             return (int)(pixelTimerHeadingHeight * (Screen.width / 1920f));
         }
 
-        public static void AddCooldown(string text, float duration, EventInfo eventInfo)
+        public static void AddCooldown(string text, float duration, Tuple<string, string, EventInfo> eventInfo)
         {
             if (!initialised)
             {
@@ -338,19 +338,19 @@ namespace TwitchInteraction
             }
 
             CustomText cooldownText = new CustomText(text, duration, 0, true);
-            cooldownText.SetEvent(new KeyValuePair<string, EventInfo>(text, eventInfo));
+            cooldownText.SetEvent(eventInfo);
             customTimerTexts.Add(cooldownText);
         }
 
-        public static void AddCooldown(string text, TimedEventInfo timedEvent)
+        public static void AddCooldown(string text, Tuple<string, string, TimedEventInfo> eventInfo)
         {
             if (!initialised)
             {
                 Initialise();
             }
 
-            CustomText cooldownText = new CustomText(text, timedEvent.TimerLength, 0, true);
-            cooldownText.SetTimedEvent(new KeyValuePair<string, TimedEventInfo>(text, timedEvent));
+            CustomText cooldownText = new CustomText(text, eventInfo.Item3.TimerLength, 0, true);
+            cooldownText.SetTimedEvent(eventInfo);
             EventLookup.RunningEventIDs.Add(text);
             customTimerTexts.Add(cooldownText);
         }
@@ -438,11 +438,11 @@ namespace TwitchInteraction
                 {
                     if (customTimerTexts[i].HasTimedEvent())
                     {
-                        KeyValuePair<string, TimedEventInfo> timedEvent = customTimerTexts[i].GetTimedEvent();
-                        EventLookup.RunningEventIDs.Remove(timedEvent.Key);
-                        EventLookup.TimedActionsQueue.Add(timedEvent.Value.TimedAction);
-                        EventLookup.Cooldowns.Add(timedEvent.Key, Time.time);
-                        AddCooldownText(timedEvent.Key, timedEvent.Value.CooldownSeconds, timedEvent.Value);
+                        Tuple<string, string, TimedEventInfo> timedEvent = customTimerTexts[i].GetTimedEvent();
+                        EventLookup.RunningEventIDs.Remove(timedEvent.Item1);
+                        EventLookup.TimedActionsQueue.Add(timedEvent);
+                        EventLookup.Cooldowns.Add(timedEvent.Item1, Time.time);
+                        AddCooldownText(timedEvent.Item1, timedEvent.Item3.CooldownSeconds, new Tuple<string, string, EventInfo>(timedEvent.Item1, timedEvent.Item2, timedEvent.Item3));
                     }
 
                     customTimerTexts[i].Destroy();
@@ -473,11 +473,11 @@ namespace TwitchInteraction
                 cooldownText.Value.Update(-((actionQueueTexts.Count + k) * ActualTimerTextHeight()) - 2 * ActualTimerHeadingHeight());
                 k++;
 
-                KeyValuePair<string, EventInfo> eventInfo = cooldownText.Value.GetEvent();
-                float currentCooldownDuration = Time.time - EventLookup.Cooldowns[eventInfo.Key];
-                if (currentCooldownDuration >= eventInfo.Value.CooldownSeconds)
+                Tuple<string, string, EventInfo> eventInfo = cooldownText.Value.GetEvent();
+                float currentCooldownDuration = Time.time - EventLookup.Cooldowns[eventInfo.Item1];
+                if (currentCooldownDuration >= eventInfo.Item3.CooldownSeconds)
                 {
-                    finishedCooldowns.Add(eventInfo.Key);
+                    finishedCooldowns.Add(eventInfo.Item1);
                 }
 
                 if (cooldownText.Value.getTextWidth() > newWidestText)
@@ -513,10 +513,10 @@ namespace TwitchInteraction
             newEventsList.Enqueue(new KeyValuePair<string, KeyValuePair<string, int>>(text, userBitPair));
         }
 
-        public static void AddCooldownText(string text, float duration, EventInfo eventInfo)
+        public static void AddCooldownText(string text, float duration, Tuple<string, string, EventInfo> eventInfo)
         {
             CustomText cooldownText = new CustomText(text, duration, 0, true);
-            cooldownText.SetEvent(new KeyValuePair<string, EventInfo>(text, eventInfo));
+            cooldownText.SetEvent(eventInfo);
             cooldownTexts.Add(new KeyValuePair<string, CustomText>(text, cooldownText));
         }
 
@@ -594,10 +594,10 @@ namespace TwitchInteraction
 
             initialised = true;
 
-            EventLookup.ActionQueue = new List<KeyValuePair<string, EventInfo>>();
+            EventLookup.ActionQueue = new List<Tuple<string, string, EventInfo>>();
             EventLookup.Cooldowns = new Dictionary<string, float>();
             EventLookup.RunningEventIDs = new List<string>();
-            EventLookup.TimedActionsQueue = new List<Action>();
+            EventLookup.TimedActionsQueue = new List<Tuple<string, string, TimedEventInfo>>();
         }
 
     }
