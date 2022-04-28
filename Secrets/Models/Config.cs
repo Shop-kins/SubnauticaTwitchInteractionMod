@@ -62,139 +62,145 @@ namespace TwitchInteraction
     [ConfigFile("events")]
     public class EventsFile : ConfigFile
     {
-        [Slider("Kill Riley Bit Cost", 0, 1000, DefaultValue = 500, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Kill Riley Bit Cost", 10, 1000, DefaultValue = 500, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
         public int Kill_BitCost { get; set; } = 500;
-        [Slider("Kill Riley Cooldown", 0, 180, DefaultValue = 60, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Kill Riley Cooldown", 10, 180, DefaultValue = 60, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
         public int Kill_Cooldown { get; set; } = 60;
 
-        [Slider("Heal Riley Bit Cost", 0, 1000, DefaultValue = 50, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Heal Riley Bit Cost", 1, 1000, DefaultValue = 50, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
         public int Heal_BitCost { get; set; } = 50;
-        [Slider("Heal Riley Cooldown", 0, 180, DefaultValue = 15, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Heal Riley Cooldown", 10, 180, DefaultValue = 15, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
         public int Heal_Cooldown { get; set; } = 15;
-        [Slider("Day/Night Riley Bit Cost", 0, 1000, DefaultValue = 50, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Day/Night Riley Bit Cost", 1, 1000, DefaultValue = 50, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
         public int DayNight_BitCost { get; set; } = 50;
-        [Slider("Day/Night Riley Cooldown", 0, 180, DefaultValue = 30, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Day/Night Riley Cooldown", 10, 180, DefaultValue = 30, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
         public int DayNight_Cooldown { get; set; } = 30;
-        [Slider("Open PDA Bit Cost", 0, 1000, DefaultValue = 50, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Open PDA Bit Cost", 1, 1000, DefaultValue = 50, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
         public int PDA_BitCost { get; set; } = 50;
-        [Slider("Open PDA Riley Cooldown", 0, 180, DefaultValue = 15, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Open PDA Riley Cooldown", 10, 180, DefaultValue = 15, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
         public int PDA_Cooldown { get; set; } = 15;
-        [Slider("Activate Gun Bit Cost", 0, 1000, DefaultValue = 200, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Activate Gun Bit Cost", 1, 1000, DefaultValue = 200, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
         public int Gun_BitCost { get; set; } = 200;
-        [Slider("Activate Gun Cooldown", 0, 180, DefaultValue = 300, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Activate Gun Cooldown", 10, 180, DefaultValue = 300, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
         public int Gun_Cooldown { get; set; } = 300;
-        [Slider("Refill O2 Bit Cost", 0, 1000, DefaultValue = 50, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Refill O2 Bit Cost", 1, 1000, DefaultValue = 50, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
         public int O2_BitCost { get; set; } = 50;
-        [Slider("Refill O2 Cooldown", 0, 180, DefaultValue = 15, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Refill O2 Cooldown", 10, 180, DefaultValue = 15, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
         public int O2_Cooldown { get; set; } = 15;
-        [Slider("Find a New Home Bit Cost", 0, 1000, DefaultValue = 150, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Find a New Home Bit Cost", 1, 1000, DefaultValue = 150, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
         public int NewHome_BitCost { get; set; } = 150;
-        [Slider("Find a New Home Cooldown", 0, 180, DefaultValue = 180, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Find a New Home Cooldown", 10, 180, DefaultValue = 180, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
         public int NewHome_Cooldown { get; set; } = 180;
-        [Slider("Teleport Riley Bit Cost", 0, 1000, DefaultValue = 400, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Teleport Riley Bit Cost", 1, 1000, DefaultValue = 400, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
         public int Teleport_BitCost { get; set; } = 400;
-        [Slider("Teleport Riley Cooldown", 0, 180, DefaultValue = 180, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Teleport Riley Cooldown", 10, 180, DefaultValue = 180, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
         public int Teleport_Cooldown { get; set; } = 180;
-        [Slider("Give Tooth Bit Cost", 0, 1000, DefaultValue = 1000, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Give Tooth Bit Cost", 1, 1000, DefaultValue = 1000, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
         public int Tooth_BitCost { get; set; } = 1000;
-        [Slider("Give Tooth Cooldown", 0, 180, DefaultValue = 60, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Give Tooth Cooldown", 10, 180, DefaultValue = 60, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
         public int Tooth_Cooldown { get; set; } = 60;
-        [Slider("Cow or Reaper? Yes. Bit Cost", 0, 1000, DefaultValue = 100, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Cow or Reaper? Yes. Bit Cost", 1, 1000, DefaultValue = 100, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
         public int Spawn_BitCost { get; set; } = 100;
-        [Slider("Cow or Reaper? Yes. Cooldown", 0, 180, DefaultValue = 180, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Cow or Reaper? Yes. Cooldown", 10, 180, DefaultValue = 180, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
         public int Spawn_Cooldown { get; set; } = 180;
-        [Slider("Junk Fill Bit Cost", 0, 1000, DefaultValue = 100, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Junk Fill Bit Cost", 1, 1000, DefaultValue = 100, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
         public int Junk_BitCost { get; set; } = 100;
-        [Slider("Junk Fill Cooldown", 0, 180, DefaultValue = 180, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Junk Fill Cooldown", 10, 180, DefaultValue = 180, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
         public int Junk_Cooldown { get; set; } = 180;
-        [Slider("Spawn Reaper Bit Cost", 0, 1000, DefaultValue = 150, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Spawn Reaper Bit Cost", 1, 1000, DefaultValue = 150, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
         public int Reaper_BitCost { get; set; } = 150;
-        [Slider("Spawn Reaper Cooldown", 0, 180, DefaultValue = 180, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Spawn Reaper Cooldown", 10, 180, DefaultValue = 180, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
         public int Repear_Cooldown { get; set; } = 180;
-        [Slider("Resource Roulette Bit Cost", 0, 1000, DefaultValue = 30, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Resource Roulette Bit Cost", 1, 1000, DefaultValue = 30, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
         public int Resource_BitCost { get; set; } = 30;
-        [Slider("Resourse Roulette Cooldown", 0, 180, DefaultValue = 30, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Resourse Roulette Cooldown", 10, 180, DefaultValue = 30, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
         public int Resource_Cooldown { get; set; } = 30;
-        [Slider("Random Blueprint Bit Cost", 0, 1000, DefaultValue = 100, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Random Blueprint Bit Cost", 1, 1000, DefaultValue = 100, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
         public int Blueprint_BitCost { get; set; } = 100;
-        [Slider("Random Blueprint Cooldown", 0, 180, DefaultValue = 30, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Random Blueprint Cooldown", 10, 180, DefaultValue = 30, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
         public int Blueprint_Cooldown { get; set; } = 30;
-        [Slider("Early Breakfast Bit Cost", 0, 1000, DefaultValue = 20, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Early Breakfast Bit Cost", 1, 1000, DefaultValue = 20, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
         public int Eat_BitCost { get; set; } = 20;
-        [Slider("Early Breakfast Cooldown", 0, 180, DefaultValue = 30, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Early Breakfast Cooldown", 10, 180, DefaultValue = 30, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
         public int Eat_Cooldown { get; set; } = 30;
-        [Slider("Find a Really New Home Bit Cost", 0, 1000, DefaultValue = 300, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Find a Really New Home Bit Cost", 1, 1000, DefaultValue = 300, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
         public int ReallyNewHome_BitCost { get; set; } = 300;
-        [Slider("Find a Really New Home Cooldown", 0, 300, DefaultValue = 300, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Find a Really New Home Cooldown", 10, 300, DefaultValue = 300, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
         public int ReallyNewHome_Cooldown { get; set; } = 300;
-        [Slider("Play Tooth Sound Bit Cost", 0, 1000, DefaultValue = 500, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Play Tooth Sound Bit Cost", 1, 1000, DefaultValue = 500, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
         public int ToothSound_BitCost { get; set; } = 10;
-        [Slider("Play Tooth Sound Cooldown", 0, 180, DefaultValue = 60, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Play Tooth Sound Cooldown", 10, 180, DefaultValue = 60, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
         public int ToothSound_Cooldown { get; set; } = 5;
-        [Slider("Clear Hotbar Slot Bit Cost", 0, 1000, DefaultValue = 100, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Clear Hotbar Slot Bit Cost", 1, 1000, DefaultValue = 100, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
         public int ClearHotbar_BitCost { get; set; } = 100;
-        [Slider("Clear Hotbar Slot Cooldown", 0, 180, DefaultValue = 60, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Clear Hotbar Slot Cooldown", 10, 180, DefaultValue = 60, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
         public int ClearHotbar_Cooldown { get; set; } = 60;
-        [Slider("Shuffle Hotbar Bit Cost", 0, 1000, DefaultValue = 250, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Shuffle Hotbar Bit Cost", 1, 1000, DefaultValue = 250, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
         public int ShuffleHotbar_BitCost { get; set; } = 250;
-        [Slider("Shuffle Hotbar Cooldown", 0, 180, DefaultValue = 60, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Shuffle Hotbar Cooldown", 10, 180, DefaultValue = 60, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
         public int ShuffleHotbar_Cooldown { get; set; } = 60;
-        [Slider("Steal a Battery Bit Cost", 0, 1000, DefaultValue = 150, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Steal a Battery Bit Cost", 1, 1000, DefaultValue = 150, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
         public int StealBat_BitCost { get; set; } = 150;
-        [Slider("Steal a Battery Cooldown", 0, 180, DefaultValue = 60, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Steal a Battery Cooldown", 10, 180, DefaultValue = 60, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
         public int StealBat_Cooldown { get; set; } = 60;
-        [Slider("Steal Equipment Cooldown", 0, 180, DefaultValue = 60, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Steal Equipment Cooldown", 10, 180, DefaultValue = 60, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
         public int StealEquip_Cooldown { get; set; } = 60;
-        [Slider("Steal Equipment Bit Cost", 0, 1000, DefaultValue = 250, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Steal Equipment Bit Cost", 5, 1000, DefaultValue = 250, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
         public int StealEquip_BitCost { get; set; } = 250;
-        [Slider("Kill the Bad Things Cooldown", 0, 180, DefaultValue = 60, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Kill the Bad Things Cooldown", 10, 180, DefaultValue = 60, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
         public int KillBad_Cooldown { get; set; } = 60;
-        [Slider("Kill the Bad Things Bit Cost", 0, 1000, DefaultValue = 150, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Kill the Bad Things Bit Cost", 5, 1000, DefaultValue = 150, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
         public int KillBad_BitCost { get; set; } = 150;
-        [Slider("Go Back Home Bit Cost", 0, 1000, DefaultValue = 150, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Go Back Home Bit Cost", 1, 1000, DefaultValue = 150, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
         public int GoHome_BitCost { get; set; } = 150;
-        [Slider("Go Back Home Cooldown", 0, 180, DefaultValue = 180, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Go Back Home Cooldown", 10, 180, DefaultValue = 180, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
         public int GoHome_Cooldown { get; set; } = 180;
-        [Slider("Crafted Roulette Cooldown", 0, 180, DefaultValue = 30, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Crafted Roulette Cooldown", 10, 180, DefaultValue = 30, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
         public int Crafted_Cooldown { get; set; } = 30;
-        [Slider("Crafted Roulette Bit Cost", 0, 1000, DefaultValue = 60, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Crafted Roulette Bit Cost", 5, 1000, DefaultValue = 60, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
         public int Crafted_BitCost { get; set; } = 60;
-        [Slider("Random Mouse Sensitivity Bit Cost", 0, 1000, DefaultValue = 200, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Random Mouse Sensitivity Bit Cost", 1, 1000, DefaultValue = 200, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
         public int Mouse_BitCost { get; set; } = 200;
-        [Slider("Random Mouse Sensitivity Cooldown", 0, 180, DefaultValue = 60, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Random Mouse Sensitivity Cooldown", 10, 180, DefaultValue = 60, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
         public int Mouse_Cooldown { get; set; } = 60;
-        [Slider("Hide HUD Bit Cost", 0, 1000, DefaultValue = 50, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Hide HUD Bit Cost", 1, 1000, DefaultValue = 50, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
         public int HUD_BitCost { get; set; } = 50;
-        [Slider("Hide HUD Cooldown", 0, 180, DefaultValue = 60, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Hide HUD Cooldown", 10, 180, DefaultValue = 60, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
         public int HUD_Cooldown { get; set; } = 60;
-        [Slider("Invert Controls Bit Cost", 0, 1000, DefaultValue = 200, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Invert Controls Bit Cost", 1, 1000, DefaultValue = 200, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
         public int Invert_BitCost { get; set; } = 200;
-        [Slider("Invert Controls Cooldown", 0, 180, DefaultValue = 60, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Invert Controls Cooldown", 10, 180, DefaultValue = 60, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
         public int Invert_Cooldown { get; set; } = 60;
-        [Slider("Disable Controls Bit Cost", 0, 1000, DefaultValue = 200, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Disable Controls Bit Cost", 1, 1000, DefaultValue = 200, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
         public int Disable_BitCost { get; set; } = 200;
-        [Slider("Disable Controls Cooldown", 0, 180, DefaultValue = 60, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Disable Controls Cooldown", 10, 180, DefaultValue = 60, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
         public int Disable_Cooldown { get; set; } = 60;
-        [Slider("Light? What is Light? Cooldown", 0, 180, DefaultValue = 60, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Light? What is Light? Cooldown", 10, 180, DefaultValue = 60, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
         public int Light_Cooldown { get; set; } = 60;
-        [Slider("Light? What is Light? Bit Cost", 0, 1000, DefaultValue = 100, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Light? What is Light? Bit Cost", 5, 1000, DefaultValue = 100, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
         public int Light_BitCost { get; set; } = 100;
-        [Slider("Random FOV Bit Cost", 0, 1000, DefaultValue = 1000, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Random FOV Bit Cost", 1, 1000, DefaultValue = 1000, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
         public int FOV_BitCost { get; set; } = 1000;
-        [Slider("Random FOV Cooldown", 0, 180, DefaultValue = 60, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Random FOV Cooldown", 10, 180, DefaultValue = 60, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
         public int FOV_Cooldown { get; set; } = 60;
-        [Slider("Restore Ship Bit Cost", 0, 1000, DefaultValue = 30, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Restore Ship Bit Cost", 1, 1000, DefaultValue = 30, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
         public int Ship_BitCost { get; set; } = 30;
-        [Slider("Restore Ship Cooldown", 0, 180, DefaultValue = 30, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Restore Ship Cooldown", 10, 180, DefaultValue = 30, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
         public int Ship_Cooldown { get; set; } = 30;
-        [Slider("One Hit KO Bit Cost", 0, 1000, DefaultValue = 500, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
+        [Slider("One Hit KO Bit Cost", 1, 1000, DefaultValue = 500, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
         public int OHKO_BitCost { get; set; } = 500;
-        [Slider("One Hit KO Cooldown", 0, 180, DefaultValue = 60, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
+        [Slider("One Hit KO Cooldown", 10, 180, DefaultValue = 60, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
         public int OHKO_Cooldown { get; set; } = 60;
-        [Slider("Go Really Fast Bit Cost", 0, 1000, DefaultValue = 100, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Go Really Fast Bit Cost", 1, 1000, DefaultValue = 100, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
         public int Fast_BitCost { get; set; } = 100;
-        [Slider("Go Really Fast Cooldown", 0, 180, DefaultValue = 60, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Go Really Fast Cooldown", 10, 180, DefaultValue = 60, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
         public int Fast_Cooldown { get; set; } = 60;
+        [Slider("Put your name on the map! Cooldown", 1, 1000, DefaultValue = 100, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
+        public int Beacon_Cooldown { get; set; } = 60;
+        [Slider("Put your name on the map! bit cost", 10, 180, DefaultValue = 60, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
+        public int Beacon_BitCost { get; set; } = 100;
+        
+        
 
         public List<ConfigEventInfo> PopulateEventList()
         {
@@ -232,6 +238,7 @@ namespace TwitchInteraction
             list.Add(new ConfigEventInfo("What explosion? [Integration]", this.Ship_BitCost, this.Ship_Cooldown));
             list.Add(new ConfigEventInfo("Be careful Riley [Integration]", this.OHKO_BitCost, this.OHKO_Cooldown));
             list.Add(new ConfigEventInfo("Go REALLY fast [Integration]", this.Fast_BitCost, this.Fast_Cooldown));
+            list.Add(new ConfigEventInfo("Put your name on the map! [Integration]", this.Beacon_BitCost, this.Beacon_Cooldown));
 
             return list;
         }
