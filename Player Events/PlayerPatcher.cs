@@ -21,13 +21,7 @@ namespace TwitchInteraction.Player_Events
                 {
                     // Execute all the timed event cleanup code BEFORE any of the other events
                     Tuple<string, string, TimedEventInfo> localAction = EventLookup.TimedActionsQueue[0];
-                    if (localAction.Item3.RequiresUsername)
-                    {
-                        localAction.Item3.ActionWithUsername.Invoke(localAction.Item2);
-                    } else
-                    {
-                        localAction.Item3.Action.Invoke();
-                    }
+                    localAction.Item3.TimedAction.Invoke();
                     EventLookup.TimedActionsQueue.RemoveAt(0);
                 }
 
