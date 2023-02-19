@@ -136,10 +136,7 @@ namespace TwitchInteraction.Player_Events
         {
             System.Random random = new System.Random();
             TechType[] resources = { TechType.AcidMushroom, TechType.SeaTreaderPoop, TechType.BloodOil, TechType.CoralChunk, TechType.CrashPowder, TechType.Copper, TechType.CreepvinePiece, TechType.CreepvineSeedCluster, TechType.Sulphur, TechType.WhiteMushroom, TechType.Diamond, TechType.TreeMushroomPiece, TechType.GasPod, TechType.JellyPlant, TechType.Gold, TechType.Kyanite, TechType.Lead, TechType.Lithium, TechType.Magnetite, TechType.ScrapMetal, TechType.Nickel, TechType.PinkMushroom, TechType.Quartz, TechType.AluminumOxide, TechType.Salt, TechType.Silver, TechType.SmallMelon, TechType.PurpleRattle, TechType.StalkerTooth, TechType.JeweledDiskPiece, TechType.Titanium, TechType.UraniniteCrystal };
-            
-            var pickupable = CraftData.InstantiateFromPrefab(resources[random.Next(resources.Length)]).GetComponent<Pickupable>();
-            if (pickupable != null)
-                Inventory.main.ForcePickup(pickupable);
+            CraftData.AddToInventory(resources[random.Next(resources.Length)], 1);
         }
 
         public static void randomAdvancedResources()
@@ -162,10 +159,16 @@ namespace TwitchInteraction.Player_Events
 
         public static void playToothSound()
         {
+            CoroutineHost.StartCoroutine(FunZone.playToothSoundAsync());
+        }
+
+        public static IEnumerator playToothSoundAsync()
+        {
             System.Random random = new System.Random();
-
-            FMODUWE.PlayOneShot(CraftData.GetPrefabForTechType(TechType.Stalker).GetComponent<Stalker>().loseToothSound, new Vector3(Player.main.transform.position.x - random.Next(-8, 8), Player.main.transform.position.y - random.Next(-8, 7), Player.main.transform.position.z - random.Next(-7, 8)), 1f);
-
+            var task = CraftData.GetPrefabForTechTypeAsync(TechType.Stalker);
+            yield return task;
+            var stalkerObj = task.GetResult();
+            FMODUWE.PlayOneShot(stalkerObj.GetComponent<Stalker>().loseToothSound, new Vector3(Player.main.transform.position.x - random.Next(-8, 8), Player.main.transform.position.y - random.Next(-8, 7), Player.main.transform.position.z - random.Next(-7, 8)), 1f);
         }
 
         private static float initialFOV;
@@ -501,12 +504,19 @@ namespace TwitchInteraction.Player_Events
 
         public static void SpawnUserBeacon(String username)
         {
-            var beaconObj = GameObject.Instantiate(CraftData.GetPrefabForTechType(TechType.Beacon), Player.main.lastPosition, Quaternion.identity);
+            CoroutineHost.StartCoroutine(FunZone.SpawnUserBeaconAsync(username));
+        }
+
+        public static IEnumerator SpawnUserBeaconAsync(String username)
+        {
+            TaskResult<GameObject> currentResult = new TaskResult<GameObject>();
+            yield return (object)CraftData.GetPrefabForTechTypeAsync(TechType.Beacon, false, (IOut<GameObject>)currentResult);
+            GameObject prefab = currentResult.Get();
+            var beaconObj = GameObject.Instantiate(prefab, Player.main.lastPosition, Quaternion.identity);
             var beacon = beaconObj.GetComponent<Beacon>();
             beacon.label = username;
             beacon.beaconLabel.SetLabel(username);
         }
-
     }
 }
 

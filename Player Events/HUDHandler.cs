@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace TwitchInteraction.Player_Events
 {
@@ -41,8 +38,8 @@ namespace TwitchInteraction.Player_Events
 			// Only disable things for things that are not in the path of our custom objects
 			if (!(obj.name.Contains("Twitch") || obj.name.Contains("OverlayCanvas") || obj.name.Contains("Overlays") || obj.name.Contains("OutOfOxygen")))
 			{
-				ProcessComponent(obj.GetComponent<GUIText>(), parent, false);
-				ProcessComponent(obj.GetComponent<GUITexture>(), parent, false);
+				ProcessComponent(obj.GetComponent<Text>(), parent, false);
+				ProcessComponent(obj.GetComponent<Image>(), parent, false);
 				ProcessComponent(obj.GetComponent<Renderer>(), parent, false);
 			} else
             {
@@ -73,8 +70,8 @@ namespace TwitchInteraction.Player_Events
 		{
 			obj.BroadcastMessage("UnhideForScreenshots", SendMessageOptions.DontRequireReceiver);
 
-			ProcessComponent(obj.GetComponent<GUIText>(), parent, true);
-			ProcessComponent(obj.GetComponent<GUITexture>(), parent, true);
+			ProcessComponent(obj.GetComponent<Text>(), parent, true);
+			ProcessComponent(obj.GetComponent<Image>(), parent, true);
 			ProcessComponent(obj.GetComponent<Renderer>(), parent, true);
 
 			if (recursive)

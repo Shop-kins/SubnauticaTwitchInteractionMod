@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using Oculus.Newtonsoft.Json;
+using Newtonsoft.Json;
 using TwitchInteraction.CrowdControl;
 using TwitchInteraction.Player_Events;
 

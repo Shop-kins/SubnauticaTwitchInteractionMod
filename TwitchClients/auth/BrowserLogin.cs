@@ -15,12 +15,9 @@
  */
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using System.Net;
-using Oculus.Newtonsoft.Json.Linq;
-using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
 namespace TwitchInteraction
