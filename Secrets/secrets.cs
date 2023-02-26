@@ -19,12 +19,12 @@ namespace TwitchInteraction
 
         public Secrets()
         {
-            // Config config = new Config();
+            MainPatcher.LogSource.LogInfo("Loading config file");
             Config config = OptionsPanelHandler.Main.RegisterModOptions<Config>();
             EventsFile events = OptionsPanelHandler.Main.RegisterModOptions<EventsFile>();
 
             config.Load();
-
+            MainPatcher.LogSource.LogInfo("Loaded config file");
             if (config.Client != null)
             {
                 client = config.Client;

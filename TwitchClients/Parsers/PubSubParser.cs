@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 using System;
-using Oculus.Newtonsoft.Json;
+using Newtonsoft.Json;
 
 namespace TwitchInteraction
 {

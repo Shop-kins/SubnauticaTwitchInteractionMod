@@ -7,6 +7,7 @@ using TwitchInteraction.Player_Events.Models;
 using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
+using TMPro;
 
 namespace TwitchInteraction
 {
@@ -15,7 +16,7 @@ namespace TwitchInteraction
     {
 
         private GameObject textObject;
-        private Text textText;
+        private TextMeshProUGUI textText;
         private uGUI_TextFade textFade;
         private ContentSizeFitter textFitter;
 
@@ -46,7 +47,7 @@ namespace TwitchInteraction
             this.useGlobalTextWidth = useGlobalTextWidth;
 
             textObject = new GameObject("TwitchInteractionTimerCooldown");
-            textText = textObject.AddComponent<Text>();
+            textText = textObject.AddComponent<TextMeshProUGUI>();
             textFade = textObject.AddComponent<uGUI_TextFade>();
             textFitter = textObject.AddComponent<ContentSizeFitter>();
 
@@ -56,7 +57,7 @@ namespace TwitchInteraction
             textText.font = uGUI.main.intro.mainText.text.font;
             textText.fontSize = 16;
             textText.fontStyle = uGUI.main.intro.mainText.text.fontStyle;
-            textText.alignment = TextAnchor.MiddleLeft;
+            textText.alignment = TextAlignmentOptions.Left;
             textText.color = uGUI.main.intro.mainText.text.color;
             textText.material = uGUI.main.intro.mainText.text.material;
 
@@ -274,14 +275,14 @@ namespace TwitchInteraction
             float displayX;
             switch (textText.alignment)
             {
-                case TextAnchor.UpperLeft:
-                case TextAnchor.MiddleLeft:
-                case TextAnchor.LowerLeft:
+                case TextAlignmentOptions.TopLeft:
+                case TextAlignmentOptions.Left:
+                case TextAlignmentOptions.BottomLeft:
                     displayX = x + width / 2f;
                     goto IL_9A;
-                case TextAnchor.UpperRight:
-                case TextAnchor.MiddleRight:
-                case TextAnchor.LowerRight:
+                case TextAlignmentOptions.TopRight:
+                case TextAlignmentOptions.Right:
+                case TextAlignmentOptions.BottomRight:
                     displayX = x - width / 2f;
                     goto IL_9A;
             }

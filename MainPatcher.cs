@@ -1,18 +1,22 @@
-using QModManager.API.ModLoading;
+using BepInEx;
+using BepInEx.Logging;
 using System.Reflection;
 using TwitchInteraction.CrowdControl;
 using TwitchLib.Unity;
-using TwitchLib.PubSub;
 using System;
 using HarmonyLib;
-using System.Threading;
-using TwitchInteraction.Player_Events;
 
 namespace TwitchInteraction
 {
-    [QModCore]
-    public class MainPatcher
+
+    [BepInPlugin(myGUID, pluginName, versionString)]
+
+    public class MainPatcher: BaseUnityPlugin
     {
+        public const string myGUID = "TwitchInteractionMod";
+        public const string pluginName = "TwitchInteraction";
+        public const string versionString = "1.0.0";
+
         public static TwitchChatClient otherclient;
         public static TwitchPubSubClient otherpubsub;
         public static Channel TextChannel;
@@ -21,13 +25,15 @@ namespace TwitchInteraction
         public static System.Threading.CancellationToken cts2;
         public static Api api;
         public static Secrets secrets;
-
+        internal static ManualLogSource LogSource { get; private set; }
         internal static Assembly myAssembly = Assembly.GetExecutingAssembly();
 
-        [QModPatch]
-        public static void Patch()
-        {            
+        public void Awake()
+        {
+            LogSource = base.Logger;
+            LogSource.LogInfo("TwitchInteraction -- Awake");
             secrets = new Secrets();
+            LogSource.LogInfo("TwitchInteraction -- Secrets loaded");
 
             if (secrets.client == "crowdcontrol")
             {
