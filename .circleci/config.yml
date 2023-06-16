@@ -8,7 +8,7 @@ orbs:
 jobs:
   testo/hello:
     func:"greet"
-    to:"beans"
+    parameters: {"to":"beans"}
   checkov:
     docker:
       - image: bridgecrew/checkov:latest
