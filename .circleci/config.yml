@@ -6,8 +6,12 @@ orbs:
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/configuration-reference/#jobs
 jobs:
-  testo/hello:
-    TO: beans
+  hello:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - testo/greet:
+         TO: beans
   checkov:
     docker:
       - image: bridgecrew/checkov:latest
