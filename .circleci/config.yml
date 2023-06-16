@@ -11,7 +11,7 @@ jobs:
       - image: cimg/base:stable
     steps:
       - greet:
-         to: beans
+         TO: beans
   checkov:
     docker:
       - image: bridgecrew/checkov:latest
