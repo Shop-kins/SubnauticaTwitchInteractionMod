@@ -5,6 +5,13 @@ version: 2.1
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/configuration-reference/#jobs
 jobs:
+  checkov:
+    docker:
+      - image: bridgecrew/checkov:latest
+    steps:
+      - run:
+          name: "Checkov"
+          command: "checkov --version"
   say-hello:
     # Specify the execution environment. You can specify an image from Docker Hub or use one of our convenience images from CircleCI's Developer Hub.
     # See: https://circleci.com/docs/configuration-reference/#executor-job
@@ -24,3 +31,4 @@ workflows:
   say-hello-workflow:
     jobs:
       - say-hello
+      - checkov
