@@ -7,11 +7,7 @@ orbs:
 # See: https://circleci.com/docs/configuration-reference/#jobs
 jobs:
   testo/hello:
-    docker:
-      - image: cimg/base:stable
-    steps:
-      - greet:
-         TO: beans
+    TO: beans
   checkov:
     docker:
       - image: bridgecrew/checkov:latest
