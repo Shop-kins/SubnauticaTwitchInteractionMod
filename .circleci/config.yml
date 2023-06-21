@@ -6,9 +6,6 @@ orbs:
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/configuration-reference/#jobs
 jobs:
-  testo/hello:
-    func:"greet"
-    parameters: {"to":"beans"}
   checkov:
     docker:
       - image: bridgecrew/checkov:latest
@@ -34,6 +31,8 @@ jobs:
 workflows:
   say-hello-workflow:
     jobs:
-      - testo/hello
       - say-hello
+      - checkov
+  say-beans-workflow:
+    jobs:
       - checkov
