@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using CrowdControl.Common;
 using CrowdControl.Games.Packs;
 using ConnectorType = CrowdControl.Common.ConnectorType;
@@ -10,11 +9,11 @@ public class Subnautica : SimpleTCPPack
 
     public override ushort Port => 2679;
 
-    public Subnautica(IPlayer player, Func<CrowdControlBlock, bool> responseHandler, Action<object> statusUpdateHandler) : base(player, responseHandler, statusUpdateHandler) { }
+    public Subnautica(UserRecord player, Func<CrowdControlBlock, bool> responseHandler, Action<object> statusUpdateHandler) : base(player, responseHandler, statusUpdateHandler) { }
 
-    public override Game Game => new Game(91, "Subnautica", "Subnautica", "PC", ConnectorType.SimpleTCPConnector);
+    public override Game Game => new Game("Subnautica", "Subnautica", "PC", ConnectorType.SimpleTCPServerConnector);
 
-    public override List<Effect> Effects => new List<Effect>
+    public override EffectList Effects => new EffectList
     {
         new Effect("Rip Riley", "kill"),
         new Effect("Heal Riley", "heal"),

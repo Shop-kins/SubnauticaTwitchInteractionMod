@@ -1,6 +1,6 @@
-using SMLHelper.V2.Json;
-using SMLHelper.V2.Options;
-using SMLHelper.V2.Options.Attributes;
+using Nautilus.Json;
+using Nautilus.Options;
+using Nautilus.Options.Attributes;
 using System;
 using System.Collections.Generic;
 using TwitchInteraction.Player_Events;
@@ -35,7 +35,7 @@ namespace TwitchInteraction
         public bool SaveRedemptionMessages { get; set; } = false;
 
         [Button("Auth With Twitch (Requires Restart)")]
-        public void AuthWithTwitch()
+        public void AuthWithTwitch(ButtonClickedEventArgs e)
         {
             var lego = (new GameObject("SomeObjName")).AddComponent<TwitchOAuth>();
             lego.InitiateTwitchAuth(this);
@@ -205,7 +205,7 @@ namespace TwitchInteraction
         public List<ConfigEventInfo> PopulateEventList()
         {
             var list = new List<ConfigEventInfo>();
-            list.Add(new ConfigEventInfo("Rip Riley[Integration]", this.Kill_BitCost, this.Kill_Cooldown));
+            list.Add(new ConfigEventInfo("Rip Riley [Integration]", this.Kill_BitCost, this.Kill_Cooldown));
             list.Add(new ConfigEventInfo("Heal Riley [Integration]", this.Heal_BitCost, this.Heal_Cooldown));
             list.Add(new ConfigEventInfo("Toggle Day/Night [Integration]", this.DayNight_BitCost, this.DayNight_Cooldown));
             list.Add(new ConfigEventInfo("Open PDA [Integration]", this.PDA_BitCost, this.PDA_Cooldown));

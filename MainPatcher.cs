@@ -2,7 +2,6 @@ using BepInEx;
 using BepInEx.Logging;
 using System.Reflection;
 using TwitchInteraction.CrowdControl;
-using TwitchLib.Unity;
 using System;
 using HarmonyLib;
 
@@ -23,7 +22,6 @@ namespace TwitchInteraction
         public static Channel PubSubChannel;
         public static System.Threading.CancellationToken cts;
         public static System.Threading.CancellationToken cts2;
-        public static Api api;
         public static Secrets secrets;
         internal static ManualLogSource LogSource { get; private set; }
         internal static Assembly myAssembly = Assembly.GetExecutingAssembly();

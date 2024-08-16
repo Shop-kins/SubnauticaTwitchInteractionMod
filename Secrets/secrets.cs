@@ -1,4 +1,4 @@
-﻿using SMLHelper.V2.Handlers;
+﻿using Nautilus.Handlers;
 using System.Collections.Generic;
 
 namespace TwitchInteraction
@@ -20,8 +20,8 @@ namespace TwitchInteraction
         public Secrets()
         {
             MainPatcher.LogSource.LogInfo("Loading config file");
-            Config config = OptionsPanelHandler.Main.RegisterModOptions<Config>();
-            EventsFile events = OptionsPanelHandler.Main.RegisterModOptions<EventsFile>();
+            Config config = OptionsPanelHandler.RegisterModOptions<Config>();
+            EventsFile events = OptionsPanelHandler.RegisterModOptions<EventsFile>();
 
             config.Load();
             MainPatcher.LogSource.LogInfo("Loaded config file");
