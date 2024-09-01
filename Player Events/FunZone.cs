@@ -82,13 +82,6 @@ namespace TwitchInteraction.Player_Events
            
         }
 
-        public static void LifePodWarp_Shallows()
-        {
-            Vector3 newHome = RandomStart.main.GetRandomStartPoint();
-            EscapePod.main.transform.position = newHome;
-            EscapePod.main.anchorPosition = newHome;
-        }
-
         public static void giveTooth()
         {
             DevConsole.SendConsoleCommand("item stalkertooth");
@@ -256,18 +249,6 @@ namespace TwitchInteraction.Player_Events
 
         }
 
-        public static void returnToShallows()
-        {
-            CoroutineHost.StartCoroutine(ReturnToShallowsAsync());
-        }
-        
-        private static IEnumerator ReturnToShallowsAsync()
-        {
-            yield return new WaitUntil(() => !Player.main.isPiloting && !Player.main.cinematicModeActive);
-            
-            EscapePod.main.RespawnPlayer();
-        }
-
         public static void InvertControls()
         {
             InputPatch.InputPatch.invertKeyboardAxisX = true;
@@ -294,16 +275,6 @@ namespace TwitchInteraction.Player_Events
         public static void EnableControls()
         {
             InputPatch.InputPatch.controlsEnabled = true;
-        }
-
-        public static void EnableFilmicMode()
-        {
-            UwePostProcessingManager.SetColorGradingMode(2);
-        }
-
-        public static void DisableFilmicMode()
-        {
-            UwePostProcessingManager.SetColorGradingMode(0);
         }
 
         public static void ClearRandomQuickSlot()
@@ -470,11 +441,6 @@ namespace TwitchInteraction.Player_Events
                 Inventory.main.InternalDropItem(equipmentItem.item, true);
             }
 
-        }
-
-        public static void RestoreCrashedShip()
-        {
-            DevConsole.SendConsoleCommand("restoreship");
         }
 
         public static void EnableSonicMode()
