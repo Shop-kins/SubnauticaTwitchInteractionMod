@@ -91,7 +91,52 @@ namespace TwitchInteraction.Player_Events
         public static void randomSummon()
         {
             System.Random random = new System.Random();
-            string[] creatures = { "shocker", "ghostleviathan", "biter", "blighter", "boneshark", "crabsnake", "crabsquid", "crash", "lavalizard", "mesmer", "reaperleviathan", "seadragon", "sandshark", "stalker", "warper", "bladderfish", "boomerang", "ghostrayred", "cutefish", "eyeye", "garryfish", "gasopod", "ghostrayblue", "holefish", "hoopfish", "hoverfish", "jellyray", "lavaboomerang", "oculus", "peeper", "rabbitray", "lavaeyeye", "reefback", "reginald", "seatreader", "spadefish", "spinefish", "bleeder", "shuttlebug", "cavecrawler", "floater", "lavalarva", "rockgrub", "jumper" };
+            string[] creatures = {
+                "crash",
+                "jumper",
+                "bladderfish",
+                "rockgrub",
+                "crashhome",
+                "hoopfish",
+                "rockpuncher", 
+                "boneshark", 
+                "skyray", 
+                "spinefish", 
+                "warper", 
+                "seaemperorbaby", 
+                "precursordroid", 
+                "seaemperorjuvenile", 
+                "penguin", 
+                "glowwhale", 
+                "pinnacarid",
+                "lilypaddler",
+                "spinnerfish",
+                "arcticray",
+                "symbiote", 
+                "titanholefish", 
+                "penguinbaby", 
+                "bruteshark", 
+                "trivalveblue",
+                "arcticpeeper", 
+                "arrowray", 
+                "seamonkey", 
+                "nootfish", 
+                "brinewing", 
+                "triops", 
+                "squidshark", 
+                "seamonkeybaby", 
+                "chelicerate", 
+                "snowstalker",
+                "snowstalkerbaby",
+                "featherfish",
+                "featherfishred",
+                "shadowleviathan",
+                "smallventgarden",
+                "trivalveyellow",
+                "jellyfish",
+                "discusfish",
+                "cryptosuchus",
+            };
 
             DevConsole.SendConsoleCommand("spawn " + creatures[random.Next(creatures.Length)]);
         }
@@ -107,7 +152,97 @@ namespace TwitchInteraction.Player_Events
         {
             System.Random random = new System.Random();
 
-            TechType[] blueprintTech = { TechType.BaseBioReactor, TechType.RocketBase, TechType.Constructor, TechType.Exosuit, TechType.BaseMoonpool, TechType.BaseNuclearReactor, TechType.PropulsionCannon, TechType.Seamoth, TechType.StasisRifle, TechType.ThermalPlant, TechType.Transfuser, TechType.Workbench, TechType.Techlight, TechType.LEDLight, TechType.CyclopsHullBlueprint, TechType.CyclopsBridgeBlueprint, TechType.CyclopsEngineBlueprint, TechType.CyclopsDockingBayBlueprint, TechType.Seaglide, TechType.Beacon, TechType.BatteryCharger, TechType.BaseObservatory, TechType.FiltrationMachine, TechType.CoffeeVendingMachine, TechType.BaseMapRoom, TechType.BaseLadder };
+            TechType[] blueprintTech = {
+                TechType.Beacon,
+                TechType.FrozenCreatureAntidote,
+                TechType.HydraulicFluid,
+                TechType.Gravsphere,
+                TechType.Constructor,
+                TechType.QuantumLocker,
+                TechType.Seaglide,
+                TechType.SpyPenguin,
+                TechType.PrecursorIonBattery,
+                TechType.PrecursorIonPowerCell,
+                TechType.RadioTowerTOM,
+                TechType.RadioTowerPPU,
+                TechType.SuitBoosterTank,
+                TechType.ColdSuit,
+                TechType.FlashlightHelmet,
+                TechType.Rebreather,
+                TechType.DoubleTank,
+                TechType.ReinforcedDiveSuit,
+                TechType.CoffeeVendingMachine,
+                TechType.HighCapacityTank,
+                TechType.WaterFiltrationSuit,
+                TechType.CoffeeVendingMachine,
+                TechType.Aquarium,
+                TechType.AromatherapyLamp,
+                TechType.BarTable,
+                TechType.Bed1,
+                TechType.Bed2,
+                TechType.PlanterPot,
+                TechType.BatteryCharger,
+                TechType.BaseBioReactor,
+                TechType.Bench,
+                TechType.BaseBulkhead,
+                TechType.PlanterPot3,
+                TechType.StarshipChair3,
+                TechType.PlanterPot2,
+                TechType.BaseControlRoom,
+                TechType.LabCounter,
+                TechType.StarshipDesk,
+                TechType.Exosuit,
+                TechType.SeaTruck,
+                TechType.SeaTruckAquariumModule,
+                TechType.SeaTruckDockingModule,
+                TechType.SeaTruckFabricatorModule,
+                TechType.SeaTruckSleeperModule,
+                TechType.SeaTruckStorageModule,
+                TechType.SeaTruckTeleportationModule,
+                TechType.Hoverbike,
+                TechType.ExoHullModule1,
+                TechType.ExoHullModule2,
+                TechType.ExosuitJetUpgradeModule,
+                TechType.ExosuitPropulsionArmModule,
+                TechType.ExosuitTorpedoArmModule,
+                TechType.SeaTruckUpgradeAfterburner,
+                TechType.SeaTruckUpgradePerimeterDefense,
+                TechType.SeaTruckUpgradeHorsePower,
+                TechType.Thumper,
+                TechType.TeleportationTool,
+                TechType.PropulsionCannon,
+                TechType.DiveReel,
+                TechType.MetalDetector,
+                TechType.LEDLight,
+                TechType.LaserCutter,
+                TechType.Builder,
+                TechType.WaterPurificationTablet,
+                TechType.SpicyFruitSalad,
+                TechType.BaseWindow,
+                TechType.BaseFiltrationMachine,
+                TechType.VendingMachine,
+                TechType.BaseMoonpool,
+                TechType.ThermalPlant,
+                TechType.Hoverpad,
+                TechType.BaseMapRoom,
+                TechType.Recyclotron,
+                TechType.PowerCellCharger,
+                TechType.BaseObservatory,
+                TechType.BaseNuclearReactor,
+                TechType.Workbench,
+                TechType.Jukebox,
+                TechType.FarmingTray,
+                TechType.HoverbikeIceWormReductionModule,
+                TechType.HoverbikeJumpModule,
+                TechType.Sink,
+                TechType.SmallStove,
+                TechType.SingleWallShelf,
+                TechType.Shower,
+                TechType.PictureFrame,
+                TechType.LabTrashcan,
+                TechType.PlanterPot3,
+                TechType.EmmanuelPendulum,
+            };
             int randomNum = random.Next(blueprintTech.Length);
 
             int counter = 0;
@@ -128,14 +263,65 @@ namespace TwitchInteraction.Player_Events
         public static void randomItem()
         {
             System.Random random = new System.Random();
-            TechType[] resources = { TechType.AcidMushroom, TechType.SeaTreaderPoop, TechType.BloodOil, TechType.CoralChunk, TechType.CrashPowder, TechType.Copper, TechType.CreepvinePiece, TechType.CreepvineSeedCluster, TechType.Sulphur, TechType.WhiteMushroom, TechType.Diamond, TechType.TreeMushroomPiece, TechType.GasPod, TechType.JellyPlant, TechType.Gold, TechType.Kyanite, TechType.Lead, TechType.Lithium, TechType.Magnetite, TechType.ScrapMetal, TechType.Nickel, TechType.PinkMushroom, TechType.Quartz, TechType.AluminumOxide, TechType.Salt, TechType.Silver, TechType.SmallMelon, TechType.PurpleRattle, TechType.StalkerTooth, TechType.JeweledDiskPiece, TechType.Titanium, TechType.UraniniteCrystal };
+            TechType[] resources = { 
+                TechType.Copper, 
+                TechType.CreepvinePiece, 
+                TechType.CreepvineSeedCluster, 
+                TechType.Sulphur, 
+                TechType.Diamond, 
+                TechType.HeatFruit, 
+                TechType.LilyPadResource, 
+                TechType.FrozenRiverPlant2, 
+                TechType.JellyPlant, 
+                TechType.Gold, 
+                TechType.PrecursorIonCrystal, 
+                TechType.Kyanite, 
+                TechType.Lead, 
+                TechType.Lithium, 
+                TechType.Magnetite, 
+                TechType.Nickel, 
+                TechType.SnowStalkerPlantLeaf, 
+                TechType.Quartz, 
+                TechType.GenericRibbon, 
+                TechType.KelpRootPustule, 
+                TechType.AluminumOxide, 
+                TechType.Salt, 
+                TechType.Silver, 
+                TechType.AluminumOxide, 
+                TechType.Salt, 
+                TechType.Silver, 
+                TechType.SnowStalkerFur, 
+                TechType.JeweledDiskPiece, 
+                TechType.Titanium, 
+                TechType.UraniniteCrystal, 
+                TechType.DeepLilyShroom,
+            };
             CraftData.AddToInventory(resources[random.Next(resources.Length)], 1);
         }
 
         public static void randomAdvancedResources()
         {
             System.Random random = new System.Random();
-            string[] resources = { "bleach", "enameledglass", "fibermesh", "glass", "lubricant", "plasteelingot", "silicone", "titaniumingot", "titanium", "aerogel", "benzene", "hydrochloricacid", "polyaniline", "aramidfibers"};
+            string[] resources = {
+                "aerogel",
+                "frozencreatureantidote",
+                "benzene",
+                "hydraulicfluid",
+                "hydrochloricacid",
+                "polyaniline",
+                "aramidfibers",
+                "enameledglass",
+                "fibermesh",
+                "glass",
+                "lubricant",
+                "plasteelingot",
+                "silicone",
+                "titaniumingot",
+                "advancedwiringkit",
+                "computerchip",
+                "copperwire",
+                "wiringkit"
+            };
 
             DevConsole.SendConsoleCommand("item " + resources[random.Next(resources.Length)]);
         }
@@ -148,7 +334,7 @@ namespace TwitchInteraction.Player_Events
             {
                 CraftData.AddToInventory(listofstuff[random.Next(listofstuff.Length)], 1, false, false);
             }
-        }
+        }   
 
         public static void playToothSound()
         {
