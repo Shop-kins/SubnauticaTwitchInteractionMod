@@ -24,9 +24,9 @@ namespace TwitchInteraction.Player_Events
 
         }
 
-        public static void summonReaper()
+        public static void summonShrimp()
         {
-            DevConsole.SendConsoleCommand("spawn reaperleviathan");
+            DevConsole.SendConsoleCommand("spawn chelicerate");
         }
 
         public static void TeleportPlayerOOB()

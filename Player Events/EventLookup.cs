@@ -23,21 +23,19 @@ namespace TwitchInteraction.Player_Events
         //MAP OF FUNZONE AND DANGER ZONE KEYS TO THEIR APPROPRIATE FUNCTIONS
         private static readonly Dictionary<string, EventInfo> EventDictionary = new Dictionary<string, EventInfo>() {
             // Parameter: ID, Action, BitCost, CooldownSeconds
-            { "Rip Riley [Integration]", new EventInfo(DangerZone.KillPlayer, 500, 60)},
-            { "Heal Riley [Integration]", new EventInfo(FunZone.HealPlayer, 50, 15) },
+            { "Rip Robin [Integration]", new EventInfo(DangerZone.KillPlayer, 500, 60)},
+            { "Heal Robin [Integration]", new EventInfo(FunZone.HealPlayer, 50, 15) },
             { "Toggle Day/Night [Integration]", new EventInfo(FunZone.ToggleDayNight, 50, 30) },
             { "Open PDA [Integration]", new EventInfo(FunZone.openPDA, 50, 15) },
             { "Turn on the big gun [Integration]", new EventInfo(DangerZone.EnableGun, 200, 300) },
             { "Fill Oxygen [Integration]", new EventInfo(FunZone.FillOxygen, 50, 15) },
             { "Player Teleport [Integration]", new EventInfo(DangerZone.TeleportPlayer, 400, 180) },
-            { "Give that beautiful tooth [Integration]", new EventInfo(FunZone.giveTooth, 10000, 60) },
             { "Cow or Reaper? Yes. [Integration]", new EventInfo(FunZone.randomSummon, 100, 180) },
             { "Fill him up with junk [Integration]", new EventInfo(FunZone.junkFill, 100, 180) },
-            { "Get your pet reaper to hang out [Integration]", new EventInfo(DangerZone.summonReaper, 150, 180) },
+            { "Get your pet shrimp to hang out [Integration]", new EventInfo(DangerZone.summonShrimp, 150, 180) },
             { "Resource Roulette [Integration]", new EventInfo(FunZone.randomItem, 30, 30) },
             { "Blueprint Roulette [Integration]", new EventInfo(FunZone.randomBlueprintUnlock, 100, 30) },
             { "An early breakfast [Integration]", new EventInfo(FunZone.fillFoodWater, 20, 30) },
-            { "Play tooth drop sound [Integration]", new EventInfo(FunZone.playToothSound, 10, 5) },
             { "Clear a hotbar slot [Integration]", new EventInfo(FunZone.ClearRandomQuickSlot, 100, 60) },
             { "Shuffle the hotbar [Integration]", new EventInfo(FunZone.RandomizeQuickSlots, 250, 60) },
             { "Steal a battery [Integration]", new EventInfo(FunZone.RemoveRandomBattery, 150, 60) },
@@ -51,7 +49,7 @@ namespace TwitchInteraction.Player_Events
             { "Invert Controls [Integration]", new TimedEventInfo(FunZone.InvertControls, 200, 60, FunZone.NormalControls, 60) },
             { "Disable Controls [Integration]", new TimedEventInfo(FunZone.DisableControls, 200, 60, FunZone.EnableControls, 10) },
             { "Random FOV [Integration]", new TimedEventInfo(FunZone.fovRandom, 1000, 60, FunZone.fovNormal, 60) },
-            { "Be careful Riley [Integration]", new TimedEventInfo(DangerZone.ActivateOHKO, 500, 60, DangerZone.DeactiveOHKO, 60) },
+            { "Be careful Robin [Integration]", new TimedEventInfo(DangerZone.ActivateOHKO, 500, 60, DangerZone.DeactiveOHKO, 60) },
             { "Go REALLY fast [Integration]", new TimedEventInfo(FunZone.EnableSonicMode, 100, 60, FunZone.DisableFastMode, 60) }
         };
 

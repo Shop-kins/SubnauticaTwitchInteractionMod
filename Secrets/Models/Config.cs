@@ -93,21 +93,17 @@ namespace TwitchInteraction
         public int Teleport_BitCost { get; set; } = 400;
         [Slider("Teleport Riley Cooldown", 10, 180, DefaultValue = 180, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
         public int Teleport_Cooldown { get; set; } = 180;
-        [Slider("Give Tooth Bit Cost", 1, 1000, DefaultValue = 1000, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
-        public int Tooth_BitCost { get; set; } = 1000;
-        [Slider("Give Tooth Cooldown", 10, 180, DefaultValue = 60, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
-        public int Tooth_Cooldown { get; set; } = 60;
-        [Slider("Cow or Reaper? Yes. Bit Cost", 1, 1000, DefaultValue = 100, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Random Creature? Yes. Bit Cost", 1, 1000, DefaultValue = 100, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
         public int Spawn_BitCost { get; set; } = 100;
-        [Slider("Cow or Reaper? Yes. Cooldown", 10, 180, DefaultValue = 180, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Random Creature? Yes. Cooldown", 10, 180, DefaultValue = 180, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
         public int Spawn_Cooldown { get; set; } = 180;
         [Slider("Junk Fill Bit Cost", 1, 1000, DefaultValue = 100, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
         public int Junk_BitCost { get; set; } = 100;
         [Slider("Junk Fill Cooldown", 10, 180, DefaultValue = 180, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
         public int Junk_Cooldown { get; set; } = 180;
-        [Slider("Spawn Reaper Bit Cost", 1, 1000, DefaultValue = 150, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Spawn Shrimp Bit Cost", 1, 1000, DefaultValue = 150, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
         public int Reaper_BitCost { get; set; } = 150;
-        [Slider("Spawn Reaper Cooldown", 10, 180, DefaultValue = 180, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
+        [Slider("Spawn Shrimp Cooldown", 10, 180, DefaultValue = 180, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
         public int Repear_Cooldown { get; set; } = 180;
         [Slider("Resource Roulette Bit Cost", 1, 1000, DefaultValue = 30, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
         public int Resource_BitCost { get; set; } = 30;
@@ -121,11 +117,6 @@ namespace TwitchInteraction
         public int Eat_BitCost { get; set; } = 20;
         [Slider("Early Breakfast Cooldown", 10, 180, DefaultValue = 30, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
         public int Eat_Cooldown { get; set; } = 30;
-
-        [Slider("Play Tooth Sound Bit Cost", 1, 1000, DefaultValue = 500, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
-        public int ToothSound_BitCost { get; set; } = 10;
-        [Slider("Play Tooth Sound Cooldown", 10, 180, DefaultValue = 60, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
-        public int ToothSound_Cooldown { get; set; } = 5;
         [Slider("Clear Hotbar Slot Bit Cost", 1, 1000, DefaultValue = 100, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
         public int ClearHotbar_BitCost { get; set; } = 100;
         [Slider("Clear Hotbar Slot Cooldown", 10, 180, DefaultValue = 60, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
@@ -188,21 +179,19 @@ namespace TwitchInteraction
         public List<ConfigEventInfo> PopulateEventList()
         {
             var list = new List<ConfigEventInfo>();
-            list.Add(new ConfigEventInfo("Rip Riley [Integration]", this.Kill_BitCost, this.Kill_Cooldown));
-            list.Add(new ConfigEventInfo("Heal Riley [Integration]", this.Heal_BitCost, this.Heal_Cooldown));
+            list.Add(new ConfigEventInfo("Rip Robin [Integration]", this.Kill_BitCost, this.Kill_Cooldown));
+            list.Add(new ConfigEventInfo("Heal Robin [Integration]", this.Heal_BitCost, this.Heal_Cooldown));
             list.Add(new ConfigEventInfo("Toggle Day/Night [Integration]", this.DayNight_BitCost, this.DayNight_Cooldown));
             list.Add(new ConfigEventInfo("Open PDA [Integration]", this.PDA_BitCost, this.PDA_Cooldown));
             list.Add(new ConfigEventInfo("Turn on the big gun [Integration]", this.Gun_BitCost, this.Gun_Cooldown));
             list.Add(new ConfigEventInfo("Fill Oxygen [Integration]", this.O2_BitCost, this.O2_Cooldown));
             list.Add(new ConfigEventInfo("Player Teleport [Integration]", this.Teleport_BitCost, this.Teleport_Cooldown));
-            list.Add(new ConfigEventInfo("Give that beautiful tooth [Integration]", this.Tooth_BitCost, this.Tooth_Cooldown));
-            list.Add(new ConfigEventInfo("Cow or Reaper? Yes. [Integration]", this.Spawn_BitCost, this.Spawn_Cooldown));
+            list.Add(new ConfigEventInfo("Random Creature? Yes. [Integration]", this.Spawn_BitCost, this.Spawn_Cooldown));
             list.Add(new ConfigEventInfo("Fill him up with junk [Integration]", this.Junk_BitCost, this.Junk_Cooldown));
-            list.Add(new ConfigEventInfo("Get your pet reaper to hang out [Integration]", this.Reaper_BitCost, this.Repear_Cooldown));
+            list.Add(new ConfigEventInfo("Get your pet shrimp to hang out [Integration]", this.Reaper_BitCost, this.Repear_Cooldown));
             list.Add(new ConfigEventInfo("Resource Roulette [Integration]", this.Resource_BitCost, this.Resource_Cooldown));
             list.Add(new ConfigEventInfo("Blueprint Roulette [Integration]", this.Blueprint_BitCost, this.Blueprint_Cooldown));
             list.Add(new ConfigEventInfo("An early breakfast [Integration]", this.Eat_BitCost, this.Eat_Cooldown));
-            list.Add(new ConfigEventInfo("Play tooth drop sound [Integration]", this.ToothSound_BitCost, this.ToothSound_Cooldown));
             list.Add(new ConfigEventInfo("Clear a hotbar slot [Integration]", this.ClearHotbar_BitCost, this.ClearHotbar_Cooldown));
             list.Add(new ConfigEventInfo("Shuffle the hotbar [Integration]", this.ShuffleHotbar_BitCost, this.ShuffleHotbar_Cooldown));
             list.Add(new ConfigEventInfo("Steal a battery [Integration]", this.StealBat_BitCost, this.StealBat_Cooldown));
@@ -214,7 +203,7 @@ namespace TwitchInteraction
             list.Add(new ConfigEventInfo("Invert Controls [Integration]", this.Invert_BitCost, this.Invert_Cooldown));
             list.Add(new ConfigEventInfo("Disable Controls [Integration]", this.Disable_BitCost, this.Disable_Cooldown));
             list.Add(new ConfigEventInfo("Random FOV [Integration]", this.FOV_BitCost, this.FOV_Cooldown));
-            list.Add(new ConfigEventInfo("Be careful Riley [Integration]", this.OHKO_BitCost, this.OHKO_Cooldown));
+            list.Add(new ConfigEventInfo("Be careful Robin [Integration]", this.OHKO_BitCost, this.OHKO_Cooldown));
             list.Add(new ConfigEventInfo("Go REALLY fast [Integration]", this.Fast_BitCost, this.Fast_Cooldown));
             list.Add(new ConfigEventInfo("Put your name on the map! [Integration]", this.Beacon_BitCost, this.Beacon_Cooldown));
 
