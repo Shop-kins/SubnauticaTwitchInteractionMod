@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
+using TwitchInteractionBelowZero.Player_Events;
 using UnityEngine;
 using UWE;
 
@@ -82,63 +83,11 @@ namespace TwitchInteraction.Player_Events
            
         }
 
-        public static void giveTooth()
-        {
-            DevConsole.SendConsoleCommand("item stalkertooth");
-
-        }
-
         public static void randomSummon()
         {
             System.Random random = new System.Random();
-            string[] creatures = {
-                "crash",
-                "jumper",
-                "bladderfish",
-                "rockgrub",
-                "crashhome",
-                "hoopfish",
-                "rockpuncher", 
-                "boneshark", 
-                "skyray", 
-                "spinefish", 
-                "warper", 
-                "seaemperorbaby", 
-                "precursordroid", 
-                "seaemperorjuvenile", 
-                "penguin", 
-                "glowwhale", 
-                "pinnacarid",
-                "lilypaddler",
-                "spinnerfish",
-                "arcticray",
-                "symbiote", 
-                "titanholefish", 
-                "penguinbaby", 
-                "bruteshark", 
-                "trivalveblue",
-                "arcticpeeper", 
-                "arrowray", 
-                "seamonkey", 
-                "nootfish", 
-                "brinewing", 
-                "triops", 
-                "squidshark", 
-                "seamonkeybaby", 
-                "chelicerate", 
-                "snowstalker",
-                "snowstalkerbaby",
-                "featherfish",
-                "featherfishred",
-                "shadowleviathan",
-                "smallventgarden",
-                "trivalveyellow",
-                "jellyfish",
-                "discusfish",
-                "cryptosuchus",
-            };
 
-            DevConsole.SendConsoleCommand("spawn " + creatures[random.Next(creatures.Length)]);
+            DevConsole.SendConsoleCommand("spawn " + FunZoneFixtures.creatures[random.Next(FunZoneFixtures.creatures.Length)]);
         }
 
         public static void fillFoodWater()
@@ -152,97 +101,8 @@ namespace TwitchInteraction.Player_Events
         {
             System.Random random = new System.Random();
 
-            TechType[] blueprintTech = {
-                TechType.Beacon,
-                TechType.FrozenCreatureAntidote,
-                TechType.HydraulicFluid,
-                TechType.Gravsphere,
-                TechType.Constructor,
-                TechType.QuantumLocker,
-                TechType.Seaglide,
-                TechType.SpyPenguin,
-                TechType.PrecursorIonBattery,
-                TechType.PrecursorIonPowerCell,
-                TechType.RadioTowerTOM,
-                TechType.RadioTowerPPU,
-                TechType.SuitBoosterTank,
-                TechType.ColdSuit,
-                TechType.FlashlightHelmet,
-                TechType.Rebreather,
-                TechType.DoubleTank,
-                TechType.ReinforcedDiveSuit,
-                TechType.CoffeeVendingMachine,
-                TechType.HighCapacityTank,
-                TechType.WaterFiltrationSuit,
-                TechType.CoffeeVendingMachine,
-                TechType.Aquarium,
-                TechType.AromatherapyLamp,
-                TechType.BarTable,
-                TechType.Bed1,
-                TechType.Bed2,
-                TechType.PlanterPot,
-                TechType.BatteryCharger,
-                TechType.BaseBioReactor,
-                TechType.Bench,
-                TechType.BaseBulkhead,
-                TechType.PlanterPot3,
-                TechType.StarshipChair3,
-                TechType.PlanterPot2,
-                TechType.BaseControlRoom,
-                TechType.LabCounter,
-                TechType.StarshipDesk,
-                TechType.Exosuit,
-                TechType.SeaTruck,
-                TechType.SeaTruckAquariumModule,
-                TechType.SeaTruckDockingModule,
-                TechType.SeaTruckFabricatorModule,
-                TechType.SeaTruckSleeperModule,
-                TechType.SeaTruckStorageModule,
-                TechType.SeaTruckTeleportationModule,
-                TechType.Hoverbike,
-                TechType.ExoHullModule1,
-                TechType.ExoHullModule2,
-                TechType.ExosuitJetUpgradeModule,
-                TechType.ExosuitPropulsionArmModule,
-                TechType.ExosuitTorpedoArmModule,
-                TechType.SeaTruckUpgradeAfterburner,
-                TechType.SeaTruckUpgradePerimeterDefense,
-                TechType.SeaTruckUpgradeHorsePower,
-                TechType.Thumper,
-                TechType.TeleportationTool,
-                TechType.PropulsionCannon,
-                TechType.DiveReel,
-                TechType.MetalDetector,
-                TechType.LEDLight,
-                TechType.LaserCutter,
-                TechType.Builder,
-                TechType.WaterPurificationTablet,
-                TechType.SpicyFruitSalad,
-                TechType.BaseWindow,
-                TechType.BaseFiltrationMachine,
-                TechType.VendingMachine,
-                TechType.BaseMoonpool,
-                TechType.ThermalPlant,
-                TechType.Hoverpad,
-                TechType.BaseMapRoom,
-                TechType.Recyclotron,
-                TechType.PowerCellCharger,
-                TechType.BaseObservatory,
-                TechType.BaseNuclearReactor,
-                TechType.Workbench,
-                TechType.Jukebox,
-                TechType.FarmingTray,
-                TechType.HoverbikeIceWormReductionModule,
-                TechType.HoverbikeJumpModule,
-                TechType.Sink,
-                TechType.SmallStove,
-                TechType.SingleWallShelf,
-                TechType.Shower,
-                TechType.PictureFrame,
-                TechType.LabTrashcan,
-                TechType.PlanterPot3,
-                TechType.EmmanuelPendulum,
-            };
+            TechType[] blueprintTech = FunZoneFixtures.blueprintTech;
+
             int randomNum = random.Next(blueprintTech.Length);
 
             int counter = 0;
@@ -263,65 +123,14 @@ namespace TwitchInteraction.Player_Events
         public static void randomItem()
         {
             System.Random random = new System.Random();
-            TechType[] resources = { 
-                TechType.Copper, 
-                TechType.CreepvinePiece, 
-                TechType.CreepvineSeedCluster, 
-                TechType.Sulphur, 
-                TechType.Diamond, 
-                TechType.HeatFruit, 
-                TechType.LilyPadResource, 
-                TechType.FrozenRiverPlant2, 
-                TechType.JellyPlant, 
-                TechType.Gold, 
-                TechType.PrecursorIonCrystal, 
-                TechType.Kyanite, 
-                TechType.Lead, 
-                TechType.Lithium, 
-                TechType.Magnetite, 
-                TechType.Nickel, 
-                TechType.SnowStalkerPlantLeaf, 
-                TechType.Quartz, 
-                TechType.GenericRibbon, 
-                TechType.KelpRootPustule, 
-                TechType.AluminumOxide, 
-                TechType.Salt, 
-                TechType.Silver, 
-                TechType.AluminumOxide, 
-                TechType.Salt, 
-                TechType.Silver, 
-                TechType.SnowStalkerFur, 
-                TechType.JeweledDiskPiece, 
-                TechType.Titanium, 
-                TechType.UraniniteCrystal, 
-                TechType.DeepLilyShroom,
-            };
+            TechType[] resources = FunZoneFixtures.basic_resources;
             CraftData.AddToInventory(resources[random.Next(resources.Length)], 1);
         }
 
         public static void randomAdvancedResources()
         {
             System.Random random = new System.Random();
-            string[] resources = {
-                "aerogel",
-                "frozencreatureantidote",
-                "benzene",
-                "hydraulicfluid",
-                "hydrochloricacid",
-                "polyaniline",
-                "aramidfibers",
-                "enameledglass",
-                "fibermesh",
-                "glass",
-                "lubricant",
-                "plasteelingot",
-                "silicone",
-                "titaniumingot",
-                "advancedwiringkit",
-                "computerchip",
-                "copperwire",
-                "wiringkit"
-            };
+            string[] resources = FunZoneFixtures.advanced_resources;
 
             DevConsole.SendConsoleCommand("item " + resources[random.Next(resources.Length)]);
         }
@@ -329,26 +138,11 @@ namespace TwitchInteraction.Player_Events
         public static void junkFill()
         {
             System.Random random = new System.Random();
-            TechType[] listofstuff = { TechType.AcidMushroomSpore, TechType.Lead, TechType.Diamond, TechType.Magnetite, TechType.UraniniteCrystal, TechType.SeaTreaderPoop, TechType.BloodOil, TechType.SmallFanSeed, TechType.PosterAurora, TechType.DepletedReactorRod, TechType.Magnesium, TechType.MercuryOre };
             for (int i = 0; i < 48; i++)
             {
-                CraftData.AddToInventory(listofstuff[random.Next(listofstuff.Length)], 1, false, false);
+                CraftData.AddToInventory(FunZoneFixtures.random_junk[random.Next(FunZoneFixtures.random_junk.Length)], 1, false, false);
             }
         }   
-
-        public static void playToothSound()
-        {
-            CoroutineHost.StartCoroutine(FunZone.playToothSoundAsync());
-        }
-
-        public static IEnumerator playToothSoundAsync()
-        {
-            System.Random random = new System.Random();
-            var task = CraftData.GetPrefabForTechTypeAsync(TechType.Stalker);
-            yield return task;
-            var stalkerObj = task.GetResult();
-            FMODUWE.PlayOneShot(stalkerObj.GetComponent<Stalker>().loseToothSound, new Vector3(Player.main.transform.position.x - random.Next(-8, 8), Player.main.transform.position.y - random.Next(-8, 7), Player.main.transform.position.z - random.Next(-7, 8)), 1f);
-        }
 
         private static float initialFOV;
         public static void fovRandom()
@@ -669,6 +463,17 @@ namespace TwitchInteraction.Player_Events
             beacon.label = username;
             beacon.beaconLabel.SetLabel(username);
         }
+
+        public static void LifepodForceDrop(String username)
+        {
+            UnityEngine.Object.Destroy(LifepodDrop.FindObjectOfType<LifepodDrop>().gameObject);
+            SupplyDropData dropData = LifepodDrop.FindObjectOfType<LifepodDrop>().GetDropData();
+            SupplyDropManager.main.PerformDrop(dropData, dropData.PickDropZone());
+            Player.main.OnPlayerPositionCheat();
+        }
+
+
+
     }
 }
 
