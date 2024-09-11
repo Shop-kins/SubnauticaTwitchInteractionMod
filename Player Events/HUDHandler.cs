@@ -8,6 +8,7 @@ namespace TwitchInteraction.Player_Events
     {
 
 		public static bool recursive = true;
+		private static List<string> hideList = new List<string>();
 
 		private static void ProcessComponent(Behaviour b, HideForScreenshots parent, bool enable)
 		{
@@ -69,7 +70,6 @@ namespace TwitchInteraction.Player_Events
 		private static void UnhideInternal(GameObject obj, HideForScreenshots parent)
 		{
 			obj.BroadcastMessage("UnhideForScreenshots", SendMessageOptions.DontRequireReceiver);
-
 			ProcessComponent(obj.GetComponent<Text>(), parent, true);
 			ProcessComponent(obj.GetComponent<Image>(), parent, true);
 			ProcessComponent(obj.GetComponent<Renderer>(), parent, true);

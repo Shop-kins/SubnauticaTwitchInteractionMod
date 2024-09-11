@@ -18,12 +18,6 @@ namespace TwitchInteraction.Player_Events
             Player.main.liveMixin.TakeDamage(666);
         }
 
-        public static void EnableGun()
-        {
-            StoryGoalCustomEventHandler.main.gunDisabled = false;
-
-        }
-
         public static void summonShrimp()
         {
             DevConsole.SendConsoleCommand("spawn chelicerate");
@@ -101,6 +95,21 @@ namespace TwitchInteraction.Player_Events
             yield return new WaitUntil(() => Player.main.liveMixin.IsAlive() && !Player.main.cinematicModeActive && !Player.main.isPiloting && Time.timeScale > 0f);
 
             Player.main.SetPosition(newPositionData.position);
+            Player.main.OnPlayerPositionCheat();
+        }
+
+        public static void TeleportPlayerLifepod()
+        {
+            CoroutineHost.StartCoroutine(TeleportPlayerLifepodAsync());
+        }
+
+        private static IEnumerator TeleportPlayerLifepodAsync()
+        {
+
+            // queue the teleport until the player is not dead and not in a cinematic and not piloting and the game is not paused.
+            yield return new WaitUntil(() => Player.main.liveMixin.IsAlive() && !Player.main.cinematicModeActive && !Player.main.isPiloting && Time.timeScale > 0f);
+
+            Player.main.SetPosition(LifepodDrop.FindObjectOfType<LifepodDrop>().GetDropZone().destination);
             Player.main.OnPlayerPositionCheat();
         }
 

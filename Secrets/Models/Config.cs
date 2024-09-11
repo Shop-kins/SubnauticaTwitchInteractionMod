@@ -81,18 +81,10 @@ namespace TwitchInteraction
         public int PDA_BitCost { get; set; } = 50;
         [Slider("Open PDA Riley Cooldown", 10, 180, DefaultValue = 15, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
         public int PDA_Cooldown { get; set; } = 15;
-        [Slider("Activate Gun Bit Cost", 1, 1000, DefaultValue = 200, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
-        public int Gun_BitCost { get; set; } = 200;
-        [Slider("Activate Gun Cooldown", 10, 180, DefaultValue = 300, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
-        public int Gun_Cooldown { get; set; } = 300;
         [Slider("Refill O2 Bit Cost", 1, 1000, DefaultValue = 50, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
         public int O2_BitCost { get; set; } = 50;
         [Slider("Refill O2 Cooldown", 10, 180, DefaultValue = 15, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
         public int O2_Cooldown { get; set; } = 15;
-        [Slider("Teleport Riley Bit Cost", 1, 1000, DefaultValue = 400, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
-        public int Teleport_BitCost { get; set; } = 400;
-        [Slider("Teleport Riley Cooldown", 10, 180, DefaultValue = 180, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
-        public int Teleport_Cooldown { get; set; } = 180;
         [Slider("Random Creature? Yes. Bit Cost", 1, 1000, DefaultValue = 100, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
         public int Spawn_BitCost { get; set; } = 100;
         [Slider("Random Creature? Yes. Cooldown", 10, 180, DefaultValue = 180, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
@@ -145,10 +137,6 @@ namespace TwitchInteraction
         public int Mouse_BitCost { get; set; } = 200;
         [Slider("Random Mouse Sensitivity Cooldown", 10, 180, DefaultValue = 60, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
         public int Mouse_Cooldown { get; set; } = 60;
-        [Slider("Hide HUD Bit Cost", 1, 1000, DefaultValue = 50, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
-        public int HUD_BitCost { get; set; } = 50;
-        [Slider("Hide HUD Cooldown", 10, 180, DefaultValue = 60, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
-        public int HUD_Cooldown { get; set; } = 60;
         [Slider("Invert Controls Bit Cost", 1, 1000, DefaultValue = 200, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
         public int Invert_BitCost { get; set; } = 200;
         [Slider("Invert Controls Cooldown", 10, 180, DefaultValue = 60, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
@@ -173,39 +161,46 @@ namespace TwitchInteraction
         public int Beacon_Cooldown { get; set; } = 60;
         [Slider("Put your name on the map! bit cost", 10, 180, DefaultValue = 60, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
         public int Beacon_BitCost { get; set; } = 100;
+        [Slider("Go HOME Robin! Cooldown", 1, 1000, DefaultValue = 100, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
+        public int Respawn_Cooldown { get; set; } = 60;
+        [Slider("Go HOME Robin! bit cost", 10, 180, DefaultValue = 60, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
+        public int Respawn_BitCost { get; set; } = 100;
+        [Slider("Drop The lifepod! Cooldown", 1, 1000, DefaultValue = 100, Step = 10, Format = "{0:F0} bits"), OnChange(nameof(UpdateEventsData))]
+        public int Drop_Cooldown { get; set; } = 60;
+        [Slider("Drop The lifepod! bit cost", 10, 180, DefaultValue = 60, Step = 10, Format = "{0:F0} seconds"), OnChange(nameof(UpdateEventsData))]
+        public int Drop_BitCost { get; set; } = 100;
 
 
 
         public List<ConfigEventInfo> PopulateEventList()
         {
             var list = new List<ConfigEventInfo>();
-            list.Add(new ConfigEventInfo("Rip Robin [Integration]", this.Kill_BitCost, this.Kill_Cooldown));
-            list.Add(new ConfigEventInfo("Heal Robin [Integration]", this.Heal_BitCost, this.Heal_Cooldown));
-            list.Add(new ConfigEventInfo("Toggle Day/Night [Integration]", this.DayNight_BitCost, this.DayNight_Cooldown));
-            list.Add(new ConfigEventInfo("Open PDA [Integration]", this.PDA_BitCost, this.PDA_Cooldown));
-            list.Add(new ConfigEventInfo("Turn on the big gun [Integration]", this.Gun_BitCost, this.Gun_Cooldown));
-            list.Add(new ConfigEventInfo("Fill Oxygen [Integration]", this.O2_BitCost, this.O2_Cooldown));
-            list.Add(new ConfigEventInfo("Player Teleport [Integration]", this.Teleport_BitCost, this.Teleport_Cooldown));
-            list.Add(new ConfigEventInfo("Random Creature? Yes. [Integration]", this.Spawn_BitCost, this.Spawn_Cooldown));
-            list.Add(new ConfigEventInfo("Fill him up with junk [Integration]", this.Junk_BitCost, this.Junk_Cooldown));
-            list.Add(new ConfigEventInfo("Get your pet shrimp to hang out [Integration]", this.Reaper_BitCost, this.Repear_Cooldown));
-            list.Add(new ConfigEventInfo("Resource Roulette [Integration]", this.Resource_BitCost, this.Resource_Cooldown));
-            list.Add(new ConfigEventInfo("Blueprint Roulette [Integration]", this.Blueprint_BitCost, this.Blueprint_Cooldown));
-            list.Add(new ConfigEventInfo("An early breakfast [Integration]", this.Eat_BitCost, this.Eat_Cooldown));
-            list.Add(new ConfigEventInfo("Clear a hotbar slot [Integration]", this.ClearHotbar_BitCost, this.ClearHotbar_Cooldown));
-            list.Add(new ConfigEventInfo("Shuffle the hotbar [Integration]", this.ShuffleHotbar_BitCost, this.ShuffleHotbar_Cooldown));
-            list.Add(new ConfigEventInfo("Steal a battery [Integration]", this.StealBat_BitCost, this.StealBat_Cooldown));
-            list.Add(new ConfigEventInfo("Steal some equipment [Integration]", this.StealEquip_BitCost, this.StealEquip_Cooldown));
-            list.Add(new ConfigEventInfo("Kill bad things [Integration]", this.KillBad_BitCost, this.KillBad_Cooldown));
-            list.Add(new ConfigEventInfo("Crafted Roulette [Integration]", this.Crafted_BitCost, this.Crafted_Cooldown));
-            list.Add(new ConfigEventInfo("Random Mouse Sensitivity [Integration]", this.Mouse_BitCost, this.Mouse_Cooldown));
-            list.Add(new ConfigEventInfo("Hide HUD [Integration]", this.HUD_BitCost, this.HUD_Cooldown));
-            list.Add(new ConfigEventInfo("Invert Controls [Integration]", this.Invert_BitCost, this.Invert_Cooldown));
-            list.Add(new ConfigEventInfo("Disable Controls [Integration]", this.Disable_BitCost, this.Disable_Cooldown));
-            list.Add(new ConfigEventInfo("Random FOV [Integration]", this.FOV_BitCost, this.FOV_Cooldown));
-            list.Add(new ConfigEventInfo("Be careful Robin [Integration]", this.OHKO_BitCost, this.OHKO_Cooldown));
-            list.Add(new ConfigEventInfo("Go REALLY fast [Integration]", this.Fast_BitCost, this.Fast_Cooldown));
-            list.Add(new ConfigEventInfo("Put your name on the map! [Integration]", this.Beacon_BitCost, this.Beacon_Cooldown));
+            list.Add(new ConfigEventInfo(EventCodes.KILL, this.Kill_BitCost, this.Kill_Cooldown));
+            list.Add(new ConfigEventInfo(EventCodes.HEAL, this.Heal_BitCost, this.Heal_Cooldown));
+            list.Add(new ConfigEventInfo(EventCodes.DAY_NIGHT, this.DayNight_BitCost, this.DayNight_Cooldown));
+            list.Add(new ConfigEventInfo(EventCodes.PDA_OPEN, this.PDA_BitCost, this.PDA_Cooldown));
+            list.Add(new ConfigEventInfo(EventCodes.OXYGEN_FILL, this.O2_BitCost, this.O2_Cooldown));
+            list.Add(new ConfigEventInfo(EventCodes.RANDOM_CREATURE, this.Spawn_BitCost, this.Spawn_Cooldown));
+            list.Add(new ConfigEventInfo(EventCodes.JUNK_FILL, this.Junk_BitCost, this.Junk_Cooldown));
+            list.Add(new ConfigEventInfo(EventCodes.LEVIATHAN, this.Reaper_BitCost, this.Repear_Cooldown));
+            list.Add(new ConfigEventInfo(EventCodes.BASIC_ITEM, this.Resource_BitCost, this.Resource_Cooldown));
+            list.Add(new ConfigEventInfo(EventCodes.RANDOM_BLUEPRINT, this.Blueprint_BitCost, this.Blueprint_Cooldown));
+            list.Add(new ConfigEventInfo(EventCodes.FILL_SURVIVAL, this.Eat_BitCost, this.Eat_Cooldown));
+            list.Add(new ConfigEventInfo(EventCodes.HOTBAR_CLEAR, this.ClearHotbar_BitCost, this.ClearHotbar_Cooldown));
+            list.Add(new ConfigEventInfo(EventCodes.HOTBAR_SHUFFLE, this.ShuffleHotbar_BitCost, this.ShuffleHotbar_Cooldown));
+            list.Add(new ConfigEventInfo(EventCodes.BATTERY_STEAL, this.StealBat_BitCost, this.StealBat_Cooldown));
+            list.Add(new ConfigEventInfo(EventCodes.EQUIPMENT_STEAL, this.StealEquip_BitCost, this.StealEquip_Cooldown));
+            list.Add(new ConfigEventInfo(EventCodes.KILL_ENEMIES, this.KillBad_BitCost, this.KillBad_Cooldown));
+            list.Add(new ConfigEventInfo(EventCodes.CRAFTED_ITEM, this.Crafted_BitCost, this.Crafted_Cooldown));
+            list.Add(new ConfigEventInfo(EventCodes.MOUSE_SENSITIVITY, this.Mouse_BitCost, this.Mouse_Cooldown));
+            list.Add(new ConfigEventInfo(EventCodes.INVERT_CONTROLS, this.Invert_BitCost, this.Invert_Cooldown));
+            list.Add(new ConfigEventInfo(EventCodes.DISABLE_CONTROLS, this.Disable_BitCost, this.Disable_Cooldown));
+            list.Add(new ConfigEventInfo(EventCodes.FOV, this.FOV_BitCost, this.FOV_Cooldown));
+            list.Add(new ConfigEventInfo(EventCodes.ONE_HIT_MODE, this.OHKO_BitCost, this.OHKO_Cooldown));
+            list.Add(new ConfigEventInfo(EventCodes.SPEED, this.Fast_BitCost, this.Fast_Cooldown));
+            list.Add(new ConfigEventInfo(EventCodes.BEACON, this.Beacon_BitCost, this.Beacon_Cooldown));
+            list.Add(new ConfigEventInfo(EventCodes.RESPAWN_PLAYER, this.Respawn_Cooldown, this.Respawn_BitCost));
+            list.Add(new ConfigEventInfo(EventCodes.DROP_LIFEPOD, this.Drop_Cooldown, this.Drop_BitCost));
 
             return list;
         }
