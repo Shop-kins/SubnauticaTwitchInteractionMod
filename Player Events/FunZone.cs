@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Threading;
 using UnityEngine;
 using UWE;
@@ -51,17 +52,42 @@ namespace TwitchInteraction.Player_Events
 
         private static float initialMouseSens;
 
+        // GameInputSystem.MouseSensitivity (2025 patch) - accessed via reflection
         public static void RandomMouseSens()
         {
-            initialMouseSens = GameInput.GetMouseSensitivity();
-
-            System.Random random = new System.Random();
-            GameInput.SetMouseSensitivity((float)random.NextDouble());
+            initialMouseSens = GetMouseSensitivity();
+            SetMouseSensitivity(UnityEngine.Random.Range(0.01f, 1f));
         }
 
         public static void CleanupRandomMouseSens()
         {
-            GameInput.SetMouseSensitivity(initialMouseSens);
+            SetMouseSensitivity(initialMouseSens);
+        }
+
+        private static float GetMouseSensitivity()
+        {
+            try
+            {
+                var inputField = typeof(GameInput).GetField("input", BindingFlags.NonPublic | BindingFlags.Static);
+                var gameInputSystem = inputField?.GetValue(null);
+                if (gameInputSystem == null) return 0.15f;
+                var sensField = gameInputSystem.GetType().GetField("mouseSensitivity", BindingFlags.NonPublic | BindingFlags.Instance);
+                return sensField != null ? (float)sensField.GetValue(gameInputSystem) : 0.15f;
+            }
+            catch { return 0.15f; }
+        }
+
+        private static void SetMouseSensitivity(float value)
+        {
+            try
+            {
+                var inputField = typeof(GameInput).GetField("input", BindingFlags.NonPublic | BindingFlags.Static);
+                var gameInputSystem = inputField?.GetValue(null);
+                if (gameInputSystem == null) return;
+                var sensField = gameInputSystem.GetType().GetField("mouseSensitivity", BindingFlags.NonPublic | BindingFlags.Instance);
+                sensField?.SetValue(gameInputSystem, value);
+            }
+            catch { }
         }
 
         public static void hideHUD()
@@ -95,12 +121,41 @@ namespace TwitchInteraction.Player_Events
 
         }
 
+        private static readonly TechType[] SpawnableCreatures =
+        {
+            TechType.Shocker, TechType.GhostLeviathan, TechType.Biter, TechType.Blighter, TechType.BoneShark,
+            TechType.Crabsnake, TechType.CrabSquid, TechType.Crash, TechType.LavaLizard, TechType.Mesmer,
+            TechType.ReaperLeviathan, TechType.SeaDragon, TechType.Sandshark, TechType.Stalker, TechType.Warper,
+            TechType.Bladderfish, TechType.Boomerang, TechType.GhostRayRed, TechType.Cutefish, TechType.Eyeye,
+            TechType.GarryFish, TechType.Gasopod, TechType.GhostRayBlue, TechType.HoleFish, TechType.Hoopfish,
+            TechType.Hoverfish, TechType.Jellyray, TechType.LavaBoomerang, TechType.Oculus, TechType.Peeper,
+            TechType.RabbitRay, TechType.LavaEyeye, TechType.Reefback, TechType.Reginald, TechType.SeaTreader,
+            TechType.Spadefish, TechType.Spinefish, TechType.Bleeder, TechType.Shuttlebug, TechType.CaveCrawler,
+            TechType.Floater, TechType.LavaLarva, TechType.Rockgrub, TechType.Jumper
+        };
+
         public static void randomSummon()
         {
-            System.Random random = new System.Random();
-            string[] creatures = { "shocker", "ghostleviathan", "biter", "blighter", "boneshark", "crabsnake", "crabsquid", "crash", "lavalizard", "mesmer", "reaperleviathan", "seadragon", "sandshark", "stalker", "warper", "bladderfish", "boomerang", "ghostrayred", "cutefish", "eyeye", "garryfish", "gasopod", "ghostrayblue", "holefish", "hoopfish", "hoverfish", "jellyray", "lavaboomerang", "oculus", "peeper", "rabbitray", "lavaeyeye", "reefback", "reginald", "seatreader", "spadefish", "spinefish", "bleeder", "shuttlebug", "cavecrawler", "floater", "lavalarva", "rockgrub", "jumper" };
+            CoroutineHost.StartCoroutine(SpawnCreatureAsync(SpawnableCreatures[UnityEngine.Random.Range(0, SpawnableCreatures.Length)]));
+        }
 
-            DevConsole.SendConsoleCommand("spawn " + creatures[random.Next(creatures.Length)]);
+        public static IEnumerator SpawnCreatureAsync(TechType techType)
+        {
+            if (!CraftData.IsAllowed(techType))
+                yield break;
+            var request = CraftData.GetPrefabForTechTypeAsync(techType);
+            yield return request;
+            var prefab = request.GetResult();
+            if (prefab != null)
+            {
+                var obj = Utils.CreatePrefab(prefab, 12f, false);
+                if (obj != null)
+                {
+                    LargeWorldEntity.Register(obj);
+                    CrafterLogic.NotifyCraftEnd(obj, techType);
+                    obj.SendMessage("StartConstruction", SendMessageOptions.DontRequireReceiver);
+                }
+            }
         }
 
         public static void fillFoodWater()

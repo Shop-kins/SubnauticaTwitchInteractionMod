@@ -4,24 +4,15 @@ A mod for Subnautica that allows Twitch Chat to interact with the game. Works ei
 
 ## Dev Environment
 
-### Publicise dlls
+### Prerequisites
 
-in order to use this (if you're building the solution yourself), you'll be required to first publicise the following .dll files
+- .NET SDK (targets .NET Framework 4.7.2)
 
-- Assembly-CSharp
-- Assembly-CSharp-firstpass
+### Building
 
-to do so you can use [This](https://github.com/MrPurple6411/AssemblyPublicizer) 
-but its very possible this just doesn't work for you in which case just ask someone for the resultant .dlls
+Run `dotnet build` – no Crowd Control SDK required. `SubCrowdControl.cs` is loaded by the Crowd Control app when using "Load Pack Source".
 
-### Remaining dlls
-
-you will need to also include
-
-- 0Harmony
-- QModInstaller 
-- UnityEngine.CoreModule
-- UnityEngine.InputLegacyModule
+The project uses **Subnautica.GameLibs** (82304) and **Subnautica.Nautilus** for the latest Subnautica (2025 patch).
 
 ## Packaging
 

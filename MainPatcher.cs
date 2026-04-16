@@ -14,7 +14,7 @@ namespace TwitchInteraction
     {
         public const string myGUID = "TwitchInteractionMod";
         public const string pluginName = "TwitchInteraction";
-        public const string versionString = "1.0.0";
+        public const string versionString = "5.2.0";
 
         public static TwitchChatClient otherclient;
         public static TwitchPubSubClient otherpubsub;

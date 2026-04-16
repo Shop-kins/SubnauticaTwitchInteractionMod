@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +26,7 @@ namespace TwitchInteraction.Player_Events
 
         public static void summonReaper()
         {
-            DevConsole.SendConsoleCommand("spawn reaperleviathan");
+            CoroutineHost.StartCoroutine(FunZone.SpawnCreatureAsync(TechType.ReaperLeviathan));
         }
 
         public static void TeleportPlayerOOB()

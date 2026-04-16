@@ -80,23 +80,6 @@ namespace TwitchInteraction.InputPatch
         }
     }
 
-    [HarmonyPatch(typeof(GameInput))]
-    [HarmonyPatch("GetInputStateForButton")]
-    internal class InputState_Patch
-    {
-        [HarmonyPostfix]
-        public static void Postfix(ref GameInput.InputState __result, GameInput.Button button)
-        {
-            if (!InputPatch.controlsEnabled)
-            {
-                __result = new GameInput.InputState
-                {
-                    flags = GameInput.InputStateFlags.Up,
-                    timeDown = 0f
-                };
-            }
-        }
-    }
 
     [HarmonyPatch(typeof(GameInput))]
     [HarmonyPatch("GetButtonDown")]
